@@ -7,7 +7,9 @@
     <projectFile>Intermediate/ProjectFiles/Skyward.vcxproj</projectFile>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="10d3b785-d203-4efd-91d1-ce758f1113af" name="Changes" comment="" />
+    <list default="true" id="10d3b785-d203-4efd-91d1-ce758f1113af" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Skyward/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Skyward/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -16,25 +18,25 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "customColor": "",
-  "associatedIndex": 4
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 4
+}</component>
   <component name="ProjectId" id="2bwBxkBaRJJ8vGK3jV0aIY2DJ1u" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "C++ Project.Skyward.executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "KJY",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;C++ Project.Skyward.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;KJY&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected="C++ Project.Skyward">
     <configuration name="Skyward" type="CppProject" factoryName="C++ Project">
       <configuration_1>
@@ -158,6 +160,7 @@
       <option name="presentableId" value="Default" />
       <updated>1707116511190</updated>
       <workItem from="1707116512839" duration="164000" />
+      <workItem from="1707117101543" duration="211000" />
     </task>
     <servers />
   </component>

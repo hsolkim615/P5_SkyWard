@@ -4,13 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "WheeledVehiclePawn.h"
-#include "Helicopter_Base.generated.h"
+#include "VehicleBase.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class SKYWARD_API AHelicopter_Base : public AWheeledVehiclePawn
+class SKYWARD_API AVehicleBase : public AWheeledVehiclePawn
 {
 	GENERATED_BODY()
 	

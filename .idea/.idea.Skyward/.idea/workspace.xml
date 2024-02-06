@@ -12,13 +12,6 @@
   <component name="ChangeListManager">
     <list default="true" id="10d3b785-d203-4efd-91d1-ce758f1113af" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Skyward/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Skyward/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/KJY/Test_KJY.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Skyward/Private/TestActor.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Skyward/Private/Vehicle/Helicopter/HelicopterBase.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Skyward/Private/Vehicle/VehicleBase.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Skyward/Public/TestActor.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Skyward/Public/Vehicle/Helicopter/HelicopterBase.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Skyward/Public/Vehicle/VehicleBase.h" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -190,6 +183,7 @@
       <workItem from="1707181893273" duration="684000" />
       <workItem from="1707182594199" duration="169000" />
       <workItem from="1707182778416" duration="12000" />
+      <workItem from="1707183160739" duration="11969000" />
     </task>
     <servers />
   </component>

@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Vehicle/VehicleBase.h"
+#include "../Vehicle/VehicleBase.h"
 #include "HelicopterBase.generated.h"
 
 /**

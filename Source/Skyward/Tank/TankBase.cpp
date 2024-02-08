@@ -3,6 +3,7 @@
 
 #include "../Tank/TankBase.h"
 
+#include "TankFSM.h"
 #include "Components/BoxComponent.h"
 
 ATankBase::ATankBase()
@@ -13,5 +14,7 @@ ATankBase::ATankBase()
 	// SetRootComponent(boxComp);
 	//
 	// meshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Static Mesh"));
-	// meshComp->SetupAttachment(boxComp); 
+	// meshComp->SetupAttachment(boxComp);
+
+	FSM = CreateDefaultSubobject<UTankFSM>(TEXT("FSM"));
 }

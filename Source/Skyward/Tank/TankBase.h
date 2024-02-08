@@ -23,6 +23,10 @@ public:
 	//
 	// UPROPERTY(EditAnywhere)
 	// class UStaticMeshComponent* meshComp;
+
+public:
+	UPROPERTY(BlueprintReadOnly)
+	class UTankFSM* FSM;
 };
 
 

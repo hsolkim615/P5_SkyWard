@@ -27,6 +27,7 @@ public:
 
 	virtual void SetupPlayerInput(class UInputComponent* PlayerInputComponent) override;
 
+
 public:
 	// InputAction
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MySettings|BindKey")
@@ -51,7 +52,23 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MySettings|BindKey")
 	class UInputAction* IA_On_Off;
 
-public: // Heli - Moving
+
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MySettings|HeliKey")
+	class UInputAction* IA_Apache_Cyclic;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MySettings|HeliKey")
+	class UInputAction* IA_Apache_Collective;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MySettings|HeliKey")
+	class UInputAction* IA_Apache_Pedal;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MySettings|HeliKey")
+	class UInputAction* IA_Apache_Throttle;
+
+	
+
+public: // Heli - Moving Test
 	void FWD_BWD_Function(const FInputActionValue& value);
 
 	void Up_Down_Function(const FInputActionValue& value);
@@ -68,8 +85,17 @@ public: // Heli - Moving
 	// 헬기 시동
 	void On_Off_Function(const FInputActionValue& value);
 
+public: // Heli - Moving 
+	void Cyclie_RightThumbStick(const FInputActionValue& value);
+	void UpdateHelicopterAngle(const FVector2D& InputValue);
+	void StopUpdatingHelicopterAngle();
+
+	void Collective_LeftGrip(const FInputActionValue& value);
+
+	void Pedal_Trigger(const FInputActionValue& value);
 
 public:
+	// 고도유지 기능
 	void HoldHeliAltitude();
 
 public:
@@ -91,4 +117,26 @@ public:
 	TArray<class AActor*> IngnoreActors;
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	float CurrentPitch;
+	float CurrentRoll;
 };

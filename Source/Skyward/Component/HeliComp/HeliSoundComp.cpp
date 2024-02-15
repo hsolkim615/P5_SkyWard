@@ -25,7 +25,6 @@ void UHeliSoundComp::BeginPlay()
 
 void UHeliSoundComp::PlayHeliSound_Engine()
 {
-	UE_LOG(LogTemp, Warning, TEXT("PlaySound"));
 
 	HeliSoundComp->SetFloatParameter(FName("RotorSound"),HeliComp_Move->MainRotorSpeedRate);
 

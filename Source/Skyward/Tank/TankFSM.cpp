@@ -34,31 +34,69 @@ void UTankFSM::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	// switch (mState)
-	// {
-	// case EEnemyState::Attack:
-	// 	AttackState();
-	// 	break;
-	// case EEnemyState::Damage:
-	// 	break;
-	// case EEnemyState::Die:
-	// 	break;
-	// }
+	 switch (mState)
+	 {
+	 case EEnemyState::Idle:
+		 IdleState();
+		 break;
+	 case EEnemyState::Attack:
+	 	AttackState();
+	 	break;
+	 case EEnemyState::Die: 
+		DieState();
+	 	break;
+	 }
 }
 
 
-// void UTankFSM::AttackState()
-// {
-// 	FVector PlayerLoc = Player->GetActorLocation();
-// 	FVector EnemyLoc = Me->GetActorLocation();
-// 	FVector Dir = PlayerLoc - EnemyLoc;
-// }
-//
-// void UTankFSM::DamageState()
-// {
-// }
-//
-// void UTankFSM::DieState()
-// {
-// }
+void UTankFSM::IdleState()
+{
+	FVector PlayerLoc = Player->GetActorLocation();
+	FVector EnemyLoc = Me->GetActorLocation();
+	FVector Dir = PlayerLoc - EnemyLoc;
+
+	if (Dir.Size() < AttackRange)
+	{
+		mState = EEnemyState::Attack;
+	}
+
+}
+
+void UTankFSM::AttackState()
+ {
+	CurrentTime += GetWorld()->DeltaTimeSeconds;
+	if (CurrentTime > AttackTime)
+	{
+		CurrentTime = 0;
+		
+	}
+
+	FVector PlayerLoc = Player->GetActorLocation();
+	FVector EnemyLoc = Me->GetActorLocation();
+	FVector Dir = PlayerLoc - EnemyLoc;
+
+	if (Dir.Size() > AttackRange)
+	{
+		mState = EEnemyState::Idle;
+		
+	}
+
+ }
+
+
+ void UTankFSM::DieState()
+ {
+	
+ }
+
+ void UTankFSM::OnDamageProcess(int param)
+ {
+	CurrentHp -= param;
+
+	if (CurrentHp == 0)
+	{
+		mState = EEnemyState::Die;
+	}
+ }
+
 

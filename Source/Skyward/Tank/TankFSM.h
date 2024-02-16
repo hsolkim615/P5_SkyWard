@@ -6,14 +6,14 @@
 #include "Components/ActorComponent.h"
 #include "TankFSM.generated.h"
 
-// UENUM(BlueprintType)
-// enum class EEnemyState : uint8
-// {
-// 	Idle,
-// 	Attack,
-// 	Damage,
-// 	Die,
-// };
+ UENUM(BlueprintType)
+ enum class EEnemyState : uint8
+ {
+ 	Idle,
+ 	Attack,
+ 	Damage,
+ 	Die,
+ };
 
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
@@ -33,16 +33,40 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-public:
-	// UPROPERTY(BlueprintReadOnly, Category=FSM)
-	// EEnemyState mState = EEnemyState::Attack;
+
+	UPROPERTY(EditAnywhere)
+	float AttackRange;
+
+	UPROPERTY(EditAnywhere)
+	float MaxHp;
+
+	UPROPERTY(EditAnywhere)
+	float CurrentHp;
+
+	UPROPERTY(EditAnywhere)
+	float AttackTime;
+
+	UPROPERTY(EditAnywhere)
+	float DeathTime;
+
+	UPROPERTY(EditAnywhere)
+	float CurrentTime = 0;
+
+	UPROPERTY(BlueprintReadOnly, Category=FSM)
+	EEnemyState mState = EEnemyState::Idle;
 
 	UPROPERTY()
 	class AHelicopterBase* Player;
 
 	UPROPERTY()
 	class ATankBase* Me;
-	
-	
 		
+
+private:
+	void IdleState();
+	void AttackState();
+	void DieState();
+
+public:
+	void OnDamageProcess(int param);
 };

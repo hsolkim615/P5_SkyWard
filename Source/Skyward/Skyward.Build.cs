@@ -8,7 +8,7 @@ public class Skyward : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput", "UMG", "HeadMountedDisplay", "XRBase", "OnlineSubsystem", "OnlineSubsystemSteam", "Niagara" });
+		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput", "UMG", "HeadMountedDisplay", "XRBase", "OnlineSubsystem", "OnlineSubsystemSteam", "Niagara", "AIModule" });
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 

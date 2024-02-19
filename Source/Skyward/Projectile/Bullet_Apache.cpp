@@ -6,6 +6,7 @@
 #include <../../../../../../../Source/Runtime/Engine/Classes/Components/SphereComponent.h>
 #include <../../../../../../../Source/Runtime/Engine/Classes/Kismet/KismetSystemLibrary.h>
 #include <../../../../../../../Source/Runtime/Engine/Classes/Kismet/KismetMathLibrary.h>
+#include "../Tank/TankBase.h"
 
 ABullet_Apache::ABullet_Apache()
 {
@@ -55,10 +56,24 @@ void ABullet_Apache::Tick(float DeltaTime)
 
 	// 목표 위치로 부드럽게 이동
 	FVector CurrentLocation = GetActorLocation();
-	FVector NewLocation = FMath::VInterpConstantTo(CurrentLocation, TargetLocation, DeltaTime, 10000.f);
+	FVector NewLocation = FMath::VInterpConstantTo(CurrentLocation, TargetLocation, DeltaTime, 30000.f);
 	SetActorLocation(NewLocation);
 
 
+
+}
+
+void ABullet_Apache::NotifyActorBeginOverlap(AActor* OtherActor)
+{
+	Super::NotifyActorBeginOverlap(OtherActor);
+	
+	if (OtherActor->IsA<ATankBase>()) {
+		
+		OtherActor->Destroy();
+
+	}
+	
+	Destroy();
 
 }
 

@@ -72,7 +72,7 @@ void UHeliAttackComp::Shoot_MachineGun(const FInputActionValue& value)
 	// 라인 트레이스 실행
 	if (GetWorld()->LineTraceSingleByChannel(HitResult, StartLocation, EndLocation, TraceChannel, CollisionParams))
 	{
-		DrawDebugLine(GetWorld(), StartLocation, HitResult.ImpactPoint, FColor::Green, false, 5.0f, 0, 5.0f);
+		//DrawDebugLine(GetWorld(), StartLocation, HitResult.ImpactPoint, FColor::Green, false, 5.0f, 0, 5.0f);
 		
 		Bullet->BulletMove(HitResult.Location);
 
@@ -83,7 +83,7 @@ void UHeliAttackComp::Shoot_MachineGun(const FInputActionValue& value)
 	}
 	else
 	{
-		DrawDebugLine(GetWorld(), StartLocation, EndLocation, FColor::Green, false, 5.0f, 0, 5.0f);
+		//DrawDebugLine(GetWorld(), StartLocation, EndLocation, FColor::Green, false, 5.0f, 0, 5.0f);
 
 		Bullet->BulletMove(EndLocation);
 

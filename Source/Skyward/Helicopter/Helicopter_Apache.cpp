@@ -49,7 +49,7 @@ AHelicopter_Apache::AHelicopter_Apache()
 	// 카메라 위치 컴포넌트
 	CameraLocComp = CreateDefaultSubobject<USceneComponent>(TEXT("CameraLocComp"));
 	CameraLocComp->SetupAttachment(RootComponent);
-	CameraLocComp->SetRelativeLocation(FVector(245, 0, 245)/*FVector(270, 0, 245)*/);
+	CameraLocComp->SetRelativeLocation(FVector(245, 0, 100)/*FVector(270, 0, 245)*/);
 
 	// 카메라 컴포넌트
 	CameraComp = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComp"));

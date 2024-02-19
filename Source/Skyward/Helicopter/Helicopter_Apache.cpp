@@ -12,6 +12,9 @@
 #include <Components/SkeletalMeshComponent.h>
 #include "../Pilot/Pilot.h"
 #include "../Component/HeliComp/HeliAttackComp.h"
+#include "../Component/HeliComp/HeliTestComp.h"
+#include <../../../../../../../Source/Runtime/Engine/Classes/Components/SceneComponent.h>
+#include <../../../../../../../Source/Runtime/Engine/Classes/Particles/ParticleSystemComponent.h>
 
 AHelicopter_Apache::AHelicopter_Apache()
 {
@@ -35,10 +38,22 @@ AHelicopter_Apache::AHelicopter_Apache()
 	DoorCollision->SetBoxExtent(FVector(80, 60, 180));
 	DoorCollision->SetRelativeLocation(FVector(290, 140, 180));
 
+	// 기관총 총열
+	MGNozzleComp = CreateDefaultSubobject<USceneComponent>(TEXT("NozzleComp"));
+	MGNozzleComp->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, FName("gun_tilt_jntSocket"));
+
+	// 기관총 이펙트
+	MGEffectComp = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("MGEffectComp"));
+	MGEffectComp->SetupAttachment(MGNozzleComp);
+
+	// 카메라 위치 컴포넌트
+	CameraLocComp = CreateDefaultSubobject<USceneComponent>(TEXT("CameraLocComp"));
+	CameraLocComp->SetupAttachment(RootComponent);
+	CameraLocComp->SetRelativeLocation(FVector(245, 0, 245)/*FVector(270, 0, 245)*/);
+
 	// 카메라 컴포넌트
 	CameraComp = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComp"));
-	CameraComp->SetupAttachment(RootComponent);
-	CameraComp->SetRelativeLocation(FVector(270, 0, 245));
+	CameraComp->SetupAttachment(CameraLocComp);
 
 	// 이동 컴포넌트
 	MoveComp = CreateDefaultSubobject<UHeliMoveComp>(TEXT("MoveComp"));
@@ -48,6 +63,12 @@ AHelicopter_Apache::AHelicopter_Apache()
 
 	// 사운드 컴포넌트
 	SoundComp = CreateDefaultSubobject<UHeliSoundComp>(TEXT("SoundComp"));
+
+
+
+
+	// Test 컴포넌트
+	TestComp = CreateDefaultSubobject<UHeliTestComp>(TEXT("TestComp"));
 
 }
 

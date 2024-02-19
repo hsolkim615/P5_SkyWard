@@ -57,6 +57,15 @@ public:
 	class UBoxComponent* DoorCollision;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class USceneComponent* MGNozzleComp;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class UParticleSystemComponent* MGEffectComp;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class USceneComponent* CameraLocComp;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class UCameraComponent* CameraComp;
 
 public: // Actor Comp
@@ -68,6 +77,13 @@ public: // Actor Comp
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class UHeliCompBase* SoundComp;
+	
+
+	// Test ÄÄÆ÷³ÍÆ®
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class UHeliCompBase* TestComp;
+
+
 
 public:	// MoveComp
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)

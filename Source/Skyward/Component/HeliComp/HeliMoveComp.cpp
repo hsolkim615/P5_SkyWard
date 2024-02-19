@@ -31,7 +31,7 @@ void UHeliMoveComp::TickComponent(float DeltaTime, ELevelTick TickType, FActorCo
 			HeliComp_Sound->PlayHeliSound_Engine();
 		}
 
-		// 헬기 움직임
+		// 헬기 움직임 
 		MainRotorSpeedRate = FMath::FInterpTo(MainRotorSpeedRate, 25.f, DeltaTime, 0.2f); // 최고속력 25
 
 		// 애니메이션에서 사용 - 프로펠러 회전
@@ -54,8 +54,8 @@ void UHeliMoveComp::TickComponent(float DeltaTime, ELevelTick TickType, FActorCo
 		}
 
 	}
-	else {
-		// 헬기 소리 호출
+	else { // 헬기 엔진 꺼짐
+		// 헬기 소리 호출 - 시동끄는 소리
 		if (HeliComp_Sound) {
 			HeliComp_Sound->PlayHeliSound_Engine();
 		}
@@ -87,38 +87,6 @@ void UHeliMoveComp::SetupPlayerInput(UInputComponent* PlayerInputComponent)
 
 	UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent);
 
-	// 키보드 바인딩
-	if (EnhancedInputComponent) {
-
-		EnhancedInputComponent->BindAction(IA_Heli_FWD_BWD, ETriggerEvent::Triggered, this, &UHeliMoveComp::FWD_BWD_Function);
-		EnhancedInputComponent->BindAction(IA_Heli_FWD_BWD, ETriggerEvent::Canceled, this, &UHeliMoveComp::FWD_BWD_Function);
-		EnhancedInputComponent->BindAction(IA_Heli_FWD_BWD, ETriggerEvent::Completed, this, &UHeliMoveComp::FWD_BWD_Function);
-
-		EnhancedInputComponent->BindAction(IA_Heli_Up_Down, ETriggerEvent::Triggered, this, &UHeliMoveComp::Up_Down_Function);
-		EnhancedInputComponent->BindAction(IA_Heli_Up_Down, ETriggerEvent::Canceled, this, &UHeliMoveComp::Up_Down_Function);
-		EnhancedInputComponent->BindAction(IA_Heli_Up_Down, ETriggerEvent::Completed, this, &UHeliMoveComp::Up_Down_Function);
-
-		EnhancedInputComponent->BindAction(IA_Heli_Roll_Left_Right, ETriggerEvent::Triggered, this, &UHeliMoveComp::Roll_Left_Right_Function);
-		EnhancedInputComponent->BindAction(IA_Heli_Roll_Left_Right, ETriggerEvent::Canceled, this, &UHeliMoveComp::Roll_Left_Right_Function);
-		EnhancedInputComponent->BindAction(IA_Heli_Roll_Left_Right, ETriggerEvent::Completed, this, &UHeliMoveComp::Roll_Left_Right_Function);
-
-		EnhancedInputComponent->BindAction(IA_Heli_Steering, ETriggerEvent::Triggered, this, &UHeliMoveComp::Steering_Function);
-		EnhancedInputComponent->BindAction(IA_Heli_Steering, ETriggerEvent::Canceled, this, &UHeliMoveComp::Steering_Function);
-		EnhancedInputComponent->BindAction(IA_Heli_Steering, ETriggerEvent::Completed, this, &UHeliMoveComp::Steering_Function);
-
-		EnhancedInputComponent->BindAction(IA_Free_Look_Key, ETriggerEvent::Triggered, this, &UHeliMoveComp::Free_Look_Key_Function);
-		EnhancedInputComponent->BindAction(IA_Free_Look_Key, ETriggerEvent::Canceled, this, &UHeliMoveComp::Free_Look_Key_Function);
-		EnhancedInputComponent->BindAction(IA_Free_Look_Key, ETriggerEvent::Completed, this, &UHeliMoveComp::Free_Look_Key_Function);
-
-		EnhancedInputComponent->BindAction(IA_Free_Look, ETriggerEvent::Triggered, this, &UHeliMoveComp::Free_Look_Function);
-		EnhancedInputComponent->BindAction(IA_Free_Look, ETriggerEvent::Canceled, this, &UHeliMoveComp::Free_Look_Function);
-		EnhancedInputComponent->BindAction(IA_Free_Look, ETriggerEvent::Completed, this, &UHeliMoveComp::Free_Look_Function);
-
-		// 엔진 시동 
-		EnhancedInputComponent->BindAction(IA_On_Off, ETriggerEvent::Started, this, &UHeliMoveComp::On_Off_Function);
-
-	}
-
 	// VR 컨트롤러 바인딩
 	if (EnhancedInputComponent) {
 		
@@ -141,73 +109,6 @@ void UHeliMoveComp::SetupPlayerInput(UInputComponent* PlayerInputComponent)
 
 }
 
-void UHeliMoveComp::FWD_BWD_Function(const FInputActionValue& value)
-{
-
-	float PitchValue = value.Get<float>();
-
-	Apache->AddControllerPitchInput(PitchValue);
-
-	Apache->GetVehicleMovementComponent()->SetPitchInput(PitchValue);
-
-}
-
-void UHeliMoveComp::Up_Down_Function(const FInputActionValue& value)
-{
-
-	ActionValueUpDown = value.Get<float>();
-
-	//UE_LOG(LogTemp, Warning, TEXT("float : %f"), ActionValueUpDown);
-
-	if (ActionValueUpDown == 0) {
-
-		ApacheAltitude = Apache->GetActorLocation().Z;
-
-	}
-
-}
-
-void UHeliMoveComp::Roll_Left_Right_Function(const FInputActionValue& value)
-{
-
-	float RollValue = value.Get<float>();
-
-	Apache->AddControllerRollInput(RollValue);
-
-	Apache->GetVehicleMovementComponent()->SetRollInput(RollValue);
-
-
-}
-
-void UHeliMoveComp::Steering_Function(const FInputActionValue& value)
-{
-
-	float YawValue = value.Get<float>();
-
-	Apache->AddControllerYawInput(YawValue);
-
-	Apache->GetVehicleMovementComponent()->SetYawInput(YawValue);
-
-}
-
-void UHeliMoveComp::Free_Look_Key_Function(const FInputActionValue& value)
-{
-
-	Apache->AddControllerPitchInput(Look_Function_VecterValue_Y / 2);
-
-}
-
-void UHeliMoveComp::Free_Look_Function(const FInputActionValue& value)
-{
-
-	FVector2D VecterValue = value.Get<FVector2D>();
-
-	Apache->AddControllerYawInput(VecterValue.X / 2);
-
-	Look_Function_VecterValue_Y = VecterValue.Y;
-
-}
-
 void UHeliMoveComp::On_Off_Function(const FInputActionValue& value)
 {
 	if (bIsEngineOnOff == false) {
@@ -222,6 +123,7 @@ void UHeliMoveComp::On_Off_Function(const FInputActionValue& value)
 		FHitResult hitResult;
 		FVector startLoc = Apache->GetActorLocation() + FVector(0, 0, 50);
 		FVector endLoc = Apache->GetActorLocation() + FVector(0, 0, -10);
+		TArray<class AActor*> IngnoreActors;
 
 		IngnoreActors.Add(Apache);
 		FCollisionQueryParams CollisionParams;
@@ -436,6 +338,8 @@ void UHeliMoveComp::Pedal_Trigger(const FInputActionValue& value)
 
 void UHeliMoveComp::HoldHeliAltitude()
 {
+	// 헬기 고도를 유지하는 기능 
+	
 	// Out Range A 부분을 바꾸어 유지 고도를 바꿀 수 있음 -> 너무 크면 흔들림이 심하고, 너무 작으면 헬기가 추락함
 	float Altitude = UKismetMathLibrary::MapRangeClamped(Apache->GetActorLocation().Z - ApacheAltitude, 0.f, 10.f, 0.7f, 0.f);
 

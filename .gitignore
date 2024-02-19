@@ -2,6 +2,8 @@
 # Edit at https://www.toptal.com/developers/gitignore?templates=unrealengine,visualstudio
 
 Content/Resource/*
+Content/OutpostandBunker/*
+Content/Valley_Landscape/*
 
 ### UnrealEngine ###
 # Visual Studio 2015 user specific files

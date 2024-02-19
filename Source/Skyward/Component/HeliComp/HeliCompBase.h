@@ -35,7 +35,9 @@ public:
 	class UHeliMoveComp* HeliComp_Move;
 
 	UPROPERTY()
-	class UHeliSoundComp* HeliComp_Sound;
+	class UHeliAttackComp* HeliComp_Attack;
 
+	UPROPERTY()
+	class UHeliSoundComp* HeliComp_Sound;
 
 };

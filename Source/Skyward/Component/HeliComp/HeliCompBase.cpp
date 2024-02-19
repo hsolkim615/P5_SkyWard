@@ -5,6 +5,7 @@
 #include "../../Helicopter/Helicopter_Apache.h"
 #include "HeliMoveComp.h"
 #include "HeliSoundComp.h"
+#include "HeliAttackComp.h"
 
 // Sets default values for this component's properties
 UHeliCompBase::UHeliCompBase()
@@ -35,11 +36,15 @@ void UHeliCompBase::InitializeComponent()
 
 	HeliComp_Move = Cast<UHeliMoveComp>(Apache->MoveComp);
 
+	HeliComp_Attack = Cast<UHeliAttackComp>(Apache->AttackComp);
+	
 	HeliComp_Sound = Cast<UHeliSoundComp>(Apache->SoundComp);
 
 
 
 	Apache->OnSetupInputDelegate.AddUObject(this, &UHeliCompBase::SetupPlayerInput);
+
+
 
 }
 

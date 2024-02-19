@@ -10,10 +10,6 @@ void UApacheAnim::NativeBeginPlay()
 
 	Owner_Apache = Cast<AHelicopter_Apache>(GetOwningActor());
 
-	//Owner_Apache->GetVehicleMovement()
-
-
-
 }
 
 void UApacheAnim::NativeUpdateAnimation(float DeltaSeconds)

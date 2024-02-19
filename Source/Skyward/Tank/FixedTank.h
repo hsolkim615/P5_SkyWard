@@ -26,6 +26,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FVector Direction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FTimerHandle SpawnTimerHandle;
+
 	UPROPERTY()
 	float Alpha = 0.5f;
 
@@ -39,7 +42,12 @@ protected:
     UFUNCTION()
 	virtual void OnSeePawn(APawn* OtherPawn);
 
-
+	void SpawnActorFunction();
 	
+	void SetupSpawnTimer();
+
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TSubclassOf<class ABullet_Tank> ActorClass;
 };
 

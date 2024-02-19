@@ -18,6 +18,8 @@ void UHeliMoveComp::BeginPlay()
 {
 	Super::BeginPlay();
 
+	Standhigh = FMath::Abs(Apache->GetActorLocation().Z);
+
 }
 
 void UHeliMoveComp::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
@@ -49,6 +51,8 @@ void UHeliMoveComp::TickComponent(float DeltaTime, ELevelTick TickType, FActorCo
 			else
 			{
 				Apache->GetVehicleMovement()->SetThrottleInput(ActionValueUpDown);
+
+
 			}
 
 		}
@@ -79,6 +83,11 @@ void UHeliMoveComp::TickComponent(float DeltaTime, ELevelTick TickType, FActorCo
 	UKismetSystemLibrary::PrintString(this, FString::Printf(TEXT("VehicleMovementComponent Pitch: %f"), CurrentPitch), true, false, FLinearColor::Green, 5.0f, FName(TEXT("VehiclePitch")));
 	UKismetSystemLibrary::PrintString(this, FString::Printf(TEXT("VehicleMovementComponent Roll: %f"), CurrentRoll), true, false, FLinearColor::Green, 5.0f, FName(TEXT("VehicleRoll")));
 
+
+
+	UKismetSystemLibrary::PrintString(this, FString::Printf(TEXT("ApacheAltitude: %f"), ApacheAltitude + Standhigh), true, false, FLinearColor::Green, 5.0f, FName(TEXT("ApacheAltitudeLog")));
+
+
 }
 
 void UHeliMoveComp::SetupPlayerInput(UInputComponent* PlayerInputComponent)
@@ -89,7 +98,7 @@ void UHeliMoveComp::SetupPlayerInput(UInputComponent* PlayerInputComponent)
 
 	// VR 컨트롤러 바인딩
 	if (EnhancedInputComponent) {
-		
+
 		// 헬기 방향(기울기)
 		EnhancedInputComponent->BindAction(IA_Apache_Cyclic, ETriggerEvent::Triggered, this, &UHeliMoveComp::Cyclie_RightThumbStick);
 		EnhancedInputComponent->BindAction(IA_Apache_Cyclic, ETriggerEvent::Canceled, this, &UHeliMoveComp::Cyclie_RightThumbStick);
@@ -290,38 +299,35 @@ void UHeliMoveComp::Collective_LeftGrip(const FInputActionValue& value)
 	// 왼손 그랩의 반환 값에 따라 단계를 0~4로 나누고, 각 단계에 따라 고도가 달라진다. - 최대 7000m
 
 
+	//ActionValueUpDown = value.Get<float>();
+
+
+	//ActionValueUpDown = value.Get<float>();
+
+
+
+	if (value.Get<float>() == 0) {
+		ActionValueUpDown = -1;
+
+	}
+	else if (value.Get<float>() == 1) {
+		ActionValueUpDown = 1;
+	}
+	else {
+		ActionValueUpDown = 0;
+
+		// ApacheAltitude 의 값이 하나로 설정되어야 고도를 유지할 수 있는데, 현재 trigger 상태라 계속해서 ApacheAltitude가 갱신되므로 고도를 유지하지 않고 계속 상승함
+		ApacheAltitude = Apache->GetActorLocation().Z;
+
+	}
+
+
+
 
 	UKismetSystemLibrary::PrintString(this, FString::Printf(TEXT("ActionValueUpDown: %f"), ActionValueUpDown), true, false, FLinearColor::Green, 5.0f, FName(TEXT("ActionValueLog")));
 
 
-	ActionValueUpDown = value.Get<float>();
 
-	/*
-	float YawValue = value.Get<float>();
-	
-	if (YawValue == 0) {
-
-		ActionValueUpDown = -1;
-	
-	}
-	else if (0 < YawValue && YawValue < 1) {
-	
-		ActionValueUpDown = 0;
-
-	}
-	else if (YawValue == 1) {
-
-		ActionValueUpDown = 1;
-
-	}
-	*/
-
-	
-	if (ActionValueUpDown == 0) {
-
-		ApacheAltitude = Apache->GetActorLocation().Z;
-		// -> 0일 때는 고도 유지, 현재고도 보다 낮을 때는 하강, 높을 때는 상승, 1일 때는 상승하도록 작동 중 
-	}
 
 }
 
@@ -339,11 +345,13 @@ void UHeliMoveComp::Pedal_Trigger(const FInputActionValue& value)
 void UHeliMoveComp::HoldHeliAltitude()
 {
 	// 헬기 고도를 유지하는 기능 
-	
+
 	// Out Range A 부분을 바꾸어 유지 고도를 바꿀 수 있음 -> 너무 크면 흔들림이 심하고, 너무 작으면 헬기가 추락함
 	float Altitude = UKismetMathLibrary::MapRangeClamped(Apache->GetActorLocation().Z - ApacheAltitude, 0.f, 10.f, 0.7f, 0.f);
 
 	Apache->GetVehicleMovement()->SetThrottleInput(Altitude);
+
+	UE_LOG(LogTemp, Warning, TEXT("Success"));
 
 
 	/*

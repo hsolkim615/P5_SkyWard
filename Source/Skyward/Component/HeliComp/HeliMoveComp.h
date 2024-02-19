@@ -75,7 +75,7 @@ public:
 
 
 
-
+	float Standhigh;
 
 	// 로그용 변수
 	float CurrentPitch;

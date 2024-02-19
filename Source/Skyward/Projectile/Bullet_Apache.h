@@ -22,6 +22,10 @@ public:
 
 	virtual void Tick(float DeltaTime) override;
 
+	void NotifyActorBeginOverlap(AActor* OtherActor) override;
+
+
+
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class USphereComponent* HitCollision;

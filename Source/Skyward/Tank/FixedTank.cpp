@@ -105,7 +105,7 @@ void AFixedTank::OnSeePawn(APawn* OtherPawn)
 
 void AFixedTank::SpawnActorFunction()
 {
-	// GetWorld() 함수를 사용하여 현재 월드에 접근합니다.
+	// GetWorld() 함수를 사용하여 현재 월드에 접근
 	UWorld* World = GetWorld();
 	if (World)
 	{
@@ -117,7 +117,7 @@ void AFixedTank::SpawnActorFunction()
 		// 스폰할 액터의 클래스를 지정합니다.
 		//ActorClass = ABullet_Tank::StaticClass();
 
-		// 액터를 스폰합니다.
+		// 액터 스폰
 		ABullet_Tank* SpawnedActor = World->SpawnActor<ABullet_Tank>(ActorClass, SpawnLocation, SpawnRotation);
 
 		//if (SpawnedActor)
@@ -129,13 +129,11 @@ void AFixedTank::SpawnActorFunction()
 	}
 }
 
-// 액터를 주기적으로 스폰하기 위한 타이머를 설정하는 함수를 정의합니다.
+
 void AFixedTank::SetupSpawnTimer()
 {
-	// 타이머 주기를 설정합니다. 여기서는 2초로 설정합니다.
 	float SpawnInterval = 2.0f;
 
-	// 타이머를 설정합니다.
 	GetWorld()->GetTimerManager().SetTimer(SpawnTimerHandle, this, &AFixedTank::SpawnActorFunction, SpawnInterval, true);
 
 }

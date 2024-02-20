@@ -39,7 +39,14 @@ public:
 public:
 	void BulletMove(FVector TargetLoc);
 
+	void SaveOwner();
+
+	void setAttackDamage(float NewAttackDamage);
+
 public:
 	FVector TargetLocation;
 
+	class AHelicopter_Apache* OwnerHeli;
+
+	float AttackDamage;
 };

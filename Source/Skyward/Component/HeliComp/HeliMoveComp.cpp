@@ -18,7 +18,8 @@ void UHeliMoveComp::BeginPlay()
 {
 	Super::BeginPlay();
 
-	Standhigh = FMath::Abs(Apache->GetActorLocation().Z);
+
+	StandHigh = Apache->GetActorLocation().Z;
 
 }
 
@@ -79,13 +80,15 @@ void UHeliMoveComp::TickComponent(float DeltaTime, ELevelTick TickType, FActorCo
 	CurrentPitch = Apache->GetActorRotation().Pitch;
 	CurrentRoll = Apache->GetActorRotation().Roll;
 
-
+	// 전후 수평 로그
 	UKismetSystemLibrary::PrintString(this, FString::Printf(TEXT("VehicleMovementComponent Pitch: %f"), CurrentPitch), true, false, FLinearColor::Green, 5.0f, FName(TEXT("VehiclePitch")));
+	// 좌우 수평 로그
 	UKismetSystemLibrary::PrintString(this, FString::Printf(TEXT("VehicleMovementComponent Roll: %f"), CurrentRoll), true, false, FLinearColor::Green, 5.0f, FName(TEXT("VehicleRoll")));
 
-
-
-	UKismetSystemLibrary::PrintString(this, FString::Printf(TEXT("ApacheAltitude: %f"), ApacheAltitude + Standhigh), true, false, FLinearColor::Green, 5.0f, FName(TEXT("ApacheAltitudeLog")));
+	// 고도 - 절대좌표
+	//UKismetSystemLibrary::PrintString(this, FString::Printf(TEXT("ApacheAltitude: %f"), ApacheAltitude), true, false, FLinearColor::Green, 5.0f, FName(TEXT("StandHigh")));
+	// 고도 - 헬기 기준 상대좌표
+	UKismetSystemLibrary::PrintString(this, FString::Printf(TEXT("Apache->GetActorLocation().Z: %f"), Apache->GetActorLocation().Z - StandHigh), true, false, FLinearColor::Green, 5.0f, FName(TEXT("Apache->GetActorLocation().Z")));
 
 
 }
@@ -100,9 +103,9 @@ void UHeliMoveComp::SetupPlayerInput(UInputComponent* PlayerInputComponent)
 	if (EnhancedInputComponent) {
 
 		// 헬기 방향(기울기)
-		EnhancedInputComponent->BindAction(IA_Apache_Cyclic, ETriggerEvent::Triggered, this, &UHeliMoveComp::Cyclie_RightThumbStick);
-		EnhancedInputComponent->BindAction(IA_Apache_Cyclic, ETriggerEvent::Canceled, this, &UHeliMoveComp::Cyclie_RightThumbStick);
-		EnhancedInputComponent->BindAction(IA_Apache_Cyclic, ETriggerEvent::Completed, this, &UHeliMoveComp::Cyclie_RightThumbStick);
+		EnhancedInputComponent->BindAction(IA_Apache_Cyclic, ETriggerEvent::Triggered, this, &UHeliMoveComp::Cyclic_RightThumbStick);
+		EnhancedInputComponent->BindAction(IA_Apache_Cyclic, ETriggerEvent::Canceled, this, &UHeliMoveComp::Cyclic_RightThumbStick);
+		EnhancedInputComponent->BindAction(IA_Apache_Cyclic, ETriggerEvent::Completed, this, &UHeliMoveComp::Cyclic_RightThumbStick);
 
 		// 헬기 고도
 		EnhancedInputComponent->BindAction(IA_Apache_Collective, ETriggerEvent::Triggered, this, &UHeliMoveComp::Collective_LeftGrip);
@@ -118,7 +121,7 @@ void UHeliMoveComp::SetupPlayerInput(UInputComponent* PlayerInputComponent)
 
 }
 
-void UHeliMoveComp::On_Off_Function(const FInputActionValue& value)
+void UHeliMoveComp::Engine_On_Off(const FInputActionValue& value)
 {
 	if (bIsEngineOnOff == false) {
 
@@ -155,44 +158,38 @@ void UHeliMoveComp::On_Off_Function(const FInputActionValue& value)
 
 }
 
+void UHeliMoveComp::ChangeDrivingMode(const FInputActionValue& value)
+{
+
+	// 고도 유지 모드
+	AltitudeHoldMode();
+
+	// 오토 호버링 모드
+	AutoHoveringMode();
+
+}
+
+void UHeliMoveComp::AltitudeHoldMode()
+{
+
+}
+
+void UHeliMoveComp::AutoHoveringMode()
+{
+
+}
+
 // VR 컨트롤러 ==========================================================================
 
-void UHeliMoveComp::Cyclie_RightThumbStick(const FInputActionValue& value)
+void UHeliMoveComp::Cyclic_RightThumbStick(const FInputActionValue& value)
 {
 	FVector2D VecterValue = value.Get<FVector2D>();
 
-	//UKismetSystemLibrary::PrintString(const UObject * WorldContextObject, const FString & InString, bool bPrintToScreen, bool bPrintToLog, FLinearColor TextColor, float Duration, const FName Key)
-
-	UKismetSystemLibrary::PrintString(this, VecterValue.ToString(), true, false, FLinearColor::Green, 5.0f, FName(TEXT("VecterValue")));
-
-	/*
-	// 이대로 하면 썸스틱을 더 입력하지 않아도 헬기가 계속 회전함
-
-	// 전진, 후퇴
-	if (VecterValue.Y != 0) {
-
-		Apache->AddControllerPitchInput(VecterValue.Y);
-
-		Apache->GetVehicleMovementComponent()->SetPitchInput(VecterValue.Y);
-
-	}
-
-	// 오른쪽, 왼쪽
-	if (VecterValue.X != 0) {
-		Apache->AddControllerRollInput(VecterValue.X);
-
-		Apache->GetVehicleMovementComponent()->SetRollInput(VecterValue.X);
-
-	}
-	*/
-
-
 	// 썸 스틱의 기울여진 각도에 비례하여 헬기의 몸체가 기울여져야 함.(각도에 따라 0 ~ 1 사이의 값을 float로 반환함)
 	// 최대 각도 30도
-	// 조작의 편의성을 위해 스틱의 민간도를 조절할 필요가 있음 -> 입력 값이 0.5 이상일 때부터 0 ~ 30도 사이로 기울여짐
-	// 혹은 한 쪽의 입력의 절댓값이 다른 입력보다 크면, 큰 쪽으로 기울여짐
+	// 한 쪽의 입력의 절댓값이 다른 입력보다 크면, 큰 쪽으로 기울여짐
 
-
+	/*
 	if (VecterValue != FVector2D::ZeroVector) {
 		// 입력에 따라 각도 조절
 
@@ -212,62 +209,83 @@ void UHeliMoveComp::Cyclie_RightThumbStick(const FInputActionValue& value)
 		// 입력이 없으면 각도 조절 멈춤
 		StopUpdatingHelicopterAngle();
 	}
+	*/
 
+	// ============================================================================================================
 
-	/*
 	if (VecterValue != FVector2D::ZeroVector) {
 		// 입력에 따라 각도 조절
+		
+		float HeliDrectionAngle = 0;
+
+		float CurrnetDrectionAngle = 0;
+		float PreDrectionAngle = 0;
+
 
 		if (FMath::Abs(VecterValue.Y) > FMath::Abs(VecterValue.X)) {
 
-			if (FMath::Abs(Apache->GetActorRotation().Pitch) < 30.f) {
-				//Apache->AddControllerPitchInput(VecterValue.Y);
-				//Apache->GetVehicleMovementComponent()->SetPitchInput(VecterValue.Y);
+			// VecterValue.Y는 -1 ~ 1 사이의 값이다.
+			// -1인 경우 뒤로 30도 , 1인 경우 앞으로 30도로 기울어야 한다. 그 사이 값은 스틱의 기울기에 비례하여 헬기가 기울어야 한다. 
+			// 하지만 SetPitchInput은 -1, 0, 1의 값으로만 움직일 수 있다. 
+			// 이전 입력 값과 현재 입력 값을 비교하면 되지 않을까?
+			// 이전 입력값보다 현재 입력 값이 크면 각도를 1을 반환하여 크게 갱신 / 동일하면 0을 반환하여 유지 / 작으면 -1을 반환하여 작게 갱신
+
+			/*
+			CurrnetDrectionAngle = VecterValue.Y;
+
+
+			if (CurrnetDrectionAngle > PreDrectionAngle) {
+				HeliDrectionAngle = 1;
+			}
+			else if (CurrnetDrectionAngle < PreDrectionAngle) {
+				HeliDrectionAngle = -1;
+			}
+			else {
+				HeliDrectionAngle = 0;
 
 			}
-			else if (FMath::Abs(Apache->GetActorRotation().Pitch) > 30.f) {
-				StopUpdatingHelicopterAngle();
 
-			}
+			Apache->AddControllerPitchInput(HeliDrectionAngle);
+			Apache->GetVehicleMovementComponent()->SetPitchInput(HeliDrectionAngle);
+
+			PreDrectionAngle = CurrnetDrectionAngle;
+			*/
+
+			// ==============================
+
+			HeliDrectionAngle = FMath::Clamp(VecterValue.Y * 30, -30, 30);
+
+			Apache->SetActorRotation(FRotator(HeliDrectionAngle,0,0));
 
 		}
 		else if (FMath::Abs(VecterValue.X) > FMath::Abs(VecterValue.Y)) {
-
-			if (FMath::Abs(Apache->GetActorRotation().Roll) < 30.f) {
-				Apache->AddControllerRollInput(VecterValue.X);
-				Apache->GetVehicleMovementComponent()->SetRollInput(VecterValue.X);
+			
 
 
-			}
-			else if (FMath::Abs(Apache->GetActorRotation().Roll) > 30.f) {
-				StopUpdatingHelicopterAngle();
+			HeliDrectionAngle = VecterValue.X;
+
+			Apache->AddControllerRollInput(VecterValue.X);
+			Apache->GetVehicleMovementComponent()->SetRollInput(VecterValue.X);
 
 		}
+
 	}
 	else {
 		// 입력이 없으면 각도 조절 멈춤
 		StopUpdatingHelicopterAngle();
+
+		
 	}
-	*/
 
 
-	/*
-	// 입력값이 0이 아닌 경우에만 각도 조절
-	if (VecterValue != FVector2D::ZeroVector) {
-		// 입력에 따라 각도 조절
-		UpdateHelicopterAngle(VecterValue);
-	}
-	else {
-		// 입력이 없으면 각도 조절 멈춤
-		StopUpdatingHelicopterAngle();
-	}
-	*/
-
+	UKismetSystemLibrary::PrintString(this, VecterValue.ToString(), true, false, FLinearColor::Green, 5.0f, FName(TEXT("VecterValue")));
 
 }
 
 void UHeliMoveComp::UpdateHelicopterAngle(const FVector2D& InputValue)
 {
+	// **************** 현재 이 코드 안쓰는 중
+
 	// 입력에 따라 헬기의 각도 조절
 	float PitchAngle = FMath::Clamp(InputValue.Y * 30.f, -30.f, 30.f);
 	float RollAngle = FMath::Clamp(InputValue.X * 30.f, -30.f, 30.f);
@@ -295,17 +313,13 @@ void UHeliMoveComp::StopUpdatingHelicopterAngle()
 void UHeliMoveComp::Collective_LeftGrip(const FInputActionValue& value)
 {
 	// 헬기의 고도를 조종
-	// value값에 따라 하강, 유지, 상승로 헬기의 고도를 조절
-	// 왼손 그랩의 반환 값에 따라 단계를 0~4로 나누고, 각 단계에 따라 고도가 달라진다. - 최대 7000m
 
-
-	//ActionValueUpDown = value.Get<float>();
-
+	// ================================================================
 
 	//ActionValueUpDown = value.Get<float>();
 
-
-
+	// ================================================================
+	/*
 	if (value.Get<float>() == 0) {
 		ActionValueUpDown = -1;
 
@@ -320,14 +334,47 @@ void UHeliMoveComp::Collective_LeftGrip(const FInputActionValue& value)
 		ApacheAltitude = Apache->GetActorLocation().Z;
 
 	}
+	*/
 
+	// ================================================================
 
+	// 고도를 6단계로 나눔
+	if (value.Get<float>() == 0) {
+		ActionValueUpDown = -1;
 
+	}
+	else if (value.Get<float>() == 1) {
+		ActionValueUpDown = 1;
+	}
+	else {
+		ActionValueUpDown = 0;
+
+		if (value.Get<float>() <= 0.2f) {
+			ApacheAltitude = StandHigh + MaxAltitude * 0.2f;
+
+		}
+		else if (value.Get<float>() <= 0.4f) {
+			ApacheAltitude = StandHigh + MaxAltitude * 0.4f;
+
+		}
+		else if (value.Get<float>() <= 0.6f) {
+			ApacheAltitude = StandHigh + MaxAltitude * 0.6f;
+
+		}
+		else if (value.Get<float>() <= 0.8f) {
+			ApacheAltitude = StandHigh + MaxAltitude * 0.8f;
+
+		}
+		else {
+			ApacheAltitude = StandHigh + MaxAltitude; // 최대 50000만
+
+		}
+	}
+
+	//Apache->GetMesh()->SetWorldLocation(Apache->GetActorLocation(), false, nullptr, ETeleportType::TeleportPhysics); // 이동할 때 TeleportPhysics 플래그를 사용합니다.
+	//Apache->SetActorLocation(Apache->GetActorLocation(), false, nullptr, ETeleportType::TeleportPhysics);
 
 	UKismetSystemLibrary::PrintString(this, FString::Printf(TEXT("ActionValueUpDown: %f"), ActionValueUpDown), true, false, FLinearColor::Green, 5.0f, FName(TEXT("ActionValueLog")));
-
-
-
 
 }
 
@@ -345,6 +392,10 @@ void UHeliMoveComp::Pedal_Trigger(const FInputActionValue& value)
 void UHeliMoveComp::HoldHeliAltitude()
 {
 	// 헬기 고도를 유지하는 기능 
+
+	if (MaxAltitude < ApacheAltitude) {
+		ApacheAltitude = MaxAltitude;
+	}
 
 	// Out Range A 부분을 바꾸어 유지 고도를 바꿀 수 있음 -> 너무 크면 흔들림이 심하고, 너무 작으면 헬기가 추락함
 	float Altitude = UKismetMathLibrary::MapRangeClamped(Apache->GetActorLocation().Z - ApacheAltitude, 0.f, 10.f, 0.7f, 0.f);

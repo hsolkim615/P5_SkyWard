@@ -41,7 +41,7 @@ public:
 	class UInputAction* IA_Apache_Throttle;
 
 public: // Heli - Moving 
-	void Cyclie_RightThumbStick(const FInputActionValue& value);
+	void Cyclic_RightThumbStick(const FInputActionValue& value);
 	void UpdateHelicopterAngle(const FVector2D& InputValue);
 	void StopUpdatingHelicopterAngle();
 
@@ -50,17 +50,32 @@ public: // Heli - Moving
 	void Pedal_Trigger(const FInputActionValue& value);
 
 	// 헬기 시동
-	void On_Off_Function(const FInputActionValue& value);
+	void Engine_On_Off(const FInputActionValue& value);
+
+	// 운행 모드 바꾸기
+
+	void ChangeDrivingMode(const FInputActionValue& value);
+
+	// 고도 유지 모드
+	void AltitudeHoldMode();
+
+	// 호버링 모드
+	void AutoHoveringMode();
 
 public:
 	// 고도유지 기능
 	void HoldHeliAltitude();
 
 public:
+	// 상승, 하강 변수 = -1 / 0 / 1 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float ActionValueUpDown;
+	
+	// 헬기 고도
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float ApacheAltitude;
+
+	// 프로펠라 회전
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float MainRotorSpeedRate;
 	
@@ -68,14 +83,14 @@ public:
 	
 
 
-
+	// 엔진 시동 여부
 	bool bIsEngineOnOff = false;
 
+	// 헬기 고도 기준점
+	float StandHigh = 0.f;
 
-
-
-
-	float Standhigh;
+	// 최대 고도
+	float MaxAltitude = 50000.f;
 
 	// 로그용 변수
 	float CurrentPitch;

@@ -58,6 +58,9 @@ void UHeliAttackComp::Shoot_MachineGun(const FInputActionValue& value)
 	// ÃÑ¾ËÀ» ½ºÆùÇÏ´Â ±â´É
 	ABullet_Apache* SpawnBullet = GetWorld()->SpawnActor<ABullet_Apache>(BulletFactory_Apache, Apache->MGNozzleComp->GetComponentLocation(), Apache->MGNozzleComp->GetComponentRotation()/*Apache->GetMesh()->GetSocketRotation(FName("gun_tilt_jntSocket"))*/);
 
+	SpawnBullet->SetOwner(Apache);
+	SpawnBullet->SaveOwner();
+
 	// ÃÑ¿­¿¡ ºÒ²É ÀÌÆåÆ® ½ºÆù
 	Apache->MGEffectComp->SetActive(true);
 

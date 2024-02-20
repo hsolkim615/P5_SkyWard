@@ -137,6 +137,6 @@ void UHeliTestComp::Free_Look_Function(const FInputActionValue& value)
 void UHeliTestComp::On_Off_Function(const FInputActionValue& value)
 {
 	
-	HeliComp_Move->On_Off_Function(value);
+	HeliComp_Move->Engine_On_Off(value);
 
 }

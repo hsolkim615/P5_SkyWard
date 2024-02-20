@@ -1,6 +1,5 @@
 // Fill out your copyright notice in the Description page of Project Settings.
-
-
+#include "../Component/StateComponent.h"
 #include "../Helicopter/Helicopter_Apache.h"
 #include <HeadMountedDisplayFunctionLibrary.h>
 #include <EnhancedInputSubsystems.h>
@@ -13,7 +12,7 @@
 #include "../Pilot/Pilot.h"
 #include "../Component/HeliComp/HeliAttackComp.h"
 #include "../Component/HeliComp/HeliTestComp.h"
-#include <../../../../../../../Source/Runtime/Engine/Classes/Components/SceneComponent.h>
+#include <Components/SceneComponent.h>
 #include <../../../../../../../Source/Runtime/Engine/Classes/Particles/ParticleSystemComponent.h>
 
 AHelicopter_Apache::AHelicopter_Apache()
@@ -66,6 +65,12 @@ AHelicopter_Apache::AHelicopter_Apache()
 
 
 
+	// ----------------------
+
+	StateComponent = CreateDefaultSubobject<UStateComponent>(TEXT("StateComponent"));
+
+
+	// =======================
 
 	// Test ÄÄÆ÷³ÍÆ®
 	TestComp = CreateDefaultSubobject<UHeliTestComp>(TEXT("TestComp"));
@@ -80,6 +85,9 @@ void AHelicopter_Apache::BeginPlay()
 	//ModifyMapping(true);
 
 	//DoorCollision->OnComponentBeginOverlap.AddDynamic(this, &AHelicopter_Apache::OnOverlapBegin);
+
+	StateComponent->SetMaxHealthPoint(1000.f);
+	StateComponent->SetAttackDamage(10.f);
 
 }
 

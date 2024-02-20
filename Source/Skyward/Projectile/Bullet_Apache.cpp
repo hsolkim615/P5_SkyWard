@@ -7,6 +7,7 @@
 #include <../../../../../../../Source/Runtime/Engine/Classes/Kismet/KismetSystemLibrary.h>
 #include <../../../../../../../Source/Runtime/Engine/Classes/Kismet/KismetMathLibrary.h>
 #include "../Tank/TankBase.h"
+#include "../Helicopter/Helicopter_Apache.h"
 
 ABullet_Apache::ABullet_Apache()
 {
@@ -69,6 +70,8 @@ void ABullet_Apache::NotifyActorBeginOverlap(AActor* OtherActor)
 	
 	if (OtherActor->IsA<ATankBase>()) {
 		
+
+		// 데미지를 주는 방식으로 수정 필요 / 탱크가 갖고 있는 StateCompoenet의 함수를 호출할 것
 		OtherActor->Destroy();
 
 		Destroy();
@@ -93,5 +96,16 @@ void ABullet_Apache::BulletMove(FVector TargetLoc)
 
 	TargetLocation = TargetLoc;
 
+
+}
+
+void ABullet_Apache::SaveOwner()
+{
+	OwnerHeli = Cast<AHelicopter_Apache>(GetOwner());
+
+}
+
+void ABullet_Apache::setAttackDamage(float NewAttackDamage)
+{
 
 }

@@ -4,7 +4,7 @@
 Content/Resource/*
 Content/OutpostandBunker/*
 Content/Valley_Landscape/*
-Content/Valley_Common/*
+Content/Common/*
 
 ### UnrealEngine ###
 # Visual Studio 2015 user specific files

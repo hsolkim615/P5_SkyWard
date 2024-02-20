@@ -56,7 +56,7 @@ void UHeliAttackComp::Shoot_MachineGun(const FInputActionValue& value)
 	bool bIsValue = value.Get<bool>();
 
 	// ÃÑ¾ËÀ» ½ºÆùÇÏ´Â ±â´É
-	ABullet_Apache* Bullet = GetWorld()->SpawnActor<ABullet_Apache>(BulletFactory_Apache, Apache->MGNozzleComp->GetComponentLocation(), Apache->MGNozzleComp->GetComponentRotation()/*Apache->GetMesh()->GetSocketRotation(FName("gun_tilt_jntSocket"))*/);
+	ABullet_Apache* SpawnBullet = GetWorld()->SpawnActor<ABullet_Apache>(BulletFactory_Apache, Apache->MGNozzleComp->GetComponentLocation(), Apache->MGNozzleComp->GetComponentRotation()/*Apache->GetMesh()->GetSocketRotation(FName("gun_tilt_jntSocket"))*/);
 
 	// ÃÑ¿­¿¡ ºÒ²É ÀÌÆåÆ® ½ºÆù
 	Apache->MGEffectComp->SetActive(true);
@@ -74,7 +74,7 @@ void UHeliAttackComp::Shoot_MachineGun(const FInputActionValue& value)
 	{
 		//DrawDebugLine(GetWorld(), StartLocation, HitResult.ImpactPoint, FColor::Green, false, 5.0f, 0, 5.0f);
 		
-		Bullet->BulletMove(HitResult.Location);
+		SpawnBullet->BulletMove(HitResult.Location);
 
 		//UE_LOG(LogTemp, Warning, TEXT("StartLocation: %s"), *StartLocation.ToString());
 		//UE_LOG(LogTemp, Warning, TEXT("ImpactPoint: %s"), *HitResult.ImpactPoint.ToString());
@@ -85,7 +85,7 @@ void UHeliAttackComp::Shoot_MachineGun(const FInputActionValue& value)
 	{
 		//DrawDebugLine(GetWorld(), StartLocation, EndLocation, FColor::Green, false, 5.0f, 0, 5.0f);
 
-		Bullet->BulletMove(EndLocation);
+		SpawnBullet->BulletMove(EndLocation);
 
 	}
 

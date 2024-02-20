@@ -8,15 +8,15 @@
 
 UHeliSoundComp::UHeliSoundComp()
 {
-	HeliSoundComp = CreateDefaultSubobject<UAudioComponent>(TEXT("HeliSoundComp"));
+	HeliSoundPropComp = CreateDefaultSubobject<UAudioComponent>(TEXT("HeliSoundComp"));
 }
 
 void UHeliSoundComp::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (HeliSound) {
-		HeliSoundComp->SetSound(HeliSound);
+	if (HeliPropSound) {
+		HeliSoundPropComp->SetSound(HeliPropSound);
 
 	}
 
@@ -26,6 +26,6 @@ void UHeliSoundComp::BeginPlay()
 void UHeliSoundComp::PlayHeliSound_Engine()
 {
 
-	HeliSoundComp->SetFloatParameter(FName("RotorSound"),HeliComp_Move->MainRotorSpeedRate);
+	HeliSoundPropComp->SetFloatParameter(FName("RotorSound"),HeliComp_Move->MainRotorSpeedRate);
 
 }

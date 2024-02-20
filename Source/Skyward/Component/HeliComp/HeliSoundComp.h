@@ -23,10 +23,10 @@ public:
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	class USoundBase* HeliSound;
+	class USoundBase* HeliPropSound;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	class UAudioComponent* HeliSoundComp;
+	class UAudioComponent* HeliSoundPropComp;
 
 public:
 	

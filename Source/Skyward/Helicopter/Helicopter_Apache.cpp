@@ -36,7 +36,7 @@ AHelicopter_Apache::AHelicopter_Apache()
 	DoorCollision = CreateDefaultSubobject<UBoxComponent>(TEXT("BoxCollision"));
 	DoorCollision->SetupAttachment(RootComponent);
 	DoorCollision->SetBoxExtent(FVector(80, 60, 180));
-	DoorCollision->SetRelativeLocation(FVector(290, 140, 180));
+	DoorCollision->SetRelativeLocation(FVector(290, 250, 180));
 
 	// ±â°üÃÑ ÃÑ¿­
 	MGNozzleComp = CreateDefaultSubobject<USceneComponent>(TEXT("NozzleComp"));

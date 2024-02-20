@@ -71,9 +71,10 @@ void ABullet_Apache::NotifyActorBeginOverlap(AActor* OtherActor)
 		
 		OtherActor->Destroy();
 
+		Destroy();
+
 	}
 	
-	Destroy();
 
 }
 

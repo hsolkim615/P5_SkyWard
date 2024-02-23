@@ -1,10 +1,19 @@
 # Created by https://www.toptal.com/developers/gitignore/api/unrealengine,visualstudio
 # Edit at https://www.toptal.com/developers/gitignore?templates=unrealengine,visualstudio
 
-Content/Resource/*
-Content/OutpostandBunker/*
-Content/Valley_Landscape/*
 Content/Common/*
+Content/ArmyVFX/*
+Content/HDRI_Night_Sky/*
+Content/Landscape_AutoMaterial_2/*
+Content/OutpostandBunker/*
+Content/ParachuteKit/*
+Content/Planes_in_the_Sky/*
+Content/Resource/*
+Content/SniperScopesTextures/*
+Content/UWC_Bullet_Holes/*
+Content/Valley_Landscape/*
+Content/__ExternalObjects__/*
+Content/__ExternalActors__/*
 
 ### UnrealEngine ###
 # Visual Studio 2015 user specific files

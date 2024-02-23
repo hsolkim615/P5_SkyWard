@@ -34,23 +34,31 @@ void UStateComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActor
 
 void UStateComponent::SetMaxHealthPoint(float NewMaxHealthPoint)
 {
+	// 최대 체력 설정
+	
 	MaxHealthPoint = NewMaxHealthPoint;
 
 }
 
 void UStateComponent::SetHealthPoint(float NewHealthPoint)
 {
+	// 체력 설정
+	
 	HealthPoint = NewHealthPoint;
 }
 
 void UStateComponent::SetAttackDamage(float NewAttackDamage)
 {
+	// 데미지 설정
+	
 	AttackDamage = NewAttackDamage;
 
 }
 
 void UStateComponent::TakeDamage(float Damage)
 {
+	// 피격기능 
+
 	HealthPoint -= Damage;
 
 	if (HealthPoint < 0) {

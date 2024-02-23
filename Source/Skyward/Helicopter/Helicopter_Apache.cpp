@@ -1,10 +1,10 @@
 // Fill out your copyright notice in the Description page of Project Settings.
-#include "../Component/StateComponent.h"
 #include "../Helicopter/Helicopter_Apache.h"
 #include <HeadMountedDisplayFunctionLibrary.h>
 #include <EnhancedInputSubsystems.h>
 #include "../Component/HeliComp/HeliMoveComp.h"
 #include "../Component/HeliComp/HeliSoundComp.h"
+#include "../Component/StateComponent.h"
 #include <MotionControllerComponent.h>
 #include <Camera/CameraComponent.h>
 #include <Components/BoxComponent.h>
@@ -124,6 +124,7 @@ void AHelicopter_Apache::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 
 void AHelicopter_Apache::OnOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
+
 	/*
 	if (!OtherActor) {
 		return;
@@ -146,6 +147,7 @@ void AHelicopter_Apache::OnOverlapBegin(UPrimitiveComponent* OverlappedComponent
 
 	}
 	*/
+
 }
 
 void AHelicopter_Apache::ModifyMapping(bool bAddMapping)

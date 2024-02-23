@@ -18,7 +18,7 @@ void UHeliMoveComp::BeginPlay()
 {
 	Super::BeginPlay();
 
-
+	// 헬기 고도의 기준점 초기화
 	StandHigh = Apache->GetActorLocation().Z;
 
 }
@@ -35,12 +35,12 @@ void UHeliMoveComp::TickComponent(float DeltaTime, ELevelTick TickType, FActorCo
 		}
 
 		// 헬기 움직임 
+		// MainRotorSpeedRate는 엔진을 키면 자동으로 올라감
 		MainRotorSpeedRate = FMath::FInterpTo(MainRotorSpeedRate, 25.f, DeltaTime, 0.2f); // 최고속력 25
 
 		// 애니메이션에서 사용 - 프로펠러 회전
-		Apache->MainRotorSpeed += MainRotorSpeedRate;
+		Apache->MainRotorSpeed_Apache += MainRotorSpeedRate;
 
-		// MainRotorSpeedRate는 엔진을 키면 자동으로 올라감
 		if (MainRotorSpeedRate >= 15.f) {
 
 			if (ActionValueUpDown == 0) {
@@ -69,7 +69,7 @@ void UHeliMoveComp::TickComponent(float DeltaTime, ELevelTick TickType, FActorCo
 		MainRotorSpeedRate = FMath::FInterpTo(MainRotorSpeedRate, 0, DeltaTime, 1.f); // 최고속력 25
 
 		// 애니메이션에서 사용 - 프로펠러 회전
-		Apache->MainRotorSpeed += MainRotorSpeedRate;
+		Apache->MainRotorSpeed_Apache += MainRotorSpeedRate;
 	}
 
 
@@ -189,7 +189,8 @@ void UHeliMoveComp::Cyclic_RightThumbStick(const FInputActionValue& value)
 	// 최대 각도 30도
 	// 한 쪽의 입력의 절댓값이 다른 입력보다 크면, 큰 쪽으로 기울여짐
 
-	/*
+	//HeliDrectionAngle = FMath::Clamp(VecterValue.Y * 30, -30, 30);
+
 	if (VecterValue != FVector2D::ZeroVector) {
 		// 입력에 따라 각도 조절
 
@@ -209,13 +210,12 @@ void UHeliMoveComp::Cyclic_RightThumbStick(const FInputActionValue& value)
 		// 입력이 없으면 각도 조절 멈춤
 		StopUpdatingHelicopterAngle();
 	}
-	*/
 
 	// ============================================================================================================
-
+	/*
 	if (VecterValue != FVector2D::ZeroVector) {
 		// 입력에 따라 각도 조절
-		
+
 		float HeliDrectionAngle = 0;
 
 		float CurrnetDrectionAngle = 0;
@@ -230,7 +230,8 @@ void UHeliMoveComp::Cyclic_RightThumbStick(const FInputActionValue& value)
 			// 이전 입력 값과 현재 입력 값을 비교하면 되지 않을까?
 			// 이전 입력값보다 현재 입력 값이 크면 각도를 1을 반환하여 크게 갱신 / 동일하면 0을 반환하여 유지 / 작으면 -1을 반환하여 작게 갱신
 
-			/*
+
+
 			CurrnetDrectionAngle = VecterValue.Y;
 
 
@@ -249,17 +250,16 @@ void UHeliMoveComp::Cyclic_RightThumbStick(const FInputActionValue& value)
 			Apache->GetVehicleMovementComponent()->SetPitchInput(HeliDrectionAngle);
 
 			PreDrectionAngle = CurrnetDrectionAngle;
-			*/
 
 			// ==============================
 
 			HeliDrectionAngle = FMath::Clamp(VecterValue.Y * 30, -30, 30);
 
-			Apache->SetActorRotation(FRotator(HeliDrectionAngle,0,0));
+			Apache->SetActorRotation(FRotator(HeliDrectionAngle, 0, 0));
 
 		}
 		else if (FMath::Abs(VecterValue.X) > FMath::Abs(VecterValue.Y)) {
-			
+
 
 
 			HeliDrectionAngle = VecterValue.X;
@@ -274,9 +274,9 @@ void UHeliMoveComp::Cyclic_RightThumbStick(const FInputActionValue& value)
 		// 입력이 없으면 각도 조절 멈춤
 		StopUpdatingHelicopterAngle();
 
-		
-	}
 
+	}
+	*/
 
 	UKismetSystemLibrary::PrintString(this, VecterValue.ToString(), true, false, FLinearColor::Green, 5.0f, FName(TEXT("VecterValue")));
 
@@ -366,7 +366,7 @@ void UHeliMoveComp::Collective_LeftGrip(const FInputActionValue& value)
 
 		}
 		else {
-			ApacheAltitude = StandHigh + MaxAltitude; // 최대 50000만
+			ApacheAltitude = StandHigh + MaxAltitude; // 최대 40000만
 
 		}
 	}
@@ -401,9 +401,6 @@ void UHeliMoveComp::HoldHeliAltitude()
 	float Altitude = UKismetMathLibrary::MapRangeClamped(Apache->GetActorLocation().Z - ApacheAltitude, 0.f, 10.f, 0.7f, 0.f);
 
 	Apache->GetVehicleMovement()->SetThrottleInput(Altitude);
-
-	UE_LOG(LogTemp, Warning, TEXT("Success"));
-
 
 	/*
 	// 고도 유지 기능

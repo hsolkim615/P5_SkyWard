@@ -90,7 +90,7 @@ public:
 	float StandHigh = 0.f;
 
 	// 최대 고도
-	float MaxAltitude = 50000.f;
+	float MaxAltitude = 40000.f;
 
 	// 로그용 변수
 	float CurrentPitch;

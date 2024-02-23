@@ -20,7 +20,7 @@ void UApacheAnim::NativeUpdateAnimation(float DeltaSeconds)
 		return;
 	}
 
-	ABP_MainRoter_Z_Yaw = Owner_Apache->MainRotorSpeed;
-	ABP_RearRotator_Y_Pitch = Owner_Apache->MainRotorSpeed;
+	ABP_MainRoter_Z_Yaw = Owner_Apache->MainRotorSpeed_Apache;
+	ABP_RearRotator_Y_Pitch = Owner_Apache->MainRotorSpeed_Apache;
 
 }

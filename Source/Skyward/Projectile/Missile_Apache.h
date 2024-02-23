@@ -4,18 +4,18 @@
 
 #include "CoreMinimal.h"
 #include "../Projectile/ProjectileBase.h"
-#include "Bullet_Apache.generated.h"
+#include "Missile_Apache.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class SKYWARD_API ABullet_Apache : public AProjectileBase
+class SKYWARD_API AMissile_Apache : public AProjectileBase
 {
 	GENERATED_BODY()
 	
 public:
-	ABullet_Apache();
+	AMissile_Apache();
 
 public:
 	virtual void BeginPlay() override;
@@ -27,27 +27,32 @@ public:
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class USphereComponent* HitCollision;
-	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	class UStaticMeshComponent* MeshComp;
 
-	/*
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	class UProjectileMovementComponent* MoveComp;
-	*/
+	class USkeletalMeshComponent* MeshComp;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class UNiagaraComponent* NSComp;
 
 public:
-	void BulletMove(FVector TargetLoc);
+	void MissileMove(FVector TargetLoc);
 
 	void SaveOwner();
-
-	void setAttackDamage(float NewAttackDamage);
 
 public:
 	FVector TargetLocation;
 
 	class AHelicopter_Apache* OwnerHeli;
 
-	float AttackDamage;
+	bool EngineOn = false;
+
+
+
+
+public:
+	// 미사일의 가속도
+	float MissileAcceleration = 3000.0f; // 미사일의 가속도
+	float MaxSpeed = 30000.0f; // 미사일의 최대 속도
+	float CurrentSpeed = 0.0f;
+
 };

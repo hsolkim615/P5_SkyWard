@@ -16,12 +16,11 @@ ABullet_Apache::ABullet_Apache()
 	// 총알 콜리전
 	HitCollision = CreateDefaultSubobject<USphereComponent>(TEXT("HitCollision"));
 	SetRootComponent(HitCollision);
-	HitCollision->SetRelativeScale3D(FVector(0.05f));
 
 	// 총알 외형
+	MeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshComp"));
 	MeshComp->SetupAttachment(RootComponent);
 	MeshComp->SetRelativeRotation(FRotator(90, 0, 0));
-	MeshComp->SetRelativeScale3D(FVector(0.5f, 0.5, 1.f));
 
 	// 발사체 컴포넌트
 	//MoveComp = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("MoveComp"));
@@ -53,14 +52,10 @@ void ABullet_Apache::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-
-
 	// 목표 위치로 부드럽게 이동
 	FVector CurrentLocation = GetActorLocation();
-	FVector NewLocation = FMath::VInterpConstantTo(CurrentLocation, TargetLocation, DeltaTime, 30000.f);
+	FVector NewLocation = FMath::VInterpConstantTo(CurrentLocation, TargetLocation, DeltaTime, 50000.f);
 	SetActorLocation(NewLocation);
-
-
 
 }
 
@@ -71,14 +66,13 @@ void ABullet_Apache::NotifyActorBeginOverlap(AActor* OtherActor)
 	if (OtherActor->IsA<ATankBase>()) {
 		
 
-		// 데미지를 주는 방식으로 수정 필요 / 탱크가 갖고 있는 StateCompoenet의 함수를 호출할 것
+		// ***** 데미지를 주는 방식으로 수정 필요 / 탱크가 갖고 있는 StateCompoenet의 함수를 호출할 것
 		OtherActor->Destroy();
 
 		Destroy();
 
 	}
 	
-
 }
 
 void ABullet_Apache::BulletMove(FVector TargetLoc)

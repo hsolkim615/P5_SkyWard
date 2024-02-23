@@ -39,11 +39,18 @@ public:
 	void Shoot_MachineGun(const FInputActionValue& value);
 	void Stop_MGEffect(const FInputActionValue& value);
 
-	void Shoot_MissileGun(const FInputActionValue& value);
+	void Shoot_Missile(const FInputActionValue& value);
+
 
 	void Shoot_Aming(const FInputActionValue& value);
 
-	UPROPERTY(EditAnywhere, Category = Spawn_ArrowType)
+public:
+	UPROPERTY(EditAnywhere, Category = Spawn_Projectile)
 	TSubclassOf<class ABullet_Apache> BulletFactory_Apache;
+
+	UPROPERTY(EditAnywhere, Category = Spawn_Projectile)
+	TSubclassOf<class AMissile_Apache> MissileFactory_Apache;
+
+	TArray<class AMissile_Apache*> Missiles;
 
 };

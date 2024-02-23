@@ -91,7 +91,7 @@ public: // Actor Comp
 
 public:	// MoveComp
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float MainRotorSpeed = 0;
+	float MainRotorSpeed_Apache = 0;
 
 
 public:

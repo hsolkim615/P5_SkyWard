@@ -6,6 +6,7 @@
 #include <../../../../../../../Source/Runtime/AIModule/Classes/Perception/PawnSensingComponent.h>
 #include "TimerManager.h"
 #include "../Projectile/Bullet_Tank.h"
+#include <../../../../../../../Source/Runtime/Engine/Classes/Kismet/GameplayStatics.h>
 
 
 AFixedTank::AFixedTank()
@@ -63,6 +64,8 @@ void AFixedTank::OnSeePawn(APawn* OtherPawn)
 
 		// 현재 위치
 		FVector StartLoc = GetActorLocation();
+		FTransform SocketTransform = GetMesh()->GetSocketTransform(FName("gun_jntSocket"));
+		FVector SpawnLocation = SocketTransform.GetLocation();
 
 		// 목표 위치
 		FVector TargetLoc = Player->GetActorLocation(); 
@@ -73,9 +76,22 @@ void AFixedTank::OnSeePawn(APawn* OtherPawn)
 		// 새로운 위치로 이동
 		//SetActorLocation(NewLoc);
 
-		Direction = NewLoc - StartLoc;
+		Direction = (NewLoc - StartLoc).GetSafeNormal();;
 
 
+		
+
+		// 선을 그리기 위한 디버깅 목적 함수 호출
+		DrawDebugLine(
+			GetWorld(),    // UWorld 객체
+			StartLoc,         // 시작점
+			TargetLoc,           // 끝점
+			FColor::Red, // 선의 색상
+			true,         // 선이 불투명한지 여부 (false면 투명)
+			5.0f,         // 선의 지속 시간 (-1.0f로 설정하면 한 프레임 동안 지속됨)
+			10,             // 두께 (기본값 0)
+			1.0f          // Depth priority (기본값 1.0f)
+		);
 	}
 	
 

@@ -17,6 +17,9 @@ ABullet_Tank::ABullet_Tank()
 	meshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("meshComp"));
 	meshComp->SetupAttachment(CollisionComp);
 	MovementComp = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("MovementComp"));
+	//MovementComp->MaxSpeed = 0;
+	//MovementComp->InitialSpeed = 0;
+	 
 
 }
 

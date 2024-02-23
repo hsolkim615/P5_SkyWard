@@ -30,7 +30,10 @@ public:
 	FTimerHandle SpawnTimerHandle;
 
 	UPROPERTY()
-	float Alpha = 0.5f;
+	float Alpha = 0.1f;
+
+	UPROPERTY()
+	float ProjectileSpeed = 20000;
 
 	UPROPERTY(EditAnywhere)
 	class UPawnSensingComponent* pawnSensing;

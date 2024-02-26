@@ -27,14 +27,25 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 
+//	void OnSeePawn(APawn* OtherPawn) override;
+	
 	void FindPath(APath* path);
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	APath* FoundActor;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	class UChaosWheeledVehicleMovementComponent* ChaosWheeledVehicleMovementComponent;
+	float MappedValue;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float MappedValue;
+	class UChaosWheeledVehicleMovementComponent* ChaosWheeledVehicleMovementComponent;
+
+	UPROPERTY()
+	class AAIController* ai;
+
+	//UFUNCTION()
+	//void MoveTank();
+
+	UPROPERTY()
+	class ADestination* Dest;
 };

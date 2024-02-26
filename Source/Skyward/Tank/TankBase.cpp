@@ -2,14 +2,25 @@
 
 
 #include "../Tank/TankBase.h"
+#include "../Helicopter/HelicopterBase.h"
+#include <../../../../../../../Source/Runtime/AIModule/Classes/Perception/PawnSensingComponent.h>
+#include <../../../../../../../Source/Runtime/Engine/Public/TimerManager.h>
+#include "../Projectile/Bullet_Tank.h"
 
-#include "TankFSM.h"
-#include "Components/BoxComponent.h"
 
+/*
+#include "../Helicopter/HelicopterBase.h"
+#include <../../../../../../../Source/Runtime/AIModule/Classes/Perception/PawnSensingComponent.h>
+#include "TimerManager.h"
+#include "../Projectile/Bullet_Tank.h"
+#include <../../../../../../../Source/Runtime/Engine/Classes/Kismet/GameplayStatics.h>
+*/
+
+/**/
 ATankBase::ATankBase()
 {
 	PrimaryActorTick.bCanEverTick = true;
- 
+
 	// boxComp = CreateDefaultSubobject<UBoxComponent>(TEXT("Box Component"));
 	// SetRootComponent(boxComp);
 	//
@@ -17,13 +28,26 @@ ATankBase::ATankBase()
 	// meshComp->SetupAttachment(boxComp);
 
 	//FSM = CreateDefaultSubobject<UTankFSM>(TEXT("FSM"));
+
+	//pawnSensing = CreateDefaultSubobject<UPawnSensingComponent>(TEXT("pawnSensing"));
+	// OnSeePawn 이벤트에 대한 핸들러를 바인딩합니다.
+
+
 }
 
 void ATankBase::BeginPlay()
 {
 	Super::BeginPlay();
 
-	//CurrentHp = MaxHp;
+	//if (pawnSensing)
+	//{
+
+	//	pawnSensing->OnSeePawn.AddDynamic(this, &ATankBase::OnSeePawn);
+	//}
+	////Player = Cast<AHelicopterBase>(GetOwner());
+
+	//SetupTimer();
+
 
 }
 
@@ -31,49 +55,114 @@ void ATankBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	/*FVector PlayerLoc = Player->GetActorLocation();
-	FVector EnemyLoc = Me->GetActorLocation();
-	FVector Dir = PlayerLoc - EnemyLoc;
-	if (Dir < AttackRange)
-	{
-		Attack();
-	}*/
-
-
 }
 
-//void ATankBase::Attack()
+
+//
+//void ATankBase::SpawnBullet()
 //{
-//	CurrentTime += GetWorld()->DeltaTimeSeconds;
-//	// 총알 발사
-//	if (CurrentTime > AttackTime)
+//	UE_LOG(LogTemp, Warning, TEXT("spawn"));
+//
+//	// GetWorld() 함수를 사용하여 현재 월드에 접근
+//	UWorld* World = GetWorld();
+//	if (World)
 //	{
-//		CurrentTime = 0;
+//
+//		FTransform SocketTransform = GetMesh()->GetSocketTransform(FName("gun_jntSocket"));
+//		FVector SpawnLocation = SocketTransform.GetLocation();
+//		FRotator SpawnRotation = SocketTransform.GetRotation().Rotator();
+//
+//		// 스폰할 액터의 클래스를 지정합니다.
+//		//ActorClass = ABullet_Tank::StaticClass();
+//
+//		// 액터 스폰
+//		ABullet_Tank* SpawnedActor = World->SpawnActor<ABullet_Tank>(ActorClass, SpawnLocation, SpawnRotation);
+//
+//		//if (SpawnedActor)
+//		//{
+//		//	// 액터가 성공적으로 스폰되었을 때 추가적인 로직을 수행할 수 있습니다.
+//		//}
 //
 //
 //	}
-//	
 //}
 //
-//// 피격 시 플레이어 쪽에서 호출
-//void ATankBase::Damage(Param)
-//{
-//	CurrentHp -= Param;
-//	UE_LOG(LogTemp, Warning, TEXT("Damage"));
 //
-//	if (CurrentHp == 0)
-//	{
-//		Die();
+//void ATankBase::SetupTimer()
+//{
+//	UE_LOG(LogTemp, Warning, TEXT("timer"));
+//
+//	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &ATankBase::SpawnBullet, Interval, true);
+//
+//
+//
+//}
+//
+//void ATankBase::AimingPlayer()
+//{
+//	UE_LOG(LogTemp, Warning, TEXT("aiming"));
+//
+//	// 현재 위치
+//	FVector StartLoc = GetActorLocation();
+//	FTransform SocketTransform = GetMesh()->GetSocketTransform(FName("gun_jntSocket"));
+//	FVector SpawnLocation = SocketTransform.GetLocation();
+//
+//	// 목표 위치
+//	if (!Player) {
+//		return;
 //	}
+//	FVector TargetLoc = Player->GetActorLocation();
+//
+//	// 보간된 위치 계산
+//	//FVector NewLoc = FMath::Lerp(StartLoc, TargetLoc, Alpha);
+//
+//	float DeltaTime = GetWorld()->GetDeltaSeconds();
+//
+//
+//	FVector NewLoc = FMath::VInterpTo(StartLoc, TargetLoc, DeltaTime, InterpSpeed);
+//
+//
+//	// 새로운 위치로 이동
+//	//SetActorLocation(NewLoc);
+//
+//	Direction = (NewLoc - StartLoc).GetSafeNormal();
+//
+//	//SpawnBullet();
+//	//SetupTimer();
+//
+//	FHitResult HitResult;
+//	FCollisionQueryParams CollisionParams;
+//	CollisionParams.AddIgnoredActor(this); // 자기 자신은 무시
+//
+//	if (GetWorld()->LineTraceSingleByChannel(HitResult, StartLoc, TargetLoc, ECC_Visibility, CollisionParams))
+//	{
+//		// 목표물과 충돌한 경우
+//		Player = Cast<AHelicopterBase>(GetOwner());
+//		if (Player)
+//		{
+//			UE_LOG(LogTemp, Warning, TEXT("Player Detected! Fire Bullet!"));
+//
+//			//SpawnBullet();
+//
+//		}
+//	}
+//
+//
+//	//// 선을 그리기 위한 디버깅 목적 함수 호출
+//	//DrawDebugLine(
+//	//	GetWorld(),    // UWorld 객체
+//	//	StartLoc,         // 시작점
+//	//	TargetLoc,           // 끝점
+//	//	FColor::Red, // 선의 색상
+//	//	true,         // 선이 불투명한지 여부 (false면 투명)
+//	//	5.0f,         // 선의 지속 시간 (-1.0f로 설정하면 한 프레임 동안 지속됨)
+//	//	10,             // 두께 (기본값 0)
+//	//	1.0f          // Depth priority (기본값 1.0f)
+//	//);
 //}
 //
-//void ATankBase::Die()
+//void ATankBase::ResetDetection()
 //{
-//	Destroy();
-//}
-//
-//void ATankBase::DrawTrajectory()
-//{
-//	GetMesh()->transform
+//	bCanDetectPlayer = true;
 //}
 

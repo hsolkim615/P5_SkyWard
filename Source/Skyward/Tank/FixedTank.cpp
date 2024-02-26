@@ -9,6 +9,7 @@
 #include <../../../../../../../Source/Runtime/Engine/Classes/Kismet/GameplayStatics.h>
 
 
+
 AFixedTank::AFixedTank()
 {
 	PrimaryActorTick.bCanEverTick = true;
@@ -38,7 +39,7 @@ void AFixedTank::BeginPlay()
 	}
 	//Player = Cast<AHelicopterBase>(GetOwner());
 
-	SetupTimer();
+	//SetupTimer();
 
 
 }
@@ -60,7 +61,7 @@ void AFixedTank::OnSeePawn(APawn* OtherPawn)
 		//bCanDetectPlayer = false;
 		//SetupTimer();
 
-		UE_LOG(LogTemp, Warning, TEXT("sssssss"));
+		//UE_LOG(LogTemp, Warning, TEXT("sssssss"));
 
 	
 		/*CurrentTime += GetWorld()->DeltaTimeSeconds;
@@ -94,7 +95,7 @@ void AFixedTank::OnSeePawn(APawn* OtherPawn)
 
 void AFixedTank::SpawnBullet()
 {
-	UE_LOG(LogTemp, Warning, TEXT("spawn"));
+	//UE_LOG(LogTemp, Warning, TEXT("spawn"));
 
 	// GetWorld() 함수를 사용하여 현재 월드에 접근
 	UWorld* World = GetWorld();
@@ -123,7 +124,7 @@ void AFixedTank::SpawnBullet()
 
 void AFixedTank::SetupTimer()
 {
-	UE_LOG(LogTemp, Warning, TEXT("timer"));
+	//UE_LOG(LogTemp, Warning, TEXT("timer"));
 
 	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &AFixedTank::SpawnBullet, Interval, true);
 
@@ -133,7 +134,7 @@ void AFixedTank::SetupTimer()
 
 void AFixedTank::AimingPlayer()
 {
-	UE_LOG(LogTemp, Warning, TEXT("aiming"));
+	//UE_LOG(LogTemp, Warning, TEXT("aiming"));
 
 	// 현재 위치
 	FVector StartLoc = GetActorLocation();
@@ -173,7 +174,7 @@ void AFixedTank::AimingPlayer()
 		Player = Cast<AHelicopterBase>(GetOwner());
 		if (Player)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("Player Detected! Fire Bullet!"));
+			//UE_LOG(LogTemp, Warning, TEXT("Player Detected! Fire Bullet!"));
 
 			//SpawnBullet();
 			

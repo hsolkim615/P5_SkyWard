@@ -53,4 +53,11 @@ public:
 
 	TArray<class AMissile_Apache*> Missiles;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Sound", meta = (AllowPrivateAccess = "true"))
+	class USoundBase* BulletSound;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Sound", meta = (AllowPrivateAccess = "true"))
+	class USoundBase* MissileSound;
+
+
 };

@@ -10,6 +10,8 @@
 #include <../../../../../../../Source/Runtime/Engine/Classes/Kismet/KismetSystemLibrary.h>
 #include "../../Projectile/Missile_Apache.h"
 #include <../../../../../../../Plugins/FX/Niagara/Source/Niagara/Public/NiagaraComponent.h>
+#include <../../../../../../../Source/Runtime/Engine/Classes/Kismet/GameplayStatics.h>
+#include <../../../../../../../Source/Runtime/Engine/Classes/Components/SceneComponent.h>
 
 UHeliAttackComp::UHeliAttackComp()
 {
@@ -56,15 +58,6 @@ void UHeliAttackComp::TickComponent(float DeltaTime, ELevelTick TickType, FActor
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	if (Missiles.Num() > 0 && Missiles[0] != nullptr)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Missile at index 0: %s"), *Missiles[0]->GetName());
-	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Missiles array is empty or index 0 is nullptr"));
-	}
-
 }
 
 void UHeliAttackComp::SetupPlayerInput(UInputComponent* PlayerInputComponent)
@@ -91,6 +84,20 @@ void UHeliAttackComp::SetupPlayerInput(UInputComponent* PlayerInputComponent)
 void UHeliAttackComp::Shoot_MachineGun(const FInputActionValue& value)
 {
 	bool bIsValue = value.Get<bool>();
+
+	if (Apache->BulletNumber <= 0) {
+		return;
+	}
+
+	Apache->BulletNumber -= 1;
+
+	if (BulletSound) {
+
+		//UGameplayStatics::SpawnSoundAttached(GetWorld(), BulletSound, Apache->MGNozzleComp->GetComponentLocation());
+		
+	}
+
+	//UE_LOG(LogTemp, Warning, TEXT("Current BulletNumber: %d"), BulletNumber);
 
 	// 총알을 스폰하는 기능
 	ABullet_Apache* SpawnBullet = GetWorld()->SpawnActor<ABullet_Apache>(BulletFactory_Apache, Apache->MGNozzleComp->GetComponentLocation(), Apache->MGNozzleComp->GetComponentRotation()/*Apache->GetMesh()->GetSocketRotation(FName("gun_tilt_jntSocket"))*/);
@@ -146,6 +153,14 @@ void UHeliAttackComp::Stop_MGEffect(const FInputActionValue& value)
 void UHeliAttackComp::Shoot_Missile(const FInputActionValue& value)
 {
 	bool bIsValue = value.Get<bool>();
+
+	if (Apache->MissileNumber <= 0) {
+		return;
+	}
+
+	Apache->MissileNumber -= 1;
+
+	//UE_LOG(LogTemp, Warning, TEXT("Current MissileNumber: %d"), MissileNumber);
 
 	if (Missiles.Num() == 0) {
 		return;

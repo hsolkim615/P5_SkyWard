@@ -14,7 +14,8 @@
 #include "../Component/HeliComp/HeliTestComp.h"
 #include <Components/SceneComponent.h>
 #include <../../../../../../../Source/Runtime/Engine/Classes/Particles/ParticleSystemComponent.h>
-
+#include <../../../../../../../Source/Runtime/UMG/Public/Components/WidgetComponent.h>
+	
 AHelicopter_Apache::AHelicopter_Apache()
 {
 	PrimaryActorTick.bCanEverTick = true;
@@ -54,6 +55,14 @@ AHelicopter_Apache::AHelicopter_Apache()
 	CameraComp = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComp"));
 	CameraComp->SetupAttachment(CameraLocComp);
 
+	// UI 컴포넌트 
+	HeliInfoUIComp = CreateDefaultSubobject<UWidgetComponent>(TEXT("HeliInfoUIComp"));
+	HeliInfoUIComp->SetupAttachment(RootComponent);
+	HeliInfoUIComp->SetRelativeLocation(FVector(370, 0, 245));
+	HeliInfoUIComp->SetRelativeRotation(FRotator(0,180,0));	
+	HeliInfoUIComp->SetRelativeScale3D(FVector(0.11f));
+	HeliInfoUIComp->SetDrawSize(FVector2D(1000.f));
+
 	// 이동 컴포넌트
 	MoveComp = CreateDefaultSubobject<UHeliMoveComp>(TEXT("MoveComp"));
 
@@ -62,8 +71,6 @@ AHelicopter_Apache::AHelicopter_Apache()
 
 	// 사운드 컴포넌트
 	SoundComp = CreateDefaultSubobject<UHeliSoundComp>(TEXT("SoundComp"));
-
-
 
 	// ----------------------
 
@@ -95,7 +102,6 @@ void AHelicopter_Apache::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-
 }
 
 void AHelicopter_Apache::PossessedBy(AController* NewController)
@@ -122,10 +128,10 @@ void AHelicopter_Apache::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 
 }
 
+	/*
 void AHelicopter_Apache::OnOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 
-	/*
 	if (!OtherActor) {
 		return;
 	}
@@ -133,26 +139,26 @@ void AHelicopter_Apache::OnOverlapBegin(UPrimitiveComponent* OverlappedComponent
 	if (OtherActor->IsA<APilot>()) {
 
 		DoorCollision->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-		
+
 		EnableInput(GetWorld()->GetFirstPlayerController());
 
 		HeliOtherActor = OtherActor;
 
 		HeliOtherActor->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform);
-		
+
 		GetWorld()->GetFirstPlayerController()->UnPossess();
 
 		GetWorld()->GetFirstPlayerController()->Possess(this);
 
 
 	}
-	*/
 
 }
+	*/
 
 void AHelicopter_Apache::ModifyMapping(bool bAddMapping)
 {
-	
+
 	UHeadMountedDisplayFunctionLibrary::SetTrackingOrigin(EHMDTrackingOrigin::Stage);
 
 	if (APlayerController* PlayerController = GetWorld()->GetFirstPlayerController())
@@ -172,4 +178,14 @@ void AHelicopter_Apache::ModifyMapping(bool bAddMapping)
 		}
 	}
 
+}
+
+void AHelicopter_Apache::SetDoor()
+{
+	if (bIsOpenDoor == true) {
+
+	}
+	else if (bIsOpenDoor == false) {
+
+	}
 }

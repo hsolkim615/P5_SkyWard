@@ -68,6 +68,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class UCameraComponent* CameraComp;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class UWidgetComponent* HeliInfoUIComp;
+
+
 public: // Actor Comp
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class UHeliCompBase* MoveComp;
@@ -93,21 +97,27 @@ public:	// MoveComp
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float MainRotorSpeed_Apache = 0;
 
+	bool bIsOpenDoor = true;
+
+	int32 BulletNumber = 1200;
+	int32 MissileNumber = 8;
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MySettings|Components")
 	class UInputAction* IA_TakeHeli_RightA;
 
 public:
+/*
 	UFUNCTION()
 	void OnOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
-
+*/
 	class AActor* HeliOtherActor;
 
 
 public:
 	void ModifyMapping(bool bAddMapping);
 
-
+public:
+	void SetDoor();
 
 };

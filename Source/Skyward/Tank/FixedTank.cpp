@@ -33,11 +33,12 @@ void AFixedTank::BeginPlay()
 
 	if (pawnSensing)
 	{
+
 		pawnSensing->OnSeePawn.AddDynamic(this, &AFixedTank::OnSeePawn);
 	}
 	//Player = Cast<AHelicopterBase>(GetOwner());
 
-	SetupSpawnTimer();
+	SetupTimer();
 
 
 }
@@ -45,82 +46,56 @@ void AFixedTank::BeginPlay()
 void AFixedTank::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
 }
 
 void AFixedTank::OnSeePawn(APawn* OtherPawn)
 {
-	
-	
-	UE_LOG(LogTemp, Warning, TEXT("OtherPawn Name: %s"), *OtherPawn->GetName());
-
-	Player = Cast<AHelicopterBase>(OtherPawn);
-
-	//Super::OnSeePawn(OtherPawn);
-
-	if (Player)
+	if (bCanDetectPlayer && OtherPawn && OtherPawn->IsA<AHelicopterBase>())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("pawnsensing"));
+		Player = Cast<AHelicopterBase>(OtherPawn);
 
+		AimingPlayer();
 
-		// 현재 위치
-		FVector StartLoc = GetActorLocation();
-		FTransform SocketTransform = GetMesh()->GetSocketTransform(FName("gun_jntSocket"));
-		FVector SpawnLocation = SocketTransform.GetLocation();
+		//bCanDetectPlayer = false;
+		//SetupTimer();
 
-		// 목표 위치
-		FVector TargetLoc = Player->GetActorLocation(); 
+		UE_LOG(LogTemp, Warning, TEXT("sssssss"));
 
-		// 보간된 위치 계산
-		FVector NewLoc = FMath::Lerp(StartLoc, TargetLoc, Alpha);
-
-		// 새로운 위치로 이동
-		//SetActorLocation(NewLoc);
-
-		Direction = (NewLoc - StartLoc).GetSafeNormal();;
-
-
-		
-
-		// 선을 그리기 위한 디버깅 목적 함수 호출
-		DrawDebugLine(
-			GetWorld(),    // UWorld 객체
-			StartLoc,         // 시작점
-			TargetLoc,           // 끝점
-			FColor::Red, // 선의 색상
-			true,         // 선이 불투명한지 여부 (false면 투명)
-			5.0f,         // 선의 지속 시간 (-1.0f로 설정하면 한 프레임 동안 지속됨)
-			10,             // 두께 (기본값 0)
-			1.0f          // Depth priority (기본값 1.0f)
-		);
-	}
 	
+		/*CurrentTime += GetWorld()->DeltaTimeSeconds;
+		if (CurrentTime > AimingTime)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("aimingTime"));
 
-	//class AActor* aaa = Cast<AActor>(OtherPawn);
+			CurrentTime = 0;
+			AimingPlayer();
+		}*/
+	}
 
-	//if (aaa)
+	//UE_LOG(LogTemp, Warning, TEXT("OtherPawn Name: %s"), *OtherPawn->GetName());
+
+	//Player = Cast<AHelicopterBase>(OtherPawn);
+
+	////Super::OnSeePawn(OtherPawn);
+
+	//if (Player)
 	//{
+	//	UE_LOG(LogTemp, Warning, TEXT("Player"));
 
-	//	// 현재 위치
-	//	FVector StartLoc = GetActorLocation();
-
-	//	// 목표 위치
-	//	FVector TargetLoc = aaa->GetActorLocation();
-
-	//	// 보간된 위치 계산
-	//	FVector NewLoc = FMath::Lerp(StartLoc, TargetLoc, Alpha);
-
-	//	// 새로운 위치로 이동
-	//	//SetActorLocation(NewLoc);
-
-	//	Direction = NewLoc - StartLoc;
+	//	SetupTimer();
 
 	//}
+	
+	
 
 }
 
 
-void AFixedTank::SpawnActorFunction()
+void AFixedTank::SpawnBullet()
 {
+	UE_LOG(LogTemp, Warning, TEXT("spawn"));
+
 	// GetWorld() 함수를 사용하여 현재 월드에 접근
 	UWorld* World = GetWorld();
 	if (World)
@@ -146,10 +121,81 @@ void AFixedTank::SpawnActorFunction()
 }
 
 
-void AFixedTank::SetupSpawnTimer()
+void AFixedTank::SetupTimer()
 {
-	float SpawnInterval = 2.0f;
+	UE_LOG(LogTemp, Warning, TEXT("timer"));
 
-	GetWorld()->GetTimerManager().SetTimer(SpawnTimerHandle, this, &AFixedTank::SpawnActorFunction, SpawnInterval, true);
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &AFixedTank::SpawnBullet, Interval, true);
+
+
 
 }
+
+void AFixedTank::AimingPlayer()
+{
+	UE_LOG(LogTemp, Warning, TEXT("aiming"));
+
+	// 현재 위치
+	FVector StartLoc = GetActorLocation();
+	FTransform SocketTransform = GetMesh()->GetSocketTransform(FName("gun_jntSocket"));
+	FVector SpawnLocation = SocketTransform.GetLocation();
+
+	// 목표 위치
+	if (!Player) {
+		return;
+	}
+	FVector TargetLoc = Player->GetActorLocation();
+
+	// 보간된 위치 계산
+	//FVector NewLoc = FMath::Lerp(StartLoc, TargetLoc, Alpha);
+
+	float DeltaTime = GetWorld()->GetDeltaSeconds();
+
+
+	FVector NewLoc = FMath::VInterpTo(StartLoc, TargetLoc, DeltaTime, InterpSpeed);
+
+
+	// 새로운 위치로 이동
+	//SetActorLocation(NewLoc);
+
+	Direction = (NewLoc - StartLoc).GetSafeNormal();
+
+	//SpawnBullet();
+	//SetupTimer();
+
+	FHitResult HitResult;
+	FCollisionQueryParams CollisionParams;
+	CollisionParams.AddIgnoredActor(this); // 자기 자신은 무시
+
+	if (GetWorld()->LineTraceSingleByChannel(HitResult, StartLoc, TargetLoc, ECC_Visibility, CollisionParams))
+	{
+		// 목표물과 충돌한 경우
+		Player = Cast<AHelicopterBase>(GetOwner());
+		if (Player)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Player Detected! Fire Bullet!"));
+
+			//SpawnBullet();
+			
+		}
+	}
+
+
+	//// 선을 그리기 위한 디버깅 목적 함수 호출
+	//DrawDebugLine(
+	//	GetWorld(),    // UWorld 객체
+	//	StartLoc,         // 시작점
+	//	TargetLoc,           // 끝점
+	//	FColor::Red, // 선의 색상
+	//	true,         // 선이 불투명한지 여부 (false면 투명)
+	//	5.0f,         // 선의 지속 시간 (-1.0f로 설정하면 한 프레임 동안 지속됨)
+	//	10,             // 두께 (기본값 0)
+	//	1.0f          // Depth priority (기본값 1.0f)
+	//);
+}
+
+void AFixedTank::ResetDetection()
+{
+	bCanDetectPlayer = true;
+}
+

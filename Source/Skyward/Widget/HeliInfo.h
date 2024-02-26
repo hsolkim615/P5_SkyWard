@@ -15,8 +15,9 @@ class SKYWARD_API UHeliInfo : public UUserWidget
 	GENERATED_BODY()
 	
 public:
-//	virtual void NativeConstruct() override;
+	virtual void NativeConstruct() override;
 
+	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
 
 public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (BindWidget))
@@ -33,9 +34,27 @@ public:
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (BindWidget))
 	class UTextBlock* txt_Missile;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (BindWidget))
+	class UProgressBar* HP_Bar;
 
-public: // 
-	//UFUNCTION()
-	//void SetRollAngle();
+public: 
+	UFUNCTION()
+	void SetRollAngle();
+
+	UFUNCTION()
+	void SetPitchAngle();
+
+	UFUNCTION()
+	void SetAltitude();
+
+	UFUNCTION()
+	void SetBullet();
+
+	UFUNCTION()
+	void SetMissile();
+
+public:
+	class AHelicopter_Apache* Apache;
 
 };

@@ -74,8 +74,7 @@ void UHeliMoveComp::TickComponent(float DeltaTime, ELevelTick TickType, FActorCo
 
 
 
-
-
+	/*
 	// 헬기 각도 로그 -------------------------------------------------------
 	CurrentPitch = Apache->GetActorRotation().Pitch;
 	CurrentRoll = Apache->GetActorRotation().Roll;
@@ -84,12 +83,11 @@ void UHeliMoveComp::TickComponent(float DeltaTime, ELevelTick TickType, FActorCo
 	UKismetSystemLibrary::PrintString(this, FString::Printf(TEXT("VehicleMovementComponent Pitch: %f"), CurrentPitch), true, false, FLinearColor::Green, 5.0f, FName(TEXT("VehiclePitch")));
 	// 좌우 수평 로그
 	UKismetSystemLibrary::PrintString(this, FString::Printf(TEXT("VehicleMovementComponent Roll: %f"), CurrentRoll), true, false, FLinearColor::Green, 5.0f, FName(TEXT("VehicleRoll")));
-
 	// 고도 - 절대좌표
-	//UKismetSystemLibrary::PrintString(this, FString::Printf(TEXT("ApacheAltitude: %f"), ApacheAltitude), true, false, FLinearColor::Green, 5.0f, FName(TEXT("StandHigh")));
+	UKismetSystemLibrary::PrintString(this, FString::Printf(TEXT("ApacheAltitude: %f"), ApacheAltitude), true, false, FLinearColor::Green, 5.0f, FName(TEXT("StandHigh")));
 	// 고도 - 헬기 기준 상대좌표
 	UKismetSystemLibrary::PrintString(this, FString::Printf(TEXT("Apache->GetActorLocation().Z: %f"), Apache->GetActorLocation().Z - StandHigh), true, false, FLinearColor::Green, 5.0f, FName(TEXT("Apache->GetActorLocation().Z")));
-
+	*/
 
 }
 
@@ -374,7 +372,7 @@ void UHeliMoveComp::Collective_LeftGrip(const FInputActionValue& value)
 	//Apache->GetMesh()->SetWorldLocation(Apache->GetActorLocation(), false, nullptr, ETeleportType::TeleportPhysics); // 이동할 때 TeleportPhysics 플래그를 사용합니다.
 	//Apache->SetActorLocation(Apache->GetActorLocation(), false, nullptr, ETeleportType::TeleportPhysics);
 
-	UKismetSystemLibrary::PrintString(this, FString::Printf(TEXT("ActionValueUpDown: %f"), ActionValueUpDown), true, false, FLinearColor::Green, 5.0f, FName(TEXT("ActionValueLog")));
+	//UKismetSystemLibrary::PrintString(this, FString::Printf(TEXT("ActionValueUpDown: %f"), ActionValueUpDown), true, false, FLinearColor::Green, 5.0f, FName(TEXT("ActionValueLog")));
 
 }
 

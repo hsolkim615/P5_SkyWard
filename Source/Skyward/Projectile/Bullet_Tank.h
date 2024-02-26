@@ -23,7 +23,9 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-
+	
+	UPROPERTY()
+	class AHelicopterBase* Player;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class USphereComponent* CollisionComp;
@@ -33,5 +35,10 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class UProjectileMovementComponent* MovementComp;
+
+
+	float MaxDistance = 1000.0f; // 초기 속도가 최대가 될 거리
+	float MinSpeed = 5000.0f; // 초기 속도의 최소값
+	float MaxSpeed = 10000.0f; // 초기 속도의 최대값
 
 };

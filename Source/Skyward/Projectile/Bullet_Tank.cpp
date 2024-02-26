@@ -5,6 +5,7 @@
 #include <../../../../../../../Source/Runtime/Engine/Classes/Components/SphereComponent.h>
 #include <../../../../../../../Source/Runtime/Engine/Classes/Components/StaticMeshComponent.h>
 #include <../../../../../../../Source/Runtime/Engine/Classes/GameFramework/ProjectileMovementComponent.h>
+#include "../Helicopter/HelicopterBase.h"
 
 // Sets default values
 ABullet_Tank::ABullet_Tank()
@@ -19,7 +20,8 @@ ABullet_Tank::ABullet_Tank()
 	MovementComp = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("MovementComp"));
 	//MovementComp->MaxSpeed = 0;
 	//MovementComp->InitialSpeed = 0;
-	 
+
+
 
 }
 
@@ -35,5 +37,19 @@ void ABullet_Tank::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+
+	Player = Cast<AHelicopterBase>(GetOwner());
+
+	if (Player)
+	{
+		float DistanceToTarget = FVector::Distance(GetActorLocation(), Player->GetActorLocation());
+	
+
+		// 거리에 따라 초기 속도를 계산
+		float InitialSpeed = FMath::Lerp(MinSpeed, MaxSpeed, FMath::Clamp(DistanceToTarget / MaxDistance, 0.0f, 1.0f));
+
+		// Projectile Movement Component에 초기 속도 설정
+		MovementComp->InitialSpeed = InitialSpeed;
+	}
 }
 

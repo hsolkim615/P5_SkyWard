@@ -18,55 +18,61 @@ public:
 	ATankBase();
 	
 public:
-	// UPROPERTY(EditAnywhere)
-	// class UBoxComponent* boxComp;
-	//
-	// UPROPERTY(EditAnywhere)
-	// class UStaticMeshComponent* meshComp;
-
-public:
+	public:
 	virtual void BeginPlay() override;
 
 	virtual void Tick(float DeltaTime) override;
-
-
-public:
-
-	UPROPERTY(BlueprintReadOnly)
-	class UTankFSM* FSM;
-
-	//UPROPERTY(EditAnywhere)
-	//float AttackRange;
-
-	//UPROPERTY(EditAnywhere)
-	//float AttackRange;
-
-	//UPROPERTY(EditAnywhere)
-	//float MaxHp;
-
-	//UPROPERTY(EditAnywhere)
-	//float CurrentHp;
-
-	//UPROPERTY(EditAnywhere)
-	//float AttackTime;
-
-	//UPROPERTY()
-	//class AHelicopterBase* Player;
-
-	//UPROPERTY()
-	//class ATankBase* Me;
-
-	//UPROPERTY()
-	//void Attack();
-
-	//UPROPERTY()
-	//void Damage(Param);
-
-	//UPROPERTY()
-	//void Die();
-
-	//UPROPERTY()
-	//void DrawTrajectory();
+//
+//	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+//	FVector Direction;
+//
+//	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+//	FTimerHandle TimerHandle;
+//
+//	UPROPERTY()
+//	float Alpha = 0.1f;
+//
+//	UPROPERTY()
+//	float ProjectileSpeed = 20000;
+//
+//	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+//	float InterpSpeed = 1.0f;
+//
+//	UPROPERTY()
+//	float CurrentTime = 0;
+//
+//	UPROPERTY()
+//	float AimingTime = 5.0f;
+//
+//	UPROPERTY()
+//	float Interval = 3.0f;
+//
+//	UPROPERTY()
+//	float bCanDetectPlayer = true;
+//
+//	UPROPERTY(EditAnywhere)
+//	class UPawnSensingComponent* pawnSensing;
+//
+//	UPROPERTY()
+//	class AHelicopterBase* Player;
+//
+//public:
+//	//UFUNCTION()
+//	virtual void OnSeePawn(APawn* OtherPawn);
+//
+//protected:
+//
+//	void SpawnBullet();
+//	
+//	void SetupTimer();
+//
+//	void AimingPlayer();
+//
+//	void ResetDetection();
+//
+//public:
+//	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+//	TSubclassOf<class ABullet_Tank> ActorClass;
 };
 
 

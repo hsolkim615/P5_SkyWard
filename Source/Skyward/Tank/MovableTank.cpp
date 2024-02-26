@@ -9,10 +9,17 @@
 #include <../../../../../../../Source/Runtime/Engine/Classes/Kismet/KismetMathLibrary.h>
 #include <ChaosWheeledVehicleMovementComponent.h>
 #include <../../../../../../../Source/Runtime/Engine/Classes/Kismet/KismetSystemLibrary.h>
+#include "../Actor/Destination.h"
+#include <../../../../../../../Source/Runtime/AIModule/Classes/AIController.h>
+
+
 
 AMovableTank::AMovableTank()
 {
 	ChaosWheeledVehicleMovementComponent = CreateDefaultSubobject<UChaosWheeledVehicleMovementComponent>(TEXT("ChaosWheeledVehicleMovementComponent"));
+	
+
+
 }
 
 // Called when the game starts or when spawned
@@ -20,11 +27,23 @@ void AMovableTank::BeginPlay()
 {
 	Super::BeginPlay();
 
-
+	//ai = Cast<AAIController>(GetController());
 
 	FoundActor = Cast<APath>(UGameplayStatics::GetActorOfClass(GetWorld(), APath::StaticClass()));
 
+	FoundActor = Cast<APath>(UGameplayStatics::GetActorOfClass(GetWorld(), APath::StaticClass()));
+	if (FoundActor)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("FoundActor: %s"), *FoundActor->GetName());
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("FoundActor is NULL"));
+	}
+
 	ChaosWheeledVehicleMovementComponent->SetThrottleInput(1.0f);
+
+
 
 	//UObject* WorldContextObject = GetWorld(); 
 	//float DelayDuration = 3.0f; 
@@ -44,19 +63,64 @@ void AMovableTank::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	this->FindPath(FoundActor);
+	FindPath(FoundActor);
 
 	/*if (ChaosWheeledVehicleMovementComponent)
 	{
 		ChaosWheeledVehicleMovementComponent->SetSteeringInput(MappedValue);
 	}*/
 
+
+	if (!Dest || !ai)
+	{
+		return;
+	}
+
 	ChaosWheeledVehicleMovementComponent->SetSteeringInput(MappedValue);
 
+	//FVector Destination = Dest->GetActorLocation();
+	//ai->MoveToLocation(Destination);
 }
+
+
+//void AMovableTank::MoveTank()
+//{
+//	
+//	if (Target && ai)
+//	{
+//		FVector Destination = Target->GetActorLocation();
+//
+//		if (Player)
+//		{
+//			// 이동 중지
+//			ai->StopMovement();
+//
+//			// 플레이어를 조준
+//			AimingPlayer();
+//		}
+//		else
+//		{
+//			// 플레이어를 감지하지 않았을 경우 계속 이동
+//			ai->MoveToLocation(Destination);
+//		}
+//	}
+//
+//}
+
+
 
 void AMovableTank::FindPath(APath* path)
 {
+
+	UE_LOG(LogTemp, Warning, TEXT("FindPath"));
+
+	if (!FoundActor)
+	{
+		return;
+	}
+
+	UE_LOG(LogTemp, Warning, TEXT("FindPath Success"));
+
 
 	USplineComponent* Spline = FoundActor->SplineComp; //Cast<USplineComponent>(FoundActor);
 
@@ -98,6 +162,8 @@ void AMovableTank::FindPath(APath* path)
 	// MapRangeClamped 함수를 호출하여 입력 값을 출력 범위로 매핑합니다.
 	MappedValue = UKismetMathLibrary::MapRangeClamped(Value, InRangeA, InRangeB, OutRangeA, OutRangeB);
 
+	MappedValue = UKismetMathLibrary::MapRangeClamped(Value, InRangeA, InRangeB, OutRangeA, OutRangeB);
+	UE_LOG(LogTemp, Warning, TEXT("MappedValue: %f"), MappedValue);
 }
 
 

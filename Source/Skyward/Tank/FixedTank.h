@@ -72,5 +72,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TSubclassOf<class ABullet_Tank> ActorClass;
 
+
+	
 };
 

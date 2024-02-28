@@ -89,24 +89,27 @@ void UHeliAttackComp::Shoot_MachineGun(const FInputActionValue& value)
 		return;
 	}
 
-	Apache->BulletNumber -= 1;
-
-	if (BulletSound) {
-
-		//UGameplayStatics::SpawnSoundAttached(GetWorld(), BulletSound, Apache->MGNozzleComp->GetComponentLocation());
-		
+	// 타이머가 이미 활성화되어 있다면 중복으로 타이머를 시작하지 않습니다.
+	if (!GetWorld()->GetTimerManager().IsTimerActive(TimerHandle))
+	{
+		// 타이머를 설정하여 일정 시간마다 SpawnBullet 함수를 호출합니다.
+		GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &UHeliAttackComp::SpwanBullet, 0.05f, false);
 	}
 
-	//UE_LOG(LogTemp, Warning, TEXT("Current BulletNumber: %d"), BulletNumber);
-
-	// 총알을 스폰하는 기능
-	ABullet_Apache* SpawnBullet = GetWorld()->SpawnActor<ABullet_Apache>(BulletFactory_Apache, Apache->MGNozzleComp->GetComponentLocation(), Apache->MGNozzleComp->GetComponentRotation()/*Apache->GetMesh()->GetSocketRotation(FName("gun_tilt_jntSocket"))*/);
-
-	SpawnBullet->SetOwner(Apache);
-	SpawnBullet->SaveOwner();
 
 	// 총열에 불꽃 이펙트 스폰
 	Apache->MGEffectComp->SetActive(true);
+
+}
+
+void UHeliAttackComp::SpwanBullet()
+{
+	ABullet_Apache* SpawnBullet = GetWorld()->SpawnActor<ABullet_Apache>(BulletFactory_Apache, Apache->MGNozzleComp->GetComponentLocation(), Apache->MGNozzleComp->GetComponentRotation());
+
+	Apache->BulletNumber -= 1;
+
+	SpawnBullet->SetOwner(Apache);
+	SpawnBullet->SaveOwner();
 
 	FHitResult HitResult;
 	float AttackRange = 50000.f; // 사정거리
@@ -130,14 +133,26 @@ void UHeliAttackComp::Shoot_MachineGun(const FInputActionValue& value)
 	}
 	else
 	{
-		//DrawDebugLine(GetWorld(), StartLocation, EndLocation, FColor::Green, false, 5.0f, 0, 5.0f);
+		DrawDebugLine(GetWorld(), StartLocation, EndLocation, FColor::Green, false, 5.0f, 0, 5.0f);
 
 		SpawnBullet->BulletMove(EndLocation);
 
 	}
 
+	PlayMGSound();
+
+}
+
+void UHeliAttackComp::PlayMGSound()
+{
 	// 발사 사운드 필요
 
+	UGameplayStatics::PlaySoundAtLocation(
+		GetWorld(),     // WorldContextObject
+		BulletSound,        // Sound
+		Apache->MGNozzleComp->GetComponentLocation(),     // Location
+		Apache->MGNozzleComp->GetComponentRotation() // Rotation
+	);
 
 }
 
@@ -167,7 +182,7 @@ void UHeliAttackComp::Shoot_Missile(const FInputActionValue& value)
 	}
 
 	FHitResult HitResult;
-	float AttackRange = 100000.f; // 사정거리
+	float AttackRange = 800000.f; // 사정거리
 	FVector StartLocation = Apache->CameraLocComp->GetComponentLocation();// 시작 위치 설정
 	FVector EndLocation = StartLocation + (Apache->CameraLocComp->GetForwardVector() * AttackRange); // 종료 위치 설정
 	ECollisionChannel TraceChannel = ECollisionChannel::ECC_Visibility; // 라인 트레이스할 채널 설정
@@ -182,18 +197,19 @@ void UHeliAttackComp::Shoot_Missile(const FInputActionValue& value)
 	// 라인 트레이스 실행
 	if (GetWorld()->LineTraceSingleByChannel(HitResult, StartLocation, EndLocation, TraceChannel, CollisionParams))
 	{
-		//DrawDebugLine(GetWorld(), StartLocation, HitResult.ImpactPoint, FColor::Green, false, 5.0f, 0, 5.0f);
+		DrawDebugLine(GetWorld(), StartLocation, HitResult.ImpactPoint, FColor::Green, false, 5.0f, 0, 5.0f);
 
 		// 목적지로 이동 - HitResult.Location
-
+		CurrentMissile->SetInitialLocation();
 		CurrentMissile->MissileMove(HitResult.Location);
 
 	}
 	else
 	{
-		//DrawDebugLine(GetWorld(), StartLocation, EndLocation, FColor::Green, false, 5.0f, 0, 5.0f);
+		DrawDebugLine(GetWorld(), StartLocation, EndLocation, FColor::Green, false, 5.0f, 0, 5.0f);
 
 		// 목적지로 이동 - EndLocation
+		CurrentMissile->SetInitialLocation();
 		CurrentMissile->MissileMove(EndLocation);
 
 

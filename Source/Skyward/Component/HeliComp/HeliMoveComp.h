@@ -40,6 +40,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MySettings|HeliKey")
 	class UInputAction* IA_Apache_Throttle;
 
+		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MySettings|HeliKey")
+	class UInputAction* IA_Apache_Engine;
+
 public: // Heli - Moving 
 	void Cyclic_RightThumbStick(const FInputActionValue& value);
 	void UpdateHelicopterAngle(const FVector2D& InputValue);
@@ -95,4 +98,12 @@ public:
 	// 로그용 변수
 	float CurrentPitch;
 	float CurrentRoll;
+
+
+
+
+
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class UNiagaraSystem* NSWind;
 };

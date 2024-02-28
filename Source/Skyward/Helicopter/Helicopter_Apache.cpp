@@ -45,6 +45,7 @@ AHelicopter_Apache::AHelicopter_Apache()
 	// 기관총 이펙트
 	MGEffectComp = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("MGEffectComp"));
 	MGEffectComp->SetupAttachment(MGNozzleComp);
+	MGEffectComp->SetActive(false);
 
 	// 카메라 위치 컴포넌트
 	CameraLocComp = CreateDefaultSubobject<USceneComponent>(TEXT("CameraLocComp"));

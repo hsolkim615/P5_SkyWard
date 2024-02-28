@@ -83,8 +83,6 @@ public: // Actor Comp
 	class UHeliCompBase* SoundComp;
 	
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	class UStateComponent* StateComponent;
 
 
 	// Test ÄÄÆ÷³ÍÆ®

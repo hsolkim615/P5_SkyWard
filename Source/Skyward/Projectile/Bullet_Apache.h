@@ -47,7 +47,14 @@ public:
 public:
 	FVector TargetLocation;
 
-	class AHelicopter_Apache* OwnerHeli;
+	class AHelicopter_Apache* Apache;
 
 	float AttackDamage;
+
+
+
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class UNiagaraSystem* NSBullet;
+
 };

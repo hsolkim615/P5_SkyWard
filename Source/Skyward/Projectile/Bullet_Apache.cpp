@@ -8,6 +8,9 @@
 #include <../../../../../../../Source/Runtime/Engine/Classes/Kismet/KismetMathLibrary.h>
 #include "../Tank/TankBase.h"
 #include "../Helicopter/Helicopter_Apache.h"
+#include <../../../../../../../Plugins/FX/Niagara/Source/Niagara/Public/NiagaraFunctionLibrary.h>
+#include <../../../../../../../Source/Runtime/Engine/Classes/Kismet/GameplayStatics.h>
+#include <../../../../../../../Source/Runtime/Engine/Classes/Sound/SoundBase.h>
 
 ABullet_Apache::ABullet_Apache()
 {
@@ -63,10 +66,16 @@ void ABullet_Apache::NotifyActorBeginOverlap(AActor* OtherActor)
 {
 	Super::NotifyActorBeginOverlap(OtherActor);
 	
+	UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), NSBullet, GetActorLocation(), FRotator(0), FVector(0.01f));
+
+
 	if (OtherActor->IsA<ATankBase>()) {
 		
 
 		// ***** 데미지를 주는 방식으로 수정 필요 / 탱크가 갖고 있는 StateCompoenet의 함수를 호출할 것
+		//UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), NSBullet, TargetLocation, FRotator(0), FVector(3));
+
+
 		OtherActor->Destroy();
 
 		Destroy();
@@ -95,7 +104,7 @@ void ABullet_Apache::BulletMove(FVector TargetLoc)
 
 void ABullet_Apache::SaveOwner()
 {
-	OwnerHeli = Cast<AHelicopter_Apache>(GetOwner());
+	Apache = Cast<AHelicopter_Apache>(GetOwner());
 
 }
 

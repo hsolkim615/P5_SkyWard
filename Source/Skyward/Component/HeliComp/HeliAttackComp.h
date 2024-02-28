@@ -37,6 +37,8 @@ public: // InputAction
 
 public:
 	void Shoot_MachineGun(const FInputActionValue& value);
+	void SpwanBullet();
+	void PlayMGSound();
 	void Stop_MGEffect(const FInputActionValue& value);
 
 	void Shoot_Missile(const FInputActionValue& value);
@@ -59,5 +61,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Sound", meta = (AllowPrivateAccess = "true"))
 	class USoundBase* MissileSound;
 
+	FTimerHandle TimerHandle;
 
 };

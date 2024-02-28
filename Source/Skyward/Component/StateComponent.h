@@ -35,7 +35,12 @@ public:
 
 	void StateDestroy();
 
+	UStateComponent* GetStateComponent();
+
 public:
+
+	UStateComponent* StateComponent;
+
 	//VisibleInstanceOnly 
 	// Ã¼·Â
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)

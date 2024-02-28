@@ -8,6 +8,7 @@
 #include <Kismet/KismetMathLibrary.h>
 #include "HeliSoundComp.h"
 #include <Kismet/KismetSystemLibrary.h>
+#include <../../../../../../../Plugins/FX/Niagara/Source/Niagara/Public/NiagaraFunctionLibrary.h>
 
 UHeliMoveComp::UHeliMoveComp()
 {
@@ -28,6 +29,8 @@ void UHeliMoveComp::TickComponent(float DeltaTime, ELevelTick TickType, FActorCo
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	if (bIsEngineOnOff == true) {
+
+
 
 		// 헬기 소리 호출
 		if (HeliComp_Sound) {
@@ -115,6 +118,9 @@ void UHeliMoveComp::SetupPlayerInput(UInputComponent* PlayerInputComponent)
 		EnhancedInputComponent->BindAction(IA_Apache_Pedal, ETriggerEvent::Canceled, this, &UHeliMoveComp::Pedal_Trigger);
 		EnhancedInputComponent->BindAction(IA_Apache_Pedal, ETriggerEvent::Completed, this, &UHeliMoveComp::Pedal_Trigger);
 
+		// 헬기 엔진
+		EnhancedInputComponent->BindAction(IA_Apache_Engine, ETriggerEvent::Started, this, &UHeliMoveComp::Engine_On_Off);
+
 	}
 
 }
@@ -125,11 +131,19 @@ void UHeliMoveComp::Engine_On_Off(const FInputActionValue& value)
 
 		bIsEngineOnOff = true;
 
+		// 바람 이펙트 
+		if (NSWind) {
+
+			UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), NSWind, Apache->GetActorLocation() - FVector(0, 0, 700), FRotator(0), FVector(5));
+		}
+
+		// 브레이크 끄기
 		Apache->GetVehicleMovementComponent()->SetHandbrakeInput(false);
 
 	}
 	else if (bIsEngineOnOff == true) {
-
+		
+		// 지면과의 거리를 계산
 		FHitResult hitResult;
 		FVector startLoc = Apache->GetActorLocation() + FVector(0, 0, 50);
 		FVector endLoc = Apache->GetActorLocation() + FVector(0, 0, -10);
@@ -142,7 +156,7 @@ void UHeliMoveComp::Engine_On_Off(const FInputActionValue& value)
 		// 지면과 가까운지를 감지하는 라인트레이스
 		GetWorld()->LineTraceSingleByChannel(hitResult, startLoc, endLoc, ECC_Visibility, CollisionParams);
 
-		DrawDebugLine(GetWorld(), startLoc, endLoc, FColor::Red, false, 0, 0, 5);
+		//DrawDebugLine(GetWorld(), startLoc, endLoc, FColor::Red, false, 0, 0, 5);
 
 		if (hitResult.bBlockingHit == true) {
 
@@ -169,7 +183,7 @@ void UHeliMoveComp::ChangeDrivingMode(const FInputActionValue& value)
 
 void UHeliMoveComp::AltitudeHoldMode()
 {
-
+	
 }
 
 void UHeliMoveComp::AutoHoveringMode()
@@ -223,8 +237,8 @@ void UHeliMoveComp::Cyclic_RightThumbStick(const FInputActionValue& value)
 		if (FMath::Abs(VecterValue.Y) > FMath::Abs(VecterValue.X)) {
 
 			// VecterValue.Y는 -1 ~ 1 사이의 값이다.
-			// -1인 경우 뒤로 30도 , 1인 경우 앞으로 30도로 기울어야 한다. 그 사이 값은 스틱의 기울기에 비례하여 헬기가 기울어야 한다. 
-			// 하지만 SetPitchInput은 -1, 0, 1의 값으로만 움직일 수 있다. 
+			// -1인 경우 뒤로 30도 , 1인 경우 앞으로 30도로 기울어야 한다. 그 사이 값은 스틱의 기울기에 비례하여 헬기가 기울어야 한다.
+			// 하지만 SetPitchInput은 -1, 0, 1의 값으로만 움직일 수 있다.
 			// 이전 입력 값과 현재 입력 값을 비교하면 되지 않을까?
 			// 이전 입력값보다 현재 입력 값이 크면 각도를 1을 반환하여 크게 갱신 / 동일하면 0을 반환하여 유지 / 작으면 -1을 반환하여 작게 갱신
 
@@ -276,7 +290,7 @@ void UHeliMoveComp::Cyclic_RightThumbStick(const FInputActionValue& value)
 	}
 	*/
 
-	UKismetSystemLibrary::PrintString(this, VecterValue.ToString(), true, false, FLinearColor::Green, 5.0f, FName(TEXT("VecterValue")));
+	//UKismetSystemLibrary::PrintString(this, VecterValue.ToString(), true, false, FLinearColor::Green, 5.0f, FName(TEXT("VecterValue")));
 
 }
 
@@ -317,25 +331,29 @@ void UHeliMoveComp::Collective_LeftGrip(const FInputActionValue& value)
 	//ActionValueUpDown = value.Get<float>();
 
 	// ================================================================
-	/*
 	if (value.Get<float>() == 0) {
 		ActionValueUpDown = -1;
+
+		ApacheAltitude = Apache->GetActorLocation().Z;
 
 	}
 	else if (value.Get<float>() == 1) {
 		ActionValueUpDown = 1;
+
+		ApacheAltitude = Apache->GetActorLocation().Z;
+
 	}
 	else {
 		ActionValueUpDown = 0;
 
 		// ApacheAltitude 의 값이 하나로 설정되어야 고도를 유지할 수 있는데, 현재 trigger 상태라 계속해서 ApacheAltitude가 갱신되므로 고도를 유지하지 않고 계속 상승함
-		ApacheAltitude = Apache->GetActorLocation().Z;
+		//ApacheAltitude = Apache->GetActorLocation().Z;
 
 	}
-	*/
 
 	// ================================================================
 
+	/*
 	// 고도를 6단계로 나눔
 	if (value.Get<float>() == 0) {
 		ActionValueUpDown = -1;
@@ -368,11 +386,7 @@ void UHeliMoveComp::Collective_LeftGrip(const FInputActionValue& value)
 
 		}
 	}
-
-	//Apache->GetMesh()->SetWorldLocation(Apache->GetActorLocation(), false, nullptr, ETeleportType::TeleportPhysics); // 이동할 때 TeleportPhysics 플래그를 사용합니다.
-	//Apache->SetActorLocation(Apache->GetActorLocation(), false, nullptr, ETeleportType::TeleportPhysics);
-
-	//UKismetSystemLibrary::PrintString(this, FString::Printf(TEXT("ActionValueUpDown: %f"), ActionValueUpDown), true, false, FLinearColor::Green, 5.0f, FName(TEXT("ActionValueLog")));
+	*/
 
 }
 

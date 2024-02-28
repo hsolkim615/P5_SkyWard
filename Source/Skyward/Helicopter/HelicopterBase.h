@@ -14,5 +14,8 @@ class SKYWARD_API AHelicopterBase : public AVehicleBase
 {
 	GENERATED_BODY()
 	
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class UStateComponent* StateComponent;
 
 };

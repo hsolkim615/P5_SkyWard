@@ -10,6 +10,8 @@ UStateComponent::UStateComponent()
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
 
+	StateComponent = this;
+
 	// ...
 }
 
@@ -75,5 +77,10 @@ void UStateComponent::StateDestroy()
 	// 적합한 효과 등 연출하거나 등등
 
 
+}
+
+UStateComponent* UStateComponent::GetStateComponent()
+{
+	return StateComponent;
 }
 

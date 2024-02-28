@@ -22,6 +22,10 @@ void UHeliInfo::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 {
 	Super::NativeTick(MyGeometry, InDeltaTime);
 
+	if (!Apache) {
+		return;
+	}
+
 	HP_Bar->SetPercent(100.f / Apache->StateComponent->HealthPoint);
 	
 	if (txt_RollAngle && txt_PitchAngle && txt_Altitude && txt_Bullet && txt_Missile)

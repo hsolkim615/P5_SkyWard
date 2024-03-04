@@ -18,61 +18,68 @@ public:
 	ATankBase();
 	
 public:
-	public:
 	virtual void BeginPlay() override;
 
 	virtual void Tick(float DeltaTime) override;
-//
-//	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-//	FVector Direction;
-//
-//	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-//	FTimerHandle TimerHandle;
-//
-//	UPROPERTY()
-//	float Alpha = 0.1f;
-//
-//	UPROPERTY()
-//	float ProjectileSpeed = 20000;
-//
-//	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-//	float InterpSpeed = 1.0f;
-//
-//	UPROPERTY()
-//	float CurrentTime = 0;
-//
-//	UPROPERTY()
-//	float AimingTime = 5.0f;
-//
-//	UPROPERTY()
-//	float Interval = 3.0f;
-//
-//	UPROPERTY()
-//	float bCanDetectPlayer = true;
-//
-//	UPROPERTY(EditAnywhere)
-//	class UPawnSensingComponent* pawnSensing;
-//
-//	UPROPERTY()
-//	class AHelicopterBase* Player;
-//
-//public:
-//	//UFUNCTION()
-//	virtual void OnSeePawn(APawn* OtherPawn);
-//
-//protected:
-//
-//	void SpawnBullet();
-//	
-//	void SetupTimer();
-//
-//	void AimingPlayer();
-//
-//	void ResetDetection();
-//
-//public:
-//	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-//	TSubclassOf<class ABullet_Tank> ActorClass;
+
+protected:
+
+	UFUNCTION()
+	virtual void OnSeePawn(APawn* OtherPawn);
+
+	void AimingPlayer();
+
+	virtual void SpawnBullet();
+
+	virtual void SetupTimer();
+
+	void ResetDetection();
+	
+public:
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float InterpSpeed = 1.0f;
+	
+	UPROPERTY()
+	float bTimer = false;
+
+	UPROPERTY()
+	float Alpha = 0.1f;
+
+	UPROPERTY()
+	float ProjectileSpeed = 20000;
+
+	UPROPERTY()
+	float CurrentTime = 0;
+
+	UPROPERTY()
+	float AimingTime = 5.0f;
+
+	//UPROPERTY()
+	//float Interval;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FVector Direction;
+
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	//FTimerHandle TimerHandle;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TSubclassOf<class ABullet_Tank> ActorClass;
+	
+	UPROPERTY()
+	class AHelicopterBase* Player;
+
+	UPROPERTY(EditAnywhere)
+	class UPawnSensingComponent* pawnSensing;
+
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	//class UNiagaraSystem* Flame_Fire;
+
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	//class USoundWave* FireSound;
+
+
 };
 
 

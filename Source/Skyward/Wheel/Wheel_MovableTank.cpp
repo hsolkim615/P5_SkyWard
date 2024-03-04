@@ -6,7 +6,7 @@
 
 UWheel_MovableTank::UWheel_MovableTank() 
 {
-	WheelRadius = 45.f;
+	//WheelRadius = 45.f;
 
 	bAffectedByBrake = true;
 

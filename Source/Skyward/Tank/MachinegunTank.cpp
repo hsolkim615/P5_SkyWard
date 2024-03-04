@@ -1,35 +1,31 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "../Tank/FixedTank.h"
-#include <../../../../../../../Source/Runtime/Engine/Classes/Kismet/GameplayStatics.h>
-#include <../../../../../../../Source/Runtime/Engine/Classes/Components/AudioComponent.h>
-#include "../Projectile/Bullet_Tank.h"
+#include "../Tank/MachinegunTank.h"
 #include <../../../../../../../Plugins/FX/Niagara/Source/Niagara/Public/NiagaraFunctionLibrary.h>
+#include <../../../../../../../Source/Runtime/Engine/Classes/Kismet/GameplayStatics.h>
 #include <../../../../../../../Source/Runtime/Engine/Classes/Engine/TimerHandle.h>
-#include <../../../../../../../Plugins/FX/Niagara/Source/Niagara/Classes/NiagaraSystem.h>
-#include <../../../../../../../Source/Runtime/Engine/Classes/Sound/SoundWave.h>
+#include "../Projectile/Bullet_Tank.h"
 
-AFixedTank::AFixedTank()
+AMachinegunTank::AMachinegunTank()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
 }
 
-void AFixedTank::BeginPlay()
+void AMachinegunTank::BeginPlay()
 {
 	Super::BeginPlay();
 
-
 }
 
-void AFixedTank::Tick(float DeltaTime)
+void AMachinegunTank::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
 }
 
-void AFixedTank::SpawnBullet()
+void AMachinegunTank::SpawnBullet()
 {
 	UE_LOG(LogTemp, Warning, TEXT("spawn"));
 
@@ -49,8 +45,6 @@ void AFixedTank::SpawnBullet()
 		// 액터 스폰
 		ABullet_Tank* SpawnedActor = World->SpawnActor<ABullet_Tank>(ActorClass, SpawnLocation, SpawnRotation);
 
-
-
 		//UNiagaraSystem* NiagaraSystem = LoadObject<UNiagaraSystem>(nullptr, TEXT("C:/Users/ASUS/Desktop/Git_Final/SkyWard/Content/Tank_M109_Project/West_SPG_M109/FX/NS_East_Tank_T72B.uasset"));
 
 		if (Flame_Fire)
@@ -60,11 +54,24 @@ void AFixedTank::SpawnBullet()
 			UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), Flame_Fire, SpawnLocation, SpawnRotation);
 		}
 
-		bTimer = false;
+	//	bTimer = false;
+
+
+		NumBulletsShot++;
+
+		// 발사 횟수가 제한에 도달하면 타이머 중지
+		if (NumBulletsShot >= NumBulletsToShoot)
+		{
+			//GetWorldTimerManager().ClearTimer(TimerHandle);
+			GetWorldTimerManager().PauseTimer(TimerHandle);
+			NumBulletsShot = 0; // 발사 횟수 초기화
+
+			bTimer = false;
+		}
 	}
 }
 
-void AFixedTank::SetupTimer()
+void AMachinegunTank::SetupTimer()
 {
 	UE_LOG(LogTemp, Warning, TEXT("timer"));
 
@@ -72,12 +79,8 @@ void AFixedTank::SetupTimer()
 		return;
 	}
 
-	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &AFixedTank::SpawnBullet, Interval, false);
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &AMachinegunTank::SpawnBullet, Interval, true);
 
 }
 
-//void AFixedTank::ResetDetection()
-//{
-//	bTimer = true;
-//}
 

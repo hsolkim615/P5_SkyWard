@@ -29,7 +29,7 @@ public:
 
 //	void OnSeePawn(APawn* OtherPawn) override;
 	
-	void FindPath(APath* path);
+	//void FindPath(APath* path);
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	APath* FoundActor;
@@ -37,15 +37,51 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float MappedValue;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	class UChaosWheeledVehicleMovementComponent* ChaosWheeledVehicleMovementComponent;
+	/*UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class UChaosWheeledVehicleMovementComponent* ChaosWheeledVehicleMovementComponent;*/
 
-	UPROPERTY()
-	class AAIController* ai;
 
 	//UFUNCTION()
 	//void MoveTank();
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class USplineComponent* Spline;
+
+	/*UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class APath* Road;*/
+
 	UPROPERTY()
-	class ADestination* Dest;
+	float SplineDist;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float CheckGap = 500;
+
+	/*UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class USceneComponent* LP;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class USceneComponent* RP;*/
+
+	/*UPROPERTY()
+	class AAIController* ai;
+
+	UPROPERTY()
+	class ADestination* Dest;*/
+
+
+	UPROPERTY()
+	float Interval = 3.0f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FTimerHandle TimerHandle;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class UNiagaraSystem* Flame_Fire;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class USoundWave* FireSound;
+
+	void SpawnBullet() override;
+
+	void SetupTimer() override;
 };

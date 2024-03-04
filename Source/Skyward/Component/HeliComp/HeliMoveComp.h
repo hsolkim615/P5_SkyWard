@@ -10,7 +10,15 @@
 /**
  *
  */
-//UCLASS( ClassGroup=(Helicopter_Apache), meta=(BlueprintSpawnableComponent) )
+ //UCLASS( ClassGroup=(Helicopter_Apache), meta=(BlueprintSpawnableComponent) )
+
+UENUM()
+enum class EDriveMode : uint8
+{
+	NOMALMODE,
+	AltitudeHoldMode,
+	AutoHoveringMode,
+};
 
 UCLASS()
 class SKYWARD_API UHeliMoveComp : public UHeliCompBase
@@ -40,8 +48,17 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MySettings|HeliKey")
 	class UInputAction* IA_Apache_Throttle;
 
-		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MySettings|HeliKey")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MySettings|HeliKey")
 	class UInputAction* IA_Apache_Engine;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MySettings|HeliKey")
+	class UInputAction* IA_Apache_DriveMode;
+
+public: // 헬기 운행 모드  
+	EDriveMode GetDriveMode() const;
+
+	UPROPERTY(EditAnywhere)
+	EDriveMode DriveMode;
 
 public: // Heli - Moving 
 	void Cyclic_RightThumbStick(const FInputActionValue& value);
@@ -59,12 +76,6 @@ public: // Heli - Moving
 
 	void ChangeDrivingMode(const FInputActionValue& value);
 
-	// 고도 유지 모드
-	void AltitudeHoldMode();
-
-	// 호버링 모드
-	void AutoHoveringMode();
-
 public:
 	// 고도유지 기능
 	void HoldHeliAltitude();
@@ -73,7 +84,7 @@ public:
 	// 상승, 하강 변수 = -1 / 0 / 1 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float ActionValueUpDown;
-	
+
 	// 헬기 고도
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float ApacheAltitude;
@@ -81,9 +92,9 @@ public:
 	// 프로펠라 회전
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float MainRotorSpeedRate;
-	
 
-	
+
+
 
 
 	// 엔진 시동 여부

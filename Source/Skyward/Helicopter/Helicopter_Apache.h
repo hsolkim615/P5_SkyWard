@@ -99,6 +99,7 @@ public:	// MoveComp
 
 	int32 BulletNumber = 1200;
 	int32 MissileNumber = 8;
+	int32 HydraMissileNumber = 76;
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MySettings|Components")

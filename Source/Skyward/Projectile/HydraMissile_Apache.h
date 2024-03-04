@@ -4,18 +4,18 @@
 
 #include "CoreMinimal.h"
 #include "../Projectile/ProjectileBase.h"
-#include "Missile_Apache.generated.h"
+#include "HydraMissile_Apache.generated.h"
 
 /**
  *
  */
 UCLASS()
-class SKYWARD_API AMissile_Apache : public AProjectileBase
+class SKYWARD_API AHydraMissile_Apache : public AProjectileBase
 {
 	GENERATED_BODY()
 
 public:
-	AMissile_Apache();
+	AHydraMissile_Apache();
 
 public:
 	virtual void BeginPlay() override;
@@ -69,9 +69,7 @@ public:
 public:
 	// 미사일의 가속도
 	FVector InitialLocation;
-	float MissileAcceleration = 5000.0f; // 미사일의 가속도
-	float MaxSpeed = 100000.0f; // 미사일의 최대 속도
-	float CurrentSpeed = 0.0f;
+	float CurrentSpeed = 100000.0f;
 
 
 };

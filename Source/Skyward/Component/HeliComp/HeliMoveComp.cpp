@@ -19,6 +19,8 @@ void UHeliMoveComp::BeginPlay()
 {
 	Super::BeginPlay();
 
+	DriveMode = EDriveMode::NOMALMODE;
+
 	// 헬기 고도의 기준점 초기화
 	StandHigh = Apache->GetActorLocation().Z;
 
@@ -30,36 +32,53 @@ void UHeliMoveComp::TickComponent(float DeltaTime, ELevelTick TickType, FActorCo
 
 	if (bIsEngineOnOff == true) {
 
+		if (DriveMode == EDriveMode::NOMALMODE) {
+			// 일반 운행 모드 
 
-
-		// 헬기 소리 호출
-		if (HeliComp_Sound) {
-			HeliComp_Sound->PlayHeliSound_Engine();
-		}
-
-		// 헬기 움직임 
-		// MainRotorSpeedRate는 엔진을 키면 자동으로 올라감
-		MainRotorSpeedRate = FMath::FInterpTo(MainRotorSpeedRate, 25.f, DeltaTime, 0.2f); // 최고속력 25
-
-		// 애니메이션에서 사용 - 프로펠러 회전
-		Apache->MainRotorSpeed_Apache += MainRotorSpeedRate;
-
-		if (MainRotorSpeedRate >= 15.f) {
-
-			if (ActionValueUpDown == 0) {
-
-				// 고도 유지 기능
-				HoldHeliAltitude();
-
-			}
-			else
-			{
-				Apache->GetVehicleMovement()->SetThrottleInput(ActionValueUpDown);
-
-
+			// 헬기 소리 호출
+			if (HeliComp_Sound) {
+				HeliComp_Sound->PlayHeliSound_Engine();
 			}
 
+			// 헬기 움직임 
+			// MainRotorSpeedRate는 엔진을 키면 자동으로 올라감
+			MainRotorSpeedRate = FMath::FInterpTo(MainRotorSpeedRate, 25.f, DeltaTime, 0.2f); // 최고속력 25
+
+			// 애니메이션에서 사용 - 프로펠러 회전
+			Apache->MainRotorSpeed_Apache += MainRotorSpeedRate;
+
+			//MainRotorSpeedRate 가 일정 이상 올라가야 헬기가 움직일 수 있음
+			if (MainRotorSpeedRate >= 15.f) {
+
+				if (ActionValueUpDown == 0) {
+
+					// 고도 유지 기능
+					HoldHeliAltitude();
+
+				}
+				else
+				{
+					// 1이상 상승, -1이면 하강
+					Apache->GetVehicleMovement()->SetThrottleInput(ActionValueUpDown);
+
+
+				}
+
+			}
 		}
+		else if (DriveMode == EDriveMode::AltitudeHoldMode) {
+			// 고도 유지 모드
+
+
+
+		}
+		else if (DriveMode == EDriveMode::AutoHoveringMode) {
+			// 자동 호버링 모드
+			FVector HoveringLocation = Apache->GetActorLocation();
+
+			Apache->SetActorLocation(HoveringLocation);
+		}
+
 
 	}
 	else { // 헬기 엔진 꺼짐
@@ -103,6 +122,9 @@ void UHeliMoveComp::SetupPlayerInput(UInputComponent* PlayerInputComponent)
 	// VR 컨트롤러 바인딩
 	if (EnhancedInputComponent) {
 
+		// 헬기 엔진
+		EnhancedInputComponent->BindAction(IA_Apache_Engine, ETriggerEvent::Started, this, &UHeliMoveComp::Engine_On_Off);
+
 		// 헬기 방향(기울기)
 		EnhancedInputComponent->BindAction(IA_Apache_Cyclic, ETriggerEvent::Triggered, this, &UHeliMoveComp::Cyclic_RightThumbStick);
 		EnhancedInputComponent->BindAction(IA_Apache_Cyclic, ETriggerEvent::Canceled, this, &UHeliMoveComp::Cyclic_RightThumbStick);
@@ -118,8 +140,9 @@ void UHeliMoveComp::SetupPlayerInput(UInputComponent* PlayerInputComponent)
 		EnhancedInputComponent->BindAction(IA_Apache_Pedal, ETriggerEvent::Canceled, this, &UHeliMoveComp::Pedal_Trigger);
 		EnhancedInputComponent->BindAction(IA_Apache_Pedal, ETriggerEvent::Completed, this, &UHeliMoveComp::Pedal_Trigger);
 
-		// 헬기 엔진
-		EnhancedInputComponent->BindAction(IA_Apache_Engine, ETriggerEvent::Started, this, &UHeliMoveComp::Engine_On_Off);
+		EnhancedInputComponent->BindAction(IA_Apache_Throttle, ETriggerEvent::Triggered, this, &UHeliMoveComp::Pedal_Trigger); // 호출함수 수정 필요
+
+		EnhancedInputComponent->BindAction(IA_Apache_DriveMode, ETriggerEvent::Started, this, &UHeliMoveComp::ChangeDrivingMode); // 호출함수 수정 필요
 
 	}
 
@@ -142,7 +165,7 @@ void UHeliMoveComp::Engine_On_Off(const FInputActionValue& value)
 
 	}
 	else if (bIsEngineOnOff == true) {
-		
+
 		// 지면과의 거리를 계산
 		FHitResult hitResult;
 		FVector startLoc = Apache->GetActorLocation() + FVector(0, 0, 50);
@@ -172,23 +195,24 @@ void UHeliMoveComp::Engine_On_Off(const FInputActionValue& value)
 
 void UHeliMoveComp::ChangeDrivingMode(const FInputActionValue& value)
 {
+	if (DriveMode == EDriveMode::NOMALMODE) {
+		DriveMode = EDriveMode::AltitudeHoldMode;
 
-	// 고도 유지 모드
-	AltitudeHoldMode();
+	}
+	else if (DriveMode == EDriveMode::AltitudeHoldMode) {
+		DriveMode = EDriveMode::AutoHoveringMode;
 
-	// 오토 호버링 모드
-	AutoHoveringMode();
+	}
+	else if (DriveMode == EDriveMode::AltitudeHoldMode) {
+		DriveMode = EDriveMode::NOMALMODE;
+
+	}
 
 }
 
-void UHeliMoveComp::AltitudeHoldMode()
+EDriveMode UHeliMoveComp::GetDriveMode() const
 {
-	
-}
-
-void UHeliMoveComp::AutoHoveringMode()
-{
-
+	return EDriveMode();
 }
 
 // VR 컨트롤러 ==========================================================================
@@ -196,12 +220,6 @@ void UHeliMoveComp::AutoHoveringMode()
 void UHeliMoveComp::Cyclic_RightThumbStick(const FInputActionValue& value)
 {
 	FVector2D VecterValue = value.Get<FVector2D>();
-
-	// 썸 스틱의 기울여진 각도에 비례하여 헬기의 몸체가 기울여져야 함.(각도에 따라 0 ~ 1 사이의 값을 float로 반환함)
-	// 최대 각도 30도
-	// 한 쪽의 입력의 절댓값이 다른 입력보다 크면, 큰 쪽으로 기울여짐
-
-	//HeliDrectionAngle = FMath::Clamp(VecterValue.Y * 30, -30, 30);
 
 	if (VecterValue != FVector2D::ZeroVector) {
 		// 입력에 따라 각도 조절

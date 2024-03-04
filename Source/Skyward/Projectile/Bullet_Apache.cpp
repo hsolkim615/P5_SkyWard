@@ -57,7 +57,7 @@ void ABullet_Apache::Tick(float DeltaTime)
 
 	// 목표 위치로 부드럽게 이동
 	FVector CurrentLocation = GetActorLocation();
-	FVector NewLocation = FMath::VInterpConstantTo(CurrentLocation, TargetLocation, DeltaTime, 50000.f);
+	FVector NewLocation = FMath::VInterpConstantTo(CurrentLocation, TargetLocation, DeltaTime, 100000.f);
 	SetActorLocation(NewLocation);
 
 }
@@ -88,17 +88,7 @@ void ABullet_Apache::BulletMove(FVector TargetLoc)
 {
 	// 이동 수정 필요
 
-	/*
-	FVector TargetLocation = GetActorLocation();
-	FRotator TargetRotation = HitCollision->GetComponentRotation();
-	float MoveTime = UKismetMathLibrary::Vector_Distance(TargetLocation, TargetLoc) / 500.f; // 이동에 걸리는 시간 계산
-
-	// MoveComponentTo 함수를 호출하여 HitCollision을 TargetLocation으로 이동시킵니다.
-	UKismetSystemLibrary::MoveComponentTo(HitCollision, TargetLocation, HitCollision->GetComponentRotation(), false, false, MoveTime, false, EMoveComponentAction::Type::Move, FLatentActionInfo());
-	*/
-
 	TargetLocation = TargetLoc;
-
 
 }
 

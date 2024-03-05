@@ -27,5 +27,11 @@ void ABunker::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+
+	if (StateComponent->GetEState() == EState::DESTROY) {
+		
+		Destroy();
+	}
+
 }
 

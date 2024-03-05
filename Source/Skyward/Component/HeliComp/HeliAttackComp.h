@@ -80,10 +80,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Sound", meta = (AllowPrivateAccess = "true"))
 	class USoundBase* BulletSound;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Sound", meta = (AllowPrivateAccess = "true"))
-	class USoundBase* MissileSound;
-
-
 public:
 	// 타이머 핸들
 	FTimerHandle TimerHandle;

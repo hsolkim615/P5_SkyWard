@@ -69,7 +69,7 @@ public:
 public:
 	// 미사일의 가속도
 	FVector InitialLocation;
-	float CurrentSpeed = 100000.0f;
+	float CurrentSpeed = 50000.0f;
 
 
 };

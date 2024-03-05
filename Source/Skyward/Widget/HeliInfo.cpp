@@ -26,15 +26,18 @@ void UHeliInfo::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 		return;
 	}
 
+	// 체력 갱신
 	HP_Bar->SetPercent(100.f / Apache->StateComponent->HealthPoint);
 	
-	if (txt_RollAngle && txt_PitchAngle && txt_Altitude && txt_Bullet && txt_Missile)
+	// 헬기 정보 갱신
+	if (txt_RollAngle && txt_PitchAngle && txt_Altitude && txt_Bullet && txt_Missile && txt_HydraMissile)
 	{
 		SetRollAngle();
 		SetPitchAngle();
 		SetAltitude();
 		SetBullet();
 		SetMissile();
+		SetHydraMissile();
 	}
 
 
@@ -77,5 +80,13 @@ void UHeliInfo::SetMissile()
 	if (txt_Missile && Apache) {
 		//txt_Missile->SetText(FText::AsNumber(Cast<UHeliAttackComp>(Apache->AttackComp)->MissileNumber));
 		txt_Missile->SetText(FText::AsNumber(Apache->MissileNumber));
+	}
+}
+
+void UHeliInfo::SetHydraMissile()
+{
+	if (txt_HydraMissile && Apache) {
+		//txt_Missile->SetText(FText::AsNumber(Cast<UHeliAttackComp>(Apache->AttackComp)->MissileNumber));
+		txt_HydraMissile->SetText(FText::AsNumber(Apache->HydraMissileNumber));
 	}
 }

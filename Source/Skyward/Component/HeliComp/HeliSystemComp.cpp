@@ -3,6 +3,8 @@
 
 #include "../../Component/HeliComp/HeliSystemComp.h"
 #include <../../../../../../../Plugins/EnhancedInput/Source/EnhancedInput/Public/EnhancedInputComponent.h>
+#include "../../Helicopter/Helicopter_Apache.h"
+#include <../../../../../../../Source/Runtime/UMG/Public/Components/WidgetComponent.h>
 
 UHeliSystemComp::UHeliSystemComp()
 {
@@ -39,5 +41,5 @@ void UHeliSystemComp::SetupPlayerInput(class UInputComponent* PlayerInputCompone
 
 void UHeliSystemComp::MissionWidget()
 {
-
+	Apache->MissionUIComp->SetVisibility(!Apache->MissionUIComp->IsVisible());
 }

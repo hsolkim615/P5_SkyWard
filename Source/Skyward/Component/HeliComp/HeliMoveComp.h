@@ -54,7 +54,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MySettings|HeliKey")
 	class UInputAction* IA_Apache_DriveMode;
 
-public: // 헬기 운행 모드  
+public: // Enum - 헬기 운행 모드  
 	EDriveMode GetDriveMode() const;
 
 	UPROPERTY(EditAnywhere)

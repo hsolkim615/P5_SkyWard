@@ -7,13 +7,13 @@
 #include "HeliInfo.generated.h"
 
 /**
- * 
+ *
  */
 UCLASS()
 class SKYWARD_API UHeliInfo : public UUserWidget
 {
 	GENERATED_BODY()
-	
+
 public:
 	virtual void NativeConstruct() override;
 
@@ -31,14 +31,17 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (BindWidget))
 	class UTextBlock* txt_Bullet;
-	
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (BindWidget))
 	class UTextBlock* txt_Missile;
-	
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (BindWidget))
+	class UTextBlock* txt_HydraMissile;
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (BindWidget))
 	class UProgressBar* HP_Bar;
 
-public: 
+public:
 	UFUNCTION()
 	void SetRollAngle();
 
@@ -53,6 +56,9 @@ public:
 
 	UFUNCTION()
 	void SetMissile();
+
+	UFUNCTION()
+	void SetHydraMissile();
 
 public:
 	class AHelicopter_Apache* Apache;

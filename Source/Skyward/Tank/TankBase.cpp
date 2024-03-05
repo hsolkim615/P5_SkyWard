@@ -14,7 +14,7 @@
 #include <../../../../../../../Plugins/FX/Niagara/Source/Niagara/Public/NiagaraFunctionLibrary.h>
 #include <../../../../../../../Source/Runtime/Engine/Classes/Components/AudioComponent.h>
 #include "../Component/StateComponent.h"
-
+#include "../GameModeBase/SkywardGameModeBase.h"
 
 ATankBase::ATankBase()
 {
@@ -26,12 +26,16 @@ ATankBase::ATankBase()
 
 	NiagaraComp = CreateDefaultSubobject<UNiagaraComponent>(TEXT("NiagaraComp"));
 
+
 }
 
 void ATankBase::BeginPlay()
 {
 	Super::BeginPlay();
 
+
+	// 게임모드 베이스
+	SkywardGM = Cast<ASkywardGameModeBase>(UGameplayStatics::GetGameMode(GetWorld()));
 
 	if (pawnSensing)
 	{
@@ -185,10 +189,10 @@ void ATankBase::SetupTimer()
 
 void ATankBase::Damaged()
 {
-	NiagaraComp->Activate(true);
+	//NiagaraComp->Activate(true);
 }
 
 void ATankBase::Die()
 {
-	Destroy();
+	
 }

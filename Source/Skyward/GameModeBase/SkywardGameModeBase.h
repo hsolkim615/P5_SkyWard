@@ -23,4 +23,7 @@ public:
 	// 파괴된 건물 수
 	int DestroyEnemyBuliding = 0;
 
+public:
+	void CountDestroyMoveTank();
+
 };

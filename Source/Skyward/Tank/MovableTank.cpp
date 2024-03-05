@@ -17,6 +17,7 @@
 #include <../../../../../../../Source/Runtime/Engine/Classes/Components/AudioComponent.h>
 #include "../Projectile/Bullet_Tank.h"
 #include <../../../../../../../Source/Runtime/Engine/Classes/Engine/SkeletalMesh.h>
+#include "../GameModeBase/SkywardGameModeBase.h"
 
 
 AMovableTank::AMovableTank()
@@ -168,7 +169,12 @@ void AMovableTank::Damaged()
 
 void AMovableTank::Die()
 {
+	if (SkywardGM)
+	{
+		SkywardGM->DestroyMoveTank++;
+	}
 
+	Destroy();
 }
 
 //void AMovableTank::SetupTimer()

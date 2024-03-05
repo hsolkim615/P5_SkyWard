@@ -83,7 +83,8 @@ void AFixedTank::Damaged()
 
 void AFixedTank::Die()
 {
-	
+	Destroy();
+
 }
 
 //void AFixedTank::SetupTimer()

@@ -203,3 +203,13 @@ void AHelicopter_Apache::SetDoor()
 
 	}
 }
+
+void AHelicopter_Apache::Damaged()
+{
+
+}
+
+void AHelicopter_Apache::Die()
+{
+	
+}

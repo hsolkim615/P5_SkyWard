@@ -64,4 +64,5 @@ public: // Enum
 
 	UPROPERTY(EditAnywhere)
 	EState ActorState;
+
 };

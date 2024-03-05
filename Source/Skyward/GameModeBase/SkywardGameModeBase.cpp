@@ -3,3 +3,9 @@
 
 #include "../GameModeBase/SkywardGameModeBase.h"
 
+void ASkywardGameModeBase::CountDestroyMoveTank()
+{
+
+	DestroyMoveTank++;
+
+}

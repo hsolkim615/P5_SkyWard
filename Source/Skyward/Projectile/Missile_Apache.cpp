@@ -13,6 +13,7 @@
 #include <../../../../../../../Source/Runtime/Engine/Classes/Kismet/GameplayStatics.h>
 #include <../../../../../../../Source/Runtime/Engine/Classes/Sound/SoundBase.h>
 #include "HydraMissile_Apache.h"
+#include "../Component/StateComponent.h"
 
 AMissile_Apache::AMissile_Apache()
 {
@@ -127,16 +128,24 @@ void AMissile_Apache::BoomMissile()
 	if (OverlappingActors.Num() > 0) {
 		for (AActor* Actor : OverlappingActors) {
 
-			if (Actor->IsA<ATankBase>()) {
 
-				// StateComponent를 이용해 체력을 감소시키는 방식으로 수정
+			if (Actor->GetComponentByClass<UStateComponent>()) {
+				if (Actor->IsA<ATankBase>()) {
 
-				Actor->Destroy();
+					// StateComponent를 이용해 체력을 감소시키는 방식으로 수정
 
+
+					Cast<ATankBase>(Actor)->StateComponent->TakeDamage(60);
+
+				}
+				else if (Actor->IsA<ABunker>()) {
+
+					Cast<ABunker>(Actor)->StateComponent->TakeDamage(1000);
+
+					
+				}
 			}
-			else if (Actor->IsA<ABunker>()) {
-				Actor->Destroy();
-			}
+			
 
 		}
 	}

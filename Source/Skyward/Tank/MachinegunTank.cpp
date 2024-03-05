@@ -96,6 +96,7 @@ void AMachinegunTank::Damaged()
 
 void AMachinegunTank::Die()
 {
+	Destroy();
 
 }
 

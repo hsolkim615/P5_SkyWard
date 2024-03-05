@@ -88,7 +88,8 @@ public:
 
 
 
-
+	// 게임모드 베이스
+	class ASkywardGameModeBase* SkywardGM;
 
 
     void Damaged() override;

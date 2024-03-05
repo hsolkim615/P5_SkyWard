@@ -81,6 +81,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class USoundWave* FireSound;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Mesh")
+	class USkeletalMesh* NewMesh;
+
 	void SpawnBullet() override;
 
 	//void SetupTimer() override;

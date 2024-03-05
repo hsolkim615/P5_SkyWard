@@ -24,17 +24,17 @@ public:
 
 public:
 
-	// 총알 발사 간격
+	//// 총알 발사 간격
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float Interval = 0.2f; // 0.2초마다 발사
+	float Machine_Interval = 0.1f;
 
-	// 타이머 핸들
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FTimerHandle TimerHandle;
+	//// 타이머 핸들
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	//FTimerHandle TimerHandle;
 
 	// 발사 횟수 제한
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	int32 NumBulletsToShoot = 5; // 5발 발사
+	int32 NumBulletsToShoot = 20; // 5발 발사
 
 	// 발사 횟수 카운트
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -44,12 +44,19 @@ public:
 	//TSubclassOf<class ABullet_Tank> ActorClass;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	class UNiagaraSystem* Flame_Fire;
+	class UNiagaraSystem* FireEffect;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class USoundWave* FireSound;
 
 	void SpawnBullet() override;
 
-	void SetupTimer() override;
+	void Spawn();
+
+	//void SetupTimer() override;
+
+
+
+	void Damaged() override;
+	void Die() override;
 };

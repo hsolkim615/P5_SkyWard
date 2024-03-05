@@ -13,6 +13,7 @@
 #include <../../../../../../../Plugins/FX/Niagara/Source/Niagara/Classes/NiagaraSystem.h>
 #include <../../../../../../../Plugins/FX/Niagara/Source/Niagara/Public/NiagaraFunctionLibrary.h>
 #include <../../../../../../../Source/Runtime/Engine/Classes/Components/AudioComponent.h>
+#include "../Component/StateComponent.h"
 
 
 ATankBase::ATankBase()
@@ -20,6 +21,10 @@ ATankBase::ATankBase()
 	PrimaryActorTick.bCanEverTick = true;
 
 	pawnSensing = CreateDefaultSubobject<UPawnSensingComponent>(TEXT("pawnSensing"));
+
+	StateComponent = CreateDefaultSubobject<UStateComponent>(TEXT("StateComponent"));
+
+	NiagaraComp = CreateDefaultSubobject<UNiagaraComponent>(TEXT("NiagaraComp"));
 
 }
 
@@ -32,6 +37,8 @@ void ATankBase::BeginPlay()
 	{
 		pawnSensing->OnSeePawn.AddDynamic(this, &ATankBase::OnSeePawn);
 	}
+
+	NiagaraComp->Activate(false);
 }
 
 void ATankBase::Tick(float DeltaTime)
@@ -166,12 +173,22 @@ void ATankBase::SpawnBullet()
 
 void ATankBase::SetupTimer()
 {
-	/*UE_LOG(LogTemp, Warning, TEXT("timer"));
+	UE_LOG(LogTemp, Warning, TEXT("timer"));
 
 	if (GetWorld()->GetTimerManager().IsTimerActive(TimerHandle)) {
 		return;
 	}
 
-	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &ATankBase::SpawnBullet, Interval, false);*/
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &ATankBase::SpawnBullet, Interval, false);
 
+}
+
+void ATankBase::Damaged()
+{
+	NiagaraComp->Activate(true);
+}
+
+void ATankBase::Die()
+{
+	Destroy();
 }

@@ -11,6 +11,8 @@ AMachinegunTank::AMachinegunTank()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
+
+
 }
 
 void AMachinegunTank::BeginPlay()
@@ -33,6 +35,31 @@ void AMachinegunTank::SpawnBullet()
 	UWorld* World = GetWorld();
 	if (World)
 	{
+
+		FTransform SocketTransform = GetMesh()->GetSocketTransform(FName("gun_jntSocket_Shot"));
+		FVector SpawnLocation = SocketTransform.GetLocation();
+		FRotator SpawnRotation = SocketTransform.GetRotation().Rotator();
+
+		GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &AMachinegunTank::Spawn, Machine_Interval, true);
+
+		//UNiagaraSystem* NiagaraSystem = LoadObject<UNiagaraSystem>(nullptr, TEXT("C:/Users/ASUS/Desktop/Git_Final/SkyWard/Content/Tank_M109_Project/West_SPG_M109/FX/NS_East_Tank_T72B.uasset"));
+
+		if (FireEffect)
+		{
+			//UNiagaraComponent* NiagaraComponent = 
+
+			UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), FireEffect, SpawnLocation, SpawnRotation);
+		}
+
+	//	bTimer = false;	
+	}
+}
+
+void AMachinegunTank::Spawn()
+{
+	UWorld* World = GetWorld();
+	if (World)
+	{
 		UAudioComponent* AudioComponent = UGameplayStatics::SpawnSound2D(World, FireSound, 1.0f, 1.0f, 0.0f, nullptr, false, true);
 
 
@@ -40,23 +67,9 @@ void AMachinegunTank::SpawnBullet()
 		FVector SpawnLocation = SocketTransform.GetLocation();
 		FRotator SpawnRotation = SocketTransform.GetRotation().Rotator();
 
-
-
 		// 액터 스폰
-		ABullet_Tank* SpawnedActor = World->SpawnActor<ABullet_Tank>(ActorClass, SpawnLocation, SpawnRotation);
-
-		//UNiagaraSystem* NiagaraSystem = LoadObject<UNiagaraSystem>(nullptr, TEXT("C:/Users/ASUS/Desktop/Git_Final/SkyWard/Content/Tank_M109_Project/West_SPG_M109/FX/NS_East_Tank_T72B.uasset"));
-
-		if (Flame_Fire)
-		{
-			//UNiagaraComponent* NiagaraComponent = 
-
-			UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), Flame_Fire, SpawnLocation, SpawnRotation);
-		}
-
-	//	bTimer = false;
-
-
+		ABullet_Tank* SpawnedActor = World->SpawnActor<ABullet_Tank>(BulletClass, SpawnLocation, SpawnRotation);
+	
 		NumBulletsShot++;
 
 		// 발사 횟수가 제한에 도달하면 타이머 중지
@@ -71,16 +84,26 @@ void AMachinegunTank::SpawnBullet()
 	}
 }
 
-void AMachinegunTank::SetupTimer()
+void AMachinegunTank::Damaged()
 {
-	UE_LOG(LogTemp, Warning, TEXT("timer"));
-
-	if (GetWorld()->GetTimerManager().IsTimerActive(TimerHandle)) {
-		return;
-	}
-
-	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &AMachinegunTank::SpawnBullet, Interval, true);
 
 }
+
+void AMachinegunTank::Die()
+{
+
+}
+
+//void AMachinegunTank::SetupTimer()
+//{
+//	UE_LOG(LogTemp, Warning, TEXT("timer"));
+//
+//	if (GetWorld()->GetTimerManager().IsTimerActive(TimerHandle)) {
+//		return;
+//	}
+//
+//	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &AMachinegunTank::SpawnBullet, Interval, false);
+//
+//}
 
 

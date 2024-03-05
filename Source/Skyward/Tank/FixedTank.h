@@ -24,24 +24,32 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 
-	
+	/*
 	UPROPERTY()
-	float Interval = 3.0f;
+	float Interval = 5.0f;*/
+
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	//FTimerHandle TimerHandle;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FTimerHandle TimerHandle;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	class UNiagaraSystem* Flame_Fire;
+	class UNiagaraSystem* FireEffect;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class USoundWave* FireSound;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Mesh")
+	class USkeletalMesh* NewMesh;
+
 	void SpawnBullet() override;
 
-	void SetupTimer() override;
+	//void SetupTimer() override;
 
 
 	
+
+
+
+	void Damaged() override;
+	void Die() override;
 };
 

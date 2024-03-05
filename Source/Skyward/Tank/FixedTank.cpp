@@ -9,11 +9,19 @@
 #include <../../../../../../../Source/Runtime/Engine/Classes/Engine/TimerHandle.h>
 #include <../../../../../../../Plugins/FX/Niagara/Source/Niagara/Classes/NiagaraSystem.h>
 #include <../../../../../../../Source/Runtime/Engine/Classes/Sound/SoundWave.h>
+#include <../../../../../../../Source/Runtime/Engine/Classes/Engine/SkeletalMesh.h>
 
 AFixedTank::AFixedTank()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
+	ConstructorHelpers::FObjectFinder<USkeletalMesh>TempMesh(TEXT("C:/Users/ASUS/Desktop/Git_Final/SkyWard/Content/Resource/KJY/Damaged/FixedDamaged.uasset"));
+	
+	if (TempMesh.Succeeded())
+	{
+		//GetMesh()->SkeletalMesh
+	}
+	
 }
 
 void AFixedTank::BeginPlay()
@@ -47,34 +55,48 @@ void AFixedTank::SpawnBullet()
 
 
 		// 액터 스폰
-		ABullet_Tank* SpawnedActor = World->SpawnActor<ABullet_Tank>(ActorClass, SpawnLocation, SpawnRotation);
+		ABullet_Tank* SpawnedActor = World->SpawnActor<ABullet_Tank>(BulletClass, SpawnLocation, SpawnRotation);
 
 
 
 		//UNiagaraSystem* NiagaraSystem = LoadObject<UNiagaraSystem>(nullptr, TEXT("C:/Users/ASUS/Desktop/Git_Final/SkyWard/Content/Tank_M109_Project/West_SPG_M109/FX/NS_East_Tank_T72B.uasset"));
 
-		if (Flame_Fire)
+		if (FireEffect)
 		{
 			//UNiagaraComponent* NiagaraComponent = 
 
-			UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), Flame_Fire, SpawnLocation, SpawnRotation);
+			UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), FireEffect, SpawnLocation, SpawnRotation);
 		}
 
 		bTimer = false;
 	}
 }
 
-void AFixedTank::SetupTimer()
+void AFixedTank::Damaged()
 {
-	UE_LOG(LogTemp, Warning, TEXT("timer"));
-
-	if (GetWorld()->GetTimerManager().IsTimerActive(TimerHandle)) {
-		return;
-	}
-
-	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &AFixedTank::SpawnBullet, Interval, false);
-
+	NewMesh = nullptr; // 초기화된 메쉬 포인터
+	
+	// NewMesh에 특정 스태틱 메쉬를 할당
+	NewMesh = Cast<USkeletalMesh>(StaticLoadObject(USkeletalMesh::StaticClass(), nullptr, TEXT("C:/Users/ASUS/Desktop/Git_Final/SkyWard/Content/Resource/KJY/Damaged/FixedDamaged.uasset")));
+	GetMesh()->SetSkeletalMesh(NewMesh);
 }
+
+void AFixedTank::Die()
+{
+	
+}
+
+//void AFixedTank::SetupTimer()
+//{
+//	UE_LOG(LogTemp, Warning, TEXT("timer"));
+//
+//	if (GetWorld()->GetTimerManager().IsTimerActive(TimerHandle)) {
+//		return;
+//	}
+//
+//	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &AFixedTank::SpawnBullet, Interval, false);
+//
+//}
 
 //void AFixedTank::ResetDetection()
 //{

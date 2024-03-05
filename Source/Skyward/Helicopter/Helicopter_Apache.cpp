@@ -15,7 +15,8 @@
 #include <Components/SceneComponent.h>
 #include <../../../../../../../Source/Runtime/Engine/Classes/Particles/ParticleSystemComponent.h>
 #include <../../../../../../../Source/Runtime/UMG/Public/Components/WidgetComponent.h>
-	
+#include "../Component/HeliComp/HeliSystemComp.h"
+
 AHelicopter_Apache::AHelicopter_Apache()
 {
 	PrimaryActorTick.bCanEverTick = true;
@@ -56,13 +57,20 @@ AHelicopter_Apache::AHelicopter_Apache()
 	CameraComp = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComp"));
 	CameraComp->SetupAttachment(CameraLocComp);
 
-	// UI 컴포넌트 
+	// Info UI 컴포넌트 
 	HeliInfoUIComp = CreateDefaultSubobject<UWidgetComponent>(TEXT("HeliInfoUIComp"));
 	HeliInfoUIComp->SetupAttachment(RootComponent);
 	HeliInfoUIComp->SetRelativeLocation(FVector(370, 0, 245));
-	HeliInfoUIComp->SetRelativeRotation(FRotator(0,180,0));	
+	HeliInfoUIComp->SetRelativeRotation(FRotator(0, 180, 0));
 	HeliInfoUIComp->SetRelativeScale3D(FVector(0.11f));
 	HeliInfoUIComp->SetDrawSize(FVector2D(1000.f));
+
+	// 미션 UI 컴포넌트
+	MissionUIComp = CreateDefaultSubobject<UWidgetComponent>(TEXT("MissionUIComp"));
+	MissionUIComp->SetupAttachment(RootComponent);
+	MissionUIComp->SetRelativeLocation(FVector(340, 0, 235));
+	MissionUIComp->SetRelativeScale3D(FVector(0.05f));
+	MissionUIComp->SetDrawSize(FVector2D(1000));
 
 	// 이동 컴포넌트
 	MoveComp = CreateDefaultSubobject<UHeliMoveComp>(TEXT("MoveComp"));
@@ -72,6 +80,9 @@ AHelicopter_Apache::AHelicopter_Apache()
 
 	// 사운드 컴포넌트
 	SoundComp = CreateDefaultSubobject<UHeliSoundComp>(TEXT("SoundComp"));
+
+	// 시스템 컴포넌트
+	SystemComp = CreateDefaultSubobject<UHeliSystemComp>(TEXT("SystemComp"));
 
 	// ----------------------
 
@@ -96,6 +107,8 @@ void AHelicopter_Apache::BeginPlay()
 
 	StateComponent->SetMaxHealthPoint(1000.f);
 	StateComponent->SetAttackDamage(10.f);
+
+	ModifyMapping(true);
 
 }
 
@@ -129,7 +142,7 @@ void AHelicopter_Apache::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 
 }
 
-	/*
+/*
 void AHelicopter_Apache::OnOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 

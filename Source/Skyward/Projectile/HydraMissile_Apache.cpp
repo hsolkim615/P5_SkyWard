@@ -61,7 +61,7 @@ void AHydraMissile_Apache::Tick(float DeltaTime)
 	SetActorLocation(NewLocation);
 
 	
-	if (FVector::Distance(GetActorLocation(), TargetLocation) <= 100) {
+	if (FVector::Distance(GetActorLocation(), TargetLocation) <= 200) {
 		BoomMissile();
 	}
 	
@@ -111,12 +111,12 @@ void AHydraMissile_Apache::BoomMissile()
 	);
 
 	// 이펙트 연출
-	//UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), NSBoom, GetActorLocation(), FRotator(0), FVector(7));
+	UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), NSBoom, GetActorLocation(), FRotator(0), FVector(4));
 
-	DrawDebugCapsule(GetWorld(), GetActorLocation(), 2000.f, 2000.f, FQuat::Identity, FColor::Blue, false, 30.0f, 0, 2.0f);
+	DrawDebugCapsule(GetWorld(), GetActorLocation(), 1000.f, 1000.f, FQuat::Identity, FColor::Blue, false, 30.0f, 0, 2.0f);
 
 	// 미사일 폭발 사운드
-	//Start_BoomSound();
+	Start_BoomSound();
 
 	// 공격기능
 	if (OverlappingActors.Num() > 0) {
@@ -134,6 +134,7 @@ void AHydraMissile_Apache::BoomMissile()
 			}
 
 		}
+
 	}
 
 	Destroy();

@@ -65,7 +65,7 @@ void AMissile_Apache::Tick(float DeltaTime)
 	FVector NewLocation = CurrentLocation + Direction * CurrentSpeed * DeltaTime;
 	SetActorLocation(NewLocation);
 	
-	if (FVector::Distance(GetActorLocation(), TargetLocation) <= 100) {
+	if (FVector::Distance(GetActorLocation(), TargetLocation) <= 200) {
 		BoomMissile();
 	}
 

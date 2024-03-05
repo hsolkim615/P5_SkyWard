@@ -8,7 +8,7 @@
 #include "Helicopter_Apache.generated.h"
 
 /**
- * 
+ *
  */
 
  // UInputComponent를 매개변수로 하는 델리게이트
@@ -35,7 +35,7 @@ public:
 	virtual void UnPossessed() override;
 
 
-	
+
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MySettings|Components")
 	class UMotionControllerComponent* RightController;
@@ -71,6 +71,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class UWidgetComponent* HeliInfoUIComp;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class UWidgetComponent* MissionUIComp;
 
 public: // Actor Comp
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -81,8 +83,9 @@ public: // Actor Comp
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class UHeliCompBase* SoundComp;
-	
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class UHeliCompBase* SystemComp;
 
 
 	// Test 컴포넌트
@@ -106,10 +109,10 @@ public:
 	class UInputAction* IA_TakeHeli_RightA;
 
 public:
-/*
-	UFUNCTION()
-	void OnOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
-*/
+	/*
+		UFUNCTION()
+		void OnOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+	*/
 	class AActor* HeliOtherActor;
 
 
@@ -118,5 +121,8 @@ public:
 
 public:
 	void SetDoor();
+
+
+
 
 };

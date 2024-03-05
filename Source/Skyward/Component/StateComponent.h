@@ -6,6 +6,12 @@
 #include "Components/ActorComponent.h"
 #include "StateComponent.generated.h"
 
+UENUM()
+enum class EState : uint8
+{
+	IDLE,
+	DESTROY,
+};
 
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class SKYWARD_API UStateComponent : public UActorComponent
@@ -53,5 +59,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float AttackDamage;
 
+public: // Enum 
+	EState GetEState() const;
 
+	UPROPERTY(EditAnywhere)
+	EState ActorState;
 };

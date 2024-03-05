@@ -3,6 +3,8 @@
 
 #include "../Buliding/Bunker.h"
 #include "../Component/StateComponent.h"
+#include <../../../../../../../Source/Runtime/Engine/Classes/Kismet/GameplayStatics.h>
+#include "../GameModeBase/SkywardGameModeBase.h"
 
 // Sets default values
 ABunker::ABunker()
@@ -20,6 +22,9 @@ void ABunker::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	// 게임모드 베이스
+	SkywardGM = Cast<ASkywardGameModeBase>(UGameplayStatics::GetGameMode(GetWorld()));
+
 }
 
 // Called every frame
@@ -33,5 +38,13 @@ void ABunker::Tick(float DeltaTime)
 		Destroy();
 	}
 
+}
+
+void ABunker::Damaged()
+{
+}
+
+void ABunker::Die()
+{
 }
 

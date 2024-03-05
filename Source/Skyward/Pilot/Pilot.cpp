@@ -12,7 +12,7 @@
 // Sets default values
 APilot::APilot()
 {
-	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this character to call Tick() every frame.  SYou can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	// 오른손 컨트롤러
@@ -82,6 +82,8 @@ void APilot::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 		EnhancedInputComponent->BindAction(IA_Pilot_Turn, ETriggerEvent::Triggered, this, &APilot::Pilot_Turn);
 
+		EnhancedInputComponent->BindAction(IA_Pilot_LineTrace, ETriggerEvent::Triggered, this, &APilot::Pilot_LineTrace);
+
 		EnhancedInputComponent->BindAction(IA_Pilot_TakeHeli, ETriggerEvent::Started, this, &APilot::Pilot_TakeHeli);
 
 	}
@@ -117,6 +119,14 @@ void APilot::Pilot_Turn(const FInputActionValue& value)
 	float PlayerRotation = 0.3f * value.Get<float>();
 
 	AddControllerYawInput(PlayerRotation);
+
+}
+
+void APilot::Pilot_LineTrace(const FInputActionValue& value)
+{
+	bool bValue = value.Get<bool>();
+
+	// 라인트레이스로 버튼 클릭
 
 }
 

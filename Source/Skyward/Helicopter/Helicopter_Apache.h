@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "../Helicopter/HelicopterBase.h"
 #include "InputActionValue.h"
+#include "../Interface/StateInterface.h"
 #include "Helicopter_Apache.generated.h"
 
 /**
@@ -15,7 +16,7 @@
 DECLARE_MULTICAST_DELEGATE_OneParam(FInputDelegate, class UInputComponent*);
 
 UCLASS()
-class SKYWARD_API AHelicopter_Apache : public AHelicopterBase
+class SKYWARD_API AHelicopter_Apache : public AHelicopterBase, public IStateInterface
 {
 	GENERATED_BODY()
 
@@ -115,14 +116,17 @@ public:
 	*/
 	class AActor* HeliOtherActor;
 
-
 public:
 	void ModifyMapping(bool bAddMapping);
 
 public:
 	void SetDoor();
 
+public: // 인터페이스 함수
+	// 피가 절반 이하일 때
+	void Damaged() override;
 
-
+	// 피가 0 이하 일 때
+	void Die() override;
 
 };

@@ -90,3 +90,8 @@ UStateComponent* UStateComponent::GetStateComponent()
 	return StateComponent;
 }
 
+EState UStateComponent::GetEState() const
+{
+	return EState();
+}
+

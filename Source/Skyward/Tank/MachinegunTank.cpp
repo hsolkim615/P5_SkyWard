@@ -6,6 +6,7 @@
 #include <../../../../../../../Source/Runtime/Engine/Classes/Kismet/GameplayStatics.h>
 #include <../../../../../../../Source/Runtime/Engine/Classes/Engine/TimerHandle.h>
 #include "../Projectile/Bullet_Tank.h"
+#include <../../../../../../../Source/Runtime/Engine/Classes/Engine/SkeletalMesh.h>
 
 AMachinegunTank::AMachinegunTank()
 {
@@ -86,7 +87,11 @@ void AMachinegunTank::Spawn()
 
 void AMachinegunTank::Damaged()
 {
+	NewMesh = nullptr; // 초기화된 메쉬 포인터
 
+	// NewMesh에 특정 스태틱 메쉬를 할당
+	NewMesh = Cast<USkeletalMesh>(StaticLoadObject(USkeletalMesh::StaticClass(), nullptr, TEXT("C:/Users/ASUS/Desktop/Git_Final/SkyWard/Content/Resource/KJY/Damaged/MachineDamaged.uasset")));
+	GetMesh()->SetSkeletalMesh(NewMesh);
 }
 
 void AMachinegunTank::Die()

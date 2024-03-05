@@ -36,17 +36,23 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class UProjectileMovementComponent* MovementComp;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	class UNiagaraSystem* Flame_Damage;
-
-
-	float MaxDistance = 1000.0f; // 초기 속도가 최대가 될 거리
-	float MinSpeed = 5000.0f; // 초기 속도의 최소값
-	float MaxSpeed = 10000.0f; // 초기 속도의 최대값
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	//class UNiagaraSystem* Flame_Damage;
 	
-	float DelayInSeconds = 0.2f;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class UNiagaraSystem* BulletFlame;
+
+
+	//float MaxDistance = 1000.0f; // 초기 속도가 최대가 될 거리
+	//float MinSpeed = 5000.0f; // 초기 속도의 최소값
+	//float MaxSpeed = 10000.0f; // 초기 속도의 최대값
+	
+	float DelayInSeconds = 8.0f;
 
 	void NotifyActorBeginOverlap(AActor* OtherActor) override;
-	void Delay();
+	void BulletDestroy();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float AttackDamage = 0;
 
 };

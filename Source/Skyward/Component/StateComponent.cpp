@@ -2,6 +2,7 @@
 
 
 #include "../Component/StateComponent.h"
+#include "../Interface/StateInterface.h"
 
 // Sets default values for this component's properties
 UStateComponent::UStateComponent()
@@ -63,11 +64,16 @@ void UStateComponent::TakeDamage(float Damage)
 
 	HealthPoint -= Damage;
 
-	if (HealthPoint < 0) {
-		HealthPoint = 0;
-
-		StateDestroy();
-
+	if (auto Interface = GetOwner<IStateInterface>())
+	{
+		if (HealthPoint <= MaxHealthPoint / 2)
+		{
+			Interface->Damaged();
+		}
+		else if(HealthPoint <= 0.f)
+		{
+			Interface->Die();
+		}
 	}
 
 }

@@ -139,34 +139,44 @@ void AMovableTank::SpawnBullet()
 
 
 		// 액터 스폰
-		ABullet_Tank* SpawnedActor = World->SpawnActor<ABullet_Tank>(ActorClass, SpawnLocation, SpawnRotation);
+		ABullet_Tank* SpawnedActor = World->SpawnActor<ABullet_Tank>(BulletClass, SpawnLocation, SpawnRotation);
 
 	
 
 		//UNiagaraSystem* NiagaraSystem = LoadObject<UNiagaraSystem>(nullptr, TEXT("C:/Users/ASUS/Desktop/Git_Final/SkyWard/Content/Tank_M109_Project/West_SPG_M109/FX/NS_East_Tank_T72B.uasset"));
 
-		if (Flame_Fire)
+		if (FireEffect)
 		{
 			//UNiagaraComponent* NiagaraComponent = 
 
-			UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), Flame_Fire, SpawnLocation, SpawnRotation);
+			UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), FireEffect, SpawnLocation, SpawnRotation);
 		}
 
 		bTimer = false;
 	}
 }
 
-void AMovableTank::SetupTimer()
+void AMovableTank::Damaged()
 {
-	UE_LOG(LogTemp, Warning, TEXT("timer"));
-
-	if (GetWorld()->GetTimerManager().IsTimerActive(TimerHandle)) {
-		return;
-	}
-
-	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &AMovableTank::SpawnBullet, Interval, false);
 
 }
+
+void AMovableTank::Die()
+{
+
+}
+
+//void AMovableTank::SetupTimer()
+//{
+//	UE_LOG(LogTemp, Warning, TEXT("timer"));
+//
+//	if (GetWorld()->GetTimerManager().IsTimerActive(TimerHandle)) {
+//		return;
+//	}
+//
+//	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &AMovableTank::SpawnBullet, Interval, false);
+//
+//}
 
 //
 //void AMovableTank::MoveTank()

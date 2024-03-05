@@ -4,19 +4,20 @@
 
 #include "CoreMinimal.h"
 #include "../Vehicle/VehicleBase.h"
+#include "../Interface/StateInterface.h"
 #include "TankBase.generated.h"
 
 /**
- * 
+ *
  */
 UCLASS()
-class SKYWARD_API ATankBase : public AVehicleBase
+class SKYWARD_API ATankBase : public AVehicleBase, public IStateInterface
 {
 	GENERATED_BODY()
 
 public:
 	ATankBase();
-	
+
 public:
 	virtual void BeginPlay() override;
 
@@ -34,12 +35,12 @@ protected:
 	virtual void SetupTimer();
 
 	void ResetDetection();
-	
+
 public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float InterpSpeed = 1.0f;
-	
+
 	UPROPERTY()
 	float bTimer = false;
 
@@ -55,23 +56,29 @@ public:
 	UPROPERTY()
 	float AimingTime = 5.0f;
 
-	//UPROPERTY()
-	//float Interval;
+	UPROPERTY()
+	float Interval = 5.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FVector Direction;
 
-	//UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	//FTimerHandle TimerHandle;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FTimerHandle TimerHandle;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TSubclassOf<class ABullet_Tank> ActorClass;
-	
+	TSubclassOf<class ABullet_Tank> BulletClass;
+
 	UPROPERTY()
 	class AHelicopterBase* Player;
 
 	UPROPERTY(EditAnywhere)
 	class UPawnSensingComponent* pawnSensing;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class UStateComponent* StateComponent;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class UNiagaraComponent* NiagaraComp;
 
 	//UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	//class UNiagaraSystem* Flame_Fire;
@@ -80,7 +87,13 @@ public:
 	//class USoundWave* FireSound;
 
 
+
+
+
+
+    void Damaged() override;
+    void Die() override;
 };
 
 
-	
+

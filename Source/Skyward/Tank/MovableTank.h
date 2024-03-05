@@ -69,19 +69,22 @@ public:
 	class ADestination* Dest;*/
 
 
-	UPROPERTY()
-	float Interval = 3.0f;
+	/*UPROPERTY()
+	float Interval = 3.0f;*/
+
+	/*UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FTimerHandle TimerHandle;*/
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FTimerHandle TimerHandle;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	class UNiagaraSystem* Flame_Fire;
+	class UNiagaraSystem* FireEffect;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class USoundWave* FireSound;
 
 	void SpawnBullet() override;
 
-	void SetupTimer() override;
+	//void SetupTimer() override;
+
+	void Damaged() override;
+	void Die() override;
 };

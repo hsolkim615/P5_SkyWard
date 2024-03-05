@@ -14,6 +14,7 @@
 #include <../../../../../../../Source/Runtime/Engine/Classes/Sound/SoundBase.h>
 #include "HydraMissile_Apache.h"
 #include "../Component/StateComponent.h"
+#include "../Buliding/EnemyBuliding.h"
 
 AMissile_Apache::AMissile_Apache()
 {
@@ -119,7 +120,7 @@ void AMissile_Apache::BoomMissile()
 	// 이펙트 연출
 	UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), NSBoom, GetActorLocation(), FRotator(0), FVector(7));
 
-	DrawDebugCapsule(GetWorld(), GetActorLocation(), 2000.f, 2000.f, FQuat::Identity, FColor::Blue, false, 30.0f, 0, 2.0f);
+	//DrawDebugCapsule(GetWorld(), GetActorLocation(), 2000.f, 2000.f, FQuat::Identity, FColor::Blue, false, 30.0f, 0, 2.0f);
 
 	// 미사일 폭발 사운드
 	Start_BoomSound();
@@ -135,7 +136,7 @@ void AMissile_Apache::BoomMissile()
 					// StateComponent를 이용해 체력을 감소시키는 방식으로 수정
 
 
-					Cast<ATankBase>(Actor)->StateComponent->TakeDamage(60);
+					Cast<ATankBase>(Actor)->StateComponent->TakeDamage(1000);
 
 				}
 				else if (Actor->IsA<ABunker>()) {
@@ -143,6 +144,12 @@ void AMissile_Apache::BoomMissile()
 					Cast<ABunker>(Actor)->StateComponent->TakeDamage(1000);
 
 					
+				}
+				else if (Actor->IsA<AEnemyBuliding>()) {
+
+					Cast<AEnemyBuliding>(Actor)->StateComponent->TakeDamage(1000);
+
+
 				}
 			}
 			

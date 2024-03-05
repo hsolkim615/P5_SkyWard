@@ -11,6 +11,9 @@
 #include <../../../../../../../Plugins/FX/Niagara/Source/Niagara/Public/NiagaraFunctionLibrary.h>
 #include <../../../../../../../Source/Runtime/Engine/Classes/Kismet/GameplayStatics.h>
 #include <../../../../../../../Source/Runtime/Engine/Classes/Sound/SoundBase.h>
+#include "../Component/StateComponent.h"
+#include "../Buliding/Bunker.h"
+#include "../Buliding/EnemyBuliding.h"
 
 ABullet_Apache::ABullet_Apache()
 {
@@ -65,23 +68,40 @@ void ABullet_Apache::Tick(float DeltaTime)
 void ABullet_Apache::NotifyActorBeginOverlap(AActor* OtherActor)
 {
 	Super::NotifyActorBeginOverlap(OtherActor);
-	
+
 	UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), NSBullet, GetActorLocation(), FRotator(0), FVector(0.01f));
 
 
-	if (OtherActor->IsA<ATankBase>()) {
-		
+	if (OtherActor->GetComponentByClass<UStateComponent>()) {
+
 
 		// ***** 데미지를 주는 방식으로 수정 필요 / 탱크가 갖고 있는 StateCompoenet의 함수를 호출할 것
 		//UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), NSBullet, TargetLocation, FRotator(0), FVector(3));
 
 
-		OtherActor->Destroy();
+		if (OtherActor->IsA<ATankBase>()) {
 
-		Destroy();
+			// StateComponent를 이용해 체력을 감소시키는 방식으로 수정
+
+
+			Cast<ATankBase>(OtherActor)->StateComponent->TakeDamage(20);
+
+		}
+		else if (OtherActor->IsA<ABunker>()) {
+
+			Cast<ABunker>(OtherActor)->StateComponent->TakeDamage(20);
+
+
+		}
+		else if (OtherActor->IsA<AEnemyBuliding>()) {
+
+			Cast<AEnemyBuliding>(OtherActor)->StateComponent->TakeDamage(20);
+
+
+		}
 
 	}
-	
+
 }
 
 void ABullet_Apache::BulletMove(FVector TargetLoc)

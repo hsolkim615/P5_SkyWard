@@ -5,16 +5,16 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "../Interface/StateInterface.h"
-#include "Bunker.generated.h"
+#include "EnemyBuliding.generated.h"
 
 UCLASS()
-class SKYWARD_API ABunker : public AActor, public IStateInterface
+class SKYWARD_API AEnemyBuliding : public AActor, public IStateInterface
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	ABunker();
+	AEnemyBuliding();
 
 protected:
 	// Called when the game starts or when spawned
@@ -25,6 +25,10 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class UStaticMeshComponent* MeshComp;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class UStateComponent* StateComponent;
 
 public:

@@ -13,6 +13,8 @@
 #include <../../../../../../../Source/Runtime/Engine/Classes/Kismet/GameplayStatics.h>
 #include <../../../../../../../Source/Runtime/Engine/Classes/Sound/SoundBase.h>
 #include "Missile_Apache.h"
+#include "../Component/StateComponent.h"
+#include "../Buliding/EnemyBuliding.h"
 
 AHydraMissile_Apache::AHydraMissile_Apache()
 {
@@ -113,7 +115,7 @@ void AHydraMissile_Apache::BoomMissile()
 	// 이펙트 연출
 	UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), NSBoom, GetActorLocation(), FRotator(0), FVector(4));
 
-	DrawDebugCapsule(GetWorld(), GetActorLocation(), 1000.f, 1000.f, FQuat::Identity, FColor::Blue, false, 30.0f, 0, 2.0f);
+	//DrawDebugCapsule(GetWorld(), GetActorLocation(), 1000.f, 1000.f, FQuat::Identity, FColor::Blue, false, 30.0f, 0, 2.0f);
 
 	// 미사일 폭발 사운드
 	Start_BoomSound();
@@ -122,15 +124,28 @@ void AHydraMissile_Apache::BoomMissile()
 	if (OverlappingActors.Num() > 0) {
 		for (AActor* Actor : OverlappingActors) {
 
-			if (Actor->IsA<ATankBase>()) {
+			if (Actor->GetComponentByClass<UStateComponent>()) {
+				if (Actor->IsA<ATankBase>()) {
 
-				// StateComponent를 이용해 체력을 감소시키는 방식으로 수정
+					// StateComponent를 이용해 체력을 감소시키는 방식으로 수정
 
-				Actor->Destroy();
 
-			}
-			else if (Actor->IsA<ABunker>()) {
-				Actor->Destroy();
+					Cast<ATankBase>(Actor)->StateComponent->TakeDamage(40);
+
+				}
+				else if (Actor->IsA<ABunker>()) {
+
+					Cast<ABunker>(Actor)->StateComponent->TakeDamage(40);
+
+
+				}
+				else if (Actor->IsA<AEnemyBuliding>()) {
+
+					Cast<AEnemyBuliding>(Actor)->StateComponent->TakeDamage(40);
+
+
+				}
+
 			}
 
 		}

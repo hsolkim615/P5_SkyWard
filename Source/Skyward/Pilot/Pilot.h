@@ -20,7 +20,7 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
@@ -39,7 +39,7 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MySettings|Components")
 	class UMotionControllerComponent* LeftController;
-	
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MySettings|Components")
 	class USkeletalMeshComponent* RightHandMesh;
 
@@ -61,6 +61,10 @@ public:
 	class UInputAction* IA_Pilot_Turn;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MySettings|PilotKey")
+	class UInputAction* IA_Pilot_LineTrace;
+
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MySettings|PilotKey")
 	class UInputAction* IA_Pilot_TakeHeli;
 
 public:
@@ -71,6 +75,8 @@ public:
 	void Pilot_Move(const FInputActionValue& value);
 
 	void Pilot_Turn(const FInputActionValue& value);
+
+	void Pilot_LineTrace(const FInputActionValue& value);
 
 	void Pilot_TakeHeli(const FInputActionValue& value);
 

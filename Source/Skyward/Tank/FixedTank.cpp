@@ -74,11 +74,11 @@ void AFixedTank::SpawnBullet()
 
 void AFixedTank::Damaged()
 {
-	NewMesh = nullptr; // 초기화된 메쉬 포인터
-	
-	// NewMesh에 특정 스태틱 메쉬를 할당
-	NewMesh = Cast<USkeletalMesh>(StaticLoadObject(USkeletalMesh::StaticClass(), nullptr, TEXT("C:/Users/ASUS/Desktop/Git_Final/SkyWard/Content/Resource/KJY/Damaged/FixedDamaged.uasset")));
-	GetMesh()->SetSkeletalMesh(NewMesh);
+	//NewMesh = nullptr; // 초기화된 메쉬 포인터
+	//
+	//// NewMesh에 특정 스태틱 메쉬를 할당
+	//NewMesh = Cast<USkeletalMesh>(StaticLoadObject(USkeletalMesh::StaticClass(), nullptr, TEXT("C:/Users/ASUS/Desktop/Git_Final/SkyWard/Content/Resource/KJY/Damaged/FixedDamaged.uasset")));
+	//GetMesh()->SetSkeletalMesh(NewMesh);
 }
 
 void AFixedTank::Die()

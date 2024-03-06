@@ -134,7 +134,7 @@ void ATankBase::AimingPlayer()
 	//	TargetLoc,           // 끝점
 	//	FColor::Red, // 선의 색상
 	//	true,         // 선이 불투명한지 여부 (false면 투명)
-	//	5.0f,         // 선의 지속 시간 (-1.0f로 설정하면 한 프레임 동안 지속됨)
+	//	10.0f,         // 선의 지속 시간 (-1.0f로 설정하면 한 프레임 동안 지속됨)
 	//	10,             // 두께 (기본값 0)
 	//	1.0f          // Depth priority (기본값 1.0f)
 	//);

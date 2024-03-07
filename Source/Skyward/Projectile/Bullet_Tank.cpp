@@ -85,12 +85,13 @@ void ABullet_Tank::NotifyActorBeginOverlap(AActor* OtherActor)
 
 			Cast<AHelicopter_Apache>(OtherActor)->StateComponent->TakeDamage(AttackDamage);
 
-
+			Destroy();
 		}
 		else if (OtherActor->IsA<ABunker>()) {
 
 			Cast<ABunker>(OtherActor)->StateComponent->TakeDamage(AttackDamage);
 
+			Destroy();
 		}
 
 	}

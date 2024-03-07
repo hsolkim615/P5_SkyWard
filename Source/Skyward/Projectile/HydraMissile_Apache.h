@@ -69,7 +69,8 @@ public:
 public:
 	// 미사일의 가속도
 	FVector InitialLocation;
-	float CurrentSpeed = 50000.0f;
-
+	float CurrentSpeed = 0.0f;
+	float MissileAcceleration = 50000.0f; // 미사일의 가속도
+	float MaxSpeed = 500000.0f; // 미사일의 최대 속도
 
 };

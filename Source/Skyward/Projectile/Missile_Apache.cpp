@@ -67,7 +67,7 @@ void AMissile_Apache::Tick(float DeltaTime)
 	FVector NewLocation = CurrentLocation + Direction * CurrentSpeed * DeltaTime;
 	SetActorLocation(NewLocation);
 	
-	if (FVector::Distance(GetActorLocation(), TargetLocation) <= 200) {
+	if (FVector::Distance(GetActorLocation(), TargetLocation) <= 300) {
 		BoomMissile();
 	}
 
@@ -109,8 +109,8 @@ void AMissile_Apache::BoomMissile()
 	// 폭발 범위
 	UKismetSystemLibrary::CapsuleOverlapActors(GetWorld(), // 월드 컨텍스트 객체
 		GetActorLocation(), // Capsule의 위치
-		2000.f, // Capsule의 반지름
-		2000.f, // Capsule의 반 높이
+		2500.f, // Capsule의 반지름
+		2500.f, // Capsule의 반 높이
 		ObjectTypes, // 충돌 허용 객체 유형
 		nullptr, // 액터 클래스 필터
 		ActorsToIgnore, // 무시할 액터들의 배열
@@ -136,18 +136,18 @@ void AMissile_Apache::BoomMissile()
 					// StateComponent를 이용해 체력을 감소시키는 방식으로 수정
 
 
-					Cast<ATankBase>(Actor)->StateComponent->TakeDamage(1000);
+					Cast<ATankBase>(Actor)->StateComponent->TakeDamage(AttackDamage);
 
 				}
 				else if (Actor->IsA<ABunker>()) {
 
-					Cast<ABunker>(Actor)->StateComponent->TakeDamage(1000);
+					Cast<ABunker>(Actor)->StateComponent->TakeDamage(AttackDamage);
 
 					
 				}
 				else if (Actor->IsA<AEnemyBuliding>()) {
 
-					Cast<AEnemyBuliding>(Actor)->StateComponent->TakeDamage(1000);
+					Cast<AEnemyBuliding>(Actor)->StateComponent->TakeDamage(AttackDamage);
 
 
 				}

@@ -16,6 +16,8 @@
 #include <../../../../../../../Source/Runtime/Engine/Classes/Particles/ParticleSystemComponent.h>
 #include <../../../../../../../Source/Runtime/UMG/Public/Components/WidgetComponent.h>
 #include "../Component/HeliComp/HeliSystemComp.h"
+#include "../GameModeBase/SkywardGameModeBase.h"
+#include <../../../../../../../Source/Runtime/Engine/Classes/Kismet/GameplayStatics.h>
 
 AHelicopter_Apache::AHelicopter_Apache()
 {
@@ -89,6 +91,26 @@ AHelicopter_Apache::AHelicopter_Apache()
 	StateComponent = CreateDefaultSubobject<UStateComponent>(TEXT("StateComponent"));
 
 
+
+
+	GameEndUI1 = CreateDefaultSubobject<UWidgetComponent>(TEXT("GameEndUI1"));
+	GameEndUI1->SetupAttachment(RootComponent);
+	GameEndUI1->SetVisibility(false);
+
+	GameEndUI2 = CreateDefaultSubobject<UWidgetComponent>(TEXT("GameEndUI2"));
+	GameEndUI2->SetupAttachment(RootComponent);
+	GameEndUI2->SetVisibility(false);
+
+	GameEndUI3 = CreateDefaultSubobject<UWidgetComponent>(TEXT("GameEndUI3"));
+	GameEndUI3->SetupAttachment(RootComponent);
+	GameEndUI3->SetVisibility(false);
+
+	GameEndUI4 = CreateDefaultSubobject<UWidgetComponent>(TEXT("GameEndUI4"));
+	GameEndUI4->SetupAttachment(RootComponent);
+	GameEndUI4->SetVisibility(false);
+
+
+
 	// =======================
 
 	// Test 컴포넌트
@@ -104,6 +126,8 @@ void AHelicopter_Apache::BeginPlay()
 	//ModifyMapping(true);
 
 	//DoorCollision->OnComponentBeginOverlap.AddDynamic(this, &AHelicopter_Apache::OnOverlapBegin);
+
+	SkywardGM = Cast<ASkywardGameModeBase>(UGameplayStatics::GetGameMode(GetWorld()));
 
 	StateComponent->SetMaxHealthPoint(1000.f);
 	StateComponent->SetAttackDamage(10.f);
@@ -211,5 +235,18 @@ void AHelicopter_Apache::Damaged()
 
 void AHelicopter_Apache::Die()
 {
+	// 게임 오버
+	// 게임이 끝나고 패배 UI를 띄워야 함
+
+	SkywardGM->bIsFail = true;
+
+	HeliInfoUIComp->SetVisibility(false);
+	MissionUIComp->SetVisibility(false);
+	
+
+	GameEndUI1->SetVisibility(true);
+	GameEndUI2->SetVisibility(true);
+	GameEndUI3->SetVisibility(true);
+	GameEndUI4->SetVisibility(true);
 	
 }

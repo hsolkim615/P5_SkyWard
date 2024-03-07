@@ -23,8 +23,12 @@ void UMissionSystem::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 {
 	Super::NativeTick(MyGeometry, InDeltaTime);
 
+
 	SetTankNumber();
+
 	SetBuildingNumber();
+
+
 
 	if (SkywardGM->DestroyEnemyBuliding >= 3) {
 		SwitchMission(2);

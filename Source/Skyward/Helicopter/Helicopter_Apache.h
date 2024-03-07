@@ -89,6 +89,21 @@ public: // Actor Comp
 	class UHeliCompBase* SystemComp;
 
 
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class UWidgetComponent* GameEndUI1;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class UWidgetComponent* GameEndUI2;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class UWidgetComponent* GameEndUI3;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class UWidgetComponent* GameEndUI4;
+
+
+
 	// Test ÄÄÆ÷³ÍÆ®
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class UHeliCompBase* TestComp;
@@ -108,6 +123,9 @@ public:	// MoveComp
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MySettings|Components")
 	class UInputAction* IA_TakeHeli_RightA;
+
+public:
+	class ASkywardGameModeBase* SkywardGM;
 
 public:
 	/*

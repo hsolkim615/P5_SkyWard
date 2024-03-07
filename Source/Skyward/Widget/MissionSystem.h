@@ -49,6 +49,8 @@ public: // °ø¿ë
 	int TankNumber = 0;
 	int BuildingNumber = 0;
 
+	int WidgetIndexNum = 0;
+
 public:
 	UFUNCTION()
 	void SwitchMission(int32 IndexNum);

@@ -24,7 +24,7 @@ ATankBase::ATankBase()
 
 	StateComponent = CreateDefaultSubobject<UStateComponent>(TEXT("StateComponent"));
 
-	NiagaraComp = CreateDefaultSubobject<UNiagaraComponent>(TEXT("NiagaraComp"));
+	//NiagaraComp = CreateDefaultSubobject<UNiagaraComponent>(TEXT("NiagaraComp"));
 
 
 }
@@ -42,7 +42,7 @@ void ATankBase::BeginPlay()
 		pawnSensing->OnSeePawn.AddDynamic(this, &ATankBase::OnSeePawn);
 	}
 
-	NiagaraComp->Activate(false);
+	//NiagaraComp->Activate(false);
 }
 
 void ATankBase::Tick(float DeltaTime)

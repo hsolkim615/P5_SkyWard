@@ -77,8 +77,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class UStateComponent* StateComponent;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	class UNiagaraComponent* NiagaraComp;
+	/*UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class UNiagaraComponent* NiagaraComp;*/
 
 	//UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	//class UNiagaraSystem* Flame_Fire;

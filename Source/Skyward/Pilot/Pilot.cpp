@@ -8,6 +8,8 @@
 #include <HeadMountedDisplayFunctionLibrary.h>
 #include <EnhancedInputSubsystems.h>
 #include "../Helicopter/HelicopterBase.h"
+#include <../../../../../../../Source/Runtime/UMG/Public/Components/WidgetInteractionComponent.h>
+#include <../../../../../../../Source/Runtime/Engine/Classes/Components/StaticMeshComponent.h>
 
 // Sets default values
 APilot::APilot()
@@ -24,6 +26,10 @@ APilot::APilot()
 	RightHandMesh->SetupAttachment(RightController);
 	RightHandMesh->SetRelativeRotation(FRotator(0, 0, 90));
 
+	RightWidgetInteractive = CreateDefaultSubobject<UWidgetInteractionComponent>(TEXT("RightWidgetInteractive"));
+	RightWidgetInteractive->SetupAttachment(RightController);
+	RightWidgetInteractive->InteractionDistance = 300;
+
 	// 왼손 컨트롤러
 	LeftController = CreateDefaultSubobject<UMotionControllerComponent>(TEXT("LeftController"));
 	LeftController->SetupAttachment(RootComponent);
@@ -33,9 +39,18 @@ APilot::APilot()
 	LeftHandMesh->SetupAttachment(LeftController);
 	LeftHandMesh->SetRelativeRotation(FRotator(0, -180, 90));
 
+	//LeftWidgetInteractive = CreateDefaultSubobject<UWidgetInteractionComponent>(TEXT("LeftWidgetInteractive"));
+	//LeftWidgetInteractive->SetupAttachment(LeftController);
+
 	// 카메라 컴포넌트
 	CameraComp = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComp"));
 	CameraComp->SetupAttachment(RootComponent);
+
+
+	ClickPointer = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ClickPointer"));
+	ClickPointer->SetupAttachment(RightController);
+	ClickPointer->SetRelativeLocation(FVector(100, 0, -280));
+	ClickPointer->SetRelativeScale3D(FVector(0.2));
 
 }
 
@@ -46,6 +61,13 @@ void APilot::BeginPlay()
 
 	// VR 트래킹 및 IMC 매핑
 	ModifyMapping(true);
+
+	/*
+	// 착탄 지점 표시 액터
+	if (ClickFactory) {
+		ClickActor = GetWorld()->SpawnActor<AActor>(ClickFactory, GetActorLocation(), FRotator(0));
+	}
+	*/
 
 }
 
@@ -68,6 +90,7 @@ void APilot::Tick(float DeltaTime)
 	PilotDirection = FVector::ZeroVector;
 	// Player 이동================================
 
+
 }
 
 // Called to bind functionality to input
@@ -82,9 +105,10 @@ void APilot::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 		EnhancedInputComponent->BindAction(IA_Pilot_Turn, ETriggerEvent::Triggered, this, &APilot::Pilot_Turn);
 
-		EnhancedInputComponent->BindAction(IA_Pilot_LineTrace, ETriggerEvent::Triggered, this, &APilot::Pilot_LineTrace);
+		EnhancedInputComponent->BindAction(IA_Pilot_Click, ETriggerEvent::Started, this, &APilot::Pilot_ClickPress);
+		EnhancedInputComponent->BindAction(IA_Pilot_Click, ETriggerEvent::Completed, this, &APilot::Pilot_ClickRelease);
 
-		EnhancedInputComponent->BindAction(IA_Pilot_TakeHeli, ETriggerEvent::Started, this, &APilot::Pilot_TakeHeli);
+		//EnhancedInputComponent->BindAction(IA_Pilot_TakeHeli, ETriggerEvent::Started, this, &APilot::Pilot_TakeHeli);
 
 	}
 
@@ -122,14 +146,28 @@ void APilot::Pilot_Turn(const FInputActionValue& value)
 
 }
 
-void APilot::Pilot_LineTrace(const FInputActionValue& value)
+void APilot::Pilot_ClickPress(const FInputActionValue& value)
 {
 	bool bValue = value.Get<bool>();
 
 	// 라인트레이스로 버튼 클릭
 
+
+	RightWidgetInteractive->PressPointerKey(EKeys::LeftMouseButton);
+
+	UE_LOG(LogTemp, Warning, TEXT("Success"));
 }
 
+void APilot::Pilot_ClickRelease(const FInputActionValue& value)
+{
+	bool bValue = value.Get<bool>();
+
+	RightWidgetInteractive->ReleasePointerKey(EKeys::LeftMouseButton);
+
+
+}
+
+/*
 void APilot::Pilot_TakeHeli(const FInputActionValue& value)
 {
 	bool TakeHeil = value.Get<bool>();
@@ -157,6 +195,7 @@ void APilot::Pilot_TakeHeli(const FInputActionValue& value)
 	}
 
 }
+*/
 
 void APilot::ModifyMapping(bool bAddMapping)
 {
@@ -180,3 +219,30 @@ void APilot::ModifyMapping(bool bAddMapping)
 	}
 
 }
+
+void APilot::ClickLineTrace()
+{
+
+	StartLocation = RightController->GetComponentLocation();// 시작 위치 설정
+	EndLocation = StartLocation + FVector(500, 0, 0); // 종료 위치 설정
+
+	// 무시할 액터 저장
+	CollisionParams.AddIgnoredActor(Cast<AActor>(this)); // this는 현재 액터의 포인터를 나타냅니다.
+
+	DrawDebugLine(GetWorld(), StartLocation, EndLocation, FColor::Green, false, -1, 0, 2);
+
+
+	// 라인 트레이스 실행
+	if (GetWorld()->LineTraceSingleByChannel(HitResult, StartLocation, EndLocation, TraceChannel, CollisionParams)) {
+
+		ClickActor->SetActorLocation(HitResult.Location);
+	}
+	else {
+		ClickActor->SetActorLocation(EndLocation);
+
+	}
+
+
+
+}
+	

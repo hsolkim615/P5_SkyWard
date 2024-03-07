@@ -26,6 +26,9 @@ public:
 	virtual void SetupPlayerInput(class UInputComponent* PlayerInputComponent) override;
 
 public:
+	class ASkywardGameModeBase* SkywardGM;
+
+public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MySettings|HeliKey")
 	class UInputAction* IA_Apache_Menu;
 

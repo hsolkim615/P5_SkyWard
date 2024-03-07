@@ -1,3 +1,4 @@
+
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
@@ -15,7 +16,7 @@ void ANaviStartActor::BeginPlay()
 	Super::BeginPlay();
 
 	if (Apache && NaviEndActor) {
-		NaviLine(GetActorLocation(), GetActorLocation() + FVector(0,0,20000), NaviEndActor->GetActorLocation());
+		NaviLine(GetActorLocation(), ((GetActorLocation() + NaviEndActor->GetActorLocation())/2 )+ FVector(0,0,30000), NaviEndActor->GetActorLocation());
 	}
 
 }
@@ -41,7 +42,7 @@ void ANaviStartActor::NaviLine(FVector P1, FVector P2, FVector P3)
 		M2 = FMath::Lerp(P2, P3, i);
 		M3 = FMath::Lerp(M1, M2, i);
 
-		DrawDebugLine(GetWorld(), M3, M3 + FVector(100), FColor::Green, false, -1, 0, 100);
+		//DrawDebugLine(GetWorld(), M3, M3 + FVector(100), FColor::Green, false, -1, 0, 100);
 
 		SpawnNaviActor = GetWorld()->SpawnActor<AActor>(NaviActorFactory, M3, FRotator(0));
 

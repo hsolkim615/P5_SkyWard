@@ -103,7 +103,7 @@ void UHeliAttackComp::SetupPlayerInput(UInputComponent* PlayerInputComponent)
 		EnhancedInputComponent->BindAction(IA_Heli_MissileShoot, ETriggerEvent::Started, this, &UHeliAttackComp::Shoot_Missile);
 
 		// 히드라 미사일
-		EnhancedInputComponent->BindAction(IA_Heli_HydraMissileShoot, ETriggerEvent::Started, this, &UHeliAttackComp::Shoot_HydraMissile);
+		EnhancedInputComponent->BindAction(IA_Heli_HydraMissileShoot, ETriggerEvent::Triggered, this, &UHeliAttackComp::Shoot_HydraMissile);
 
 		// 조준
 		EnhancedInputComponent->BindAction(IA_Heli_Aming, ETriggerEvent::Triggered, this, &UHeliAttackComp::Shoot_Aming);
@@ -123,10 +123,10 @@ void UHeliAttackComp::Shoot_MachineGun(const FInputActionValue& value)
 	}
 
 	// 타이머가 이미 활성화되어 있다면 중복으로 타이머를 시작하지 않음
-	if (!GetWorld()->GetTimerManager().IsTimerActive(TimerHandle))
+	if (!GetWorld()->GetTimerManager().IsTimerActive(MGTimerHandle))
 	{
 		// 일정 시간마다 SpawnBullet 함수를 호출
-		GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &UHeliAttackComp::SpwanBullet, 0.05f, false);
+		GetWorld()->GetTimerManager().SetTimer(MGTimerHandle, this, &UHeliAttackComp::SpwanBullet, 0.05f, false);
 	}
 
 	Start_MGEffect();
@@ -240,6 +240,17 @@ void UHeliAttackComp::Shoot_HydraMissile(const FInputActionValue& value)
 		return;
 	}
 
+	// 타이머가 이미 활성화되어 있다면 중복으로 타이머를 시작하지 않음
+	if (!GetWorld()->GetTimerManager().IsTimerActive(HydraTimerHandle))
+	{
+		// 일정 시간마다 SpawnBullet 함수를 호출
+		GetWorld()->GetTimerManager().SetTimer(HydraTimerHandle, this, &UHeliAttackComp::SetHydraMissile, 0.5f, false);
+	}
+
+}
+
+void UHeliAttackComp::SetHydraMissile()
+{
 	// 배열 0번 미사일을 CurrentMissile 에 저장 - 발사할 미사일
 	AHydraMissile_Apache* CurrentHydraMissile = HydraMissile[0];
 
@@ -261,13 +272,10 @@ void UHeliAttackComp::Shoot_HydraMissile(const FInputActionValue& value)
 
 	}
 
-	//CurrentHydraMissile->Start_FlyingSound();
-
 	// 발사한 미사일을 배열에서 제거
 	if (HydraMissile.Num() > 0) {
 		HydraMissile.Remove(CurrentHydraMissile);
 	}
-
 }
 
 // 미사일 ======================================================================================================================

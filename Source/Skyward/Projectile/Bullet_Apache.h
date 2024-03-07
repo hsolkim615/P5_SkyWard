@@ -42,7 +42,7 @@ public:
 
 	void SaveOwner();
 
-	void setAttackDamage(float NewAttackDamage);
+	void HitBullet(AActor* TargetActor);
 
 public:
 	FVector TargetLocation;

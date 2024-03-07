@@ -76,6 +76,7 @@ void UHeliTestComp::FWD_BWD_Function(const FInputActionValue& value)
 
 	Apache->GetVehicleMovementComponent()->SetPitchInput(PitchValue);
 
+
 }
 
 void UHeliTestComp::Up_Down_Function(const FInputActionValue& value)

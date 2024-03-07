@@ -4,27 +4,23 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "ProjectileBase.generated.h"
+#include "Heliport.generated.h"
 
 UCLASS()
-class SKYWARD_API AProjectileBase : public AActor
+class SKYWARD_API AHeliport : public AActor
 {
 	GENERATED_BODY()
-
-public:
+	
+public:	
 	// Sets default values for this actor's properties
-	AProjectileBase();
+	AHeliport();
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:
+public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
-public:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float AttackDamage = 0;
 
 };

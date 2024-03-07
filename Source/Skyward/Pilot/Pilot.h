@@ -46,6 +46,14 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MySettings|Components")
 	class USkeletalMeshComponent* LeftHandMesh;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MySettings|Components")
+	class UWidgetInteractionComponent* RightWidgetInteractive;
+
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MySettings|Components")
+	//class UWidgetInteractionComponent* LeftWidgetInteractive;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class UStaticMeshComponent* ClickPointer;
 
 
 public:
@@ -61,7 +69,7 @@ public:
 	class UInputAction* IA_Pilot_Turn;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MySettings|PilotKey")
-	class UInputAction* IA_Pilot_LineTrace;
+	class UInputAction* IA_Pilot_Click;
 
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MySettings|PilotKey")
@@ -76,19 +84,43 @@ public:
 
 	void Pilot_Turn(const FInputActionValue& value);
 
-	void Pilot_LineTrace(const FInputActionValue& value);
+	void Pilot_ClickPress(const FInputActionValue& value);
 
-	void Pilot_TakeHeli(const FInputActionValue& value);
+	void Pilot_ClickRelease(const FInputActionValue& value);
+
+
+	//void Pilot_TakeHeli(const FInputActionValue& value);
 
 
 public:
 	FVector PilotDirection;
 
-	class AHelicopterBase* HeliActor;
+	//class AHelicopterBase* HeliActor;
 
 
 public:
 	void ModifyMapping(bool bAddMapping);
+
+	void ClickLineTrace();
+
+
+public:
+	// 라인트레이스 ----------
+	FHitResult HitResult;
+	FVector StartLocation;// 시작 위치 설정
+	FVector EndLocation; // 종료 위치 설정
+	ECollisionChannel TraceChannel = ECollisionChannel::ECC_WorldDynamic; // 라인 트레이스할 채널 설정
+	FCollisionQueryParams CollisionParams; // 무시할 액터
+
+
+
+	// 미사일 공장
+	UPROPERTY(EditAnywhere, Category = Spawn_Projectile)
+	TSubclassOf<class AActor> ClickFactory;
+
+	UPROPERTY(EditAnywhere, Category = Spawn_Projectile)
+	class AActor* ClickActor;
+
 
 
 };

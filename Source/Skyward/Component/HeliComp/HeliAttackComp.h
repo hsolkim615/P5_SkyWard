@@ -51,7 +51,7 @@ public:
 
 	// 히드라 미사일 발사
 	void Shoot_HydraMissile(const FInputActionValue& value);
-
+	void SetHydraMissile();
 
 	void Shoot_Aming(const FInputActionValue& value);
 
@@ -81,8 +81,11 @@ public:
 	class USoundBase* BulletSound;
 
 public:
-	// 타이머 핸들
-	FTimerHandle TimerHandle;
+	// 기관총 타이머 핸들
+	FTimerHandle MGTimerHandle;
+
+	// 히드라 미사일 타이머 핸들
+	FTimerHandle HydraTimerHandle;
 
 
 	// 라인트레이스 ----------

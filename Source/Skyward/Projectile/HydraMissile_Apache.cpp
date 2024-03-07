@@ -56,6 +56,24 @@ void AHydraMissile_Apache::Tick(float DeltaTime)
 		return;
 	}
 
+	// 현재 속도가 최대 속도보다 작을 때 가속
+	if (CurrentSpeed < MaxSpeed) {
+		CurrentSpeed += MissileAcceleration * DeltaTime;
+	}
+
+	// 목표 위치로 부드럽게 이동
+	FVector CurrentLocation = GetActorLocation();
+	FVector Direction = (TargetLocation - CurrentLocation).GetSafeNormal();
+	FVector NewLocation = CurrentLocation + Direction * CurrentSpeed * DeltaTime;
+	SetActorLocation(NewLocation);
+
+	if (FVector::Distance(GetActorLocation(), TargetLocation) <= 300) {
+		BoomMissile();
+	}
+
+
+
+	/*
 	// 목표 위치로 부드럽게 이동
 	FVector CurrentLocation = GetActorLocation();
 	FVector Direction = (TargetLocation - CurrentLocation).GetSafeNormal();
@@ -66,7 +84,7 @@ void AHydraMissile_Apache::Tick(float DeltaTime)
 	if (FVector::Distance(GetActorLocation(), TargetLocation) <= 200) {
 		BoomMissile();
 	}
-	
+	*/
 
 }
 
@@ -104,8 +122,8 @@ void AHydraMissile_Apache::BoomMissile()
 	// 폭발 범위
 	UKismetSystemLibrary::CapsuleOverlapActors(GetWorld(), // 월드 컨텍스트 객체
 		GetActorLocation(), // Capsule의 위치
-		1000.f, // Capsule의 반지름
-		1000.f, // Capsule의 반 높이
+		1500.f, // Capsule의 반지름
+		1500.f, // Capsule의 반 높이
 		ObjectTypes, // 충돌 허용 객체 유형
 		nullptr, // 액터 클래스 필터
 		ActorsToIgnore, // 무시할 액터들의 배열
@@ -130,18 +148,18 @@ void AHydraMissile_Apache::BoomMissile()
 					// StateComponent를 이용해 체력을 감소시키는 방식으로 수정
 
 
-					Cast<ATankBase>(Actor)->StateComponent->TakeDamage(40);
+					Cast<ATankBase>(Actor)->StateComponent->TakeDamage(AttackDamage);
 
 				}
 				else if (Actor->IsA<ABunker>()) {
 
-					Cast<ABunker>(Actor)->StateComponent->TakeDamage(40);
+					Cast<ABunker>(Actor)->StateComponent->TakeDamage(AttackDamage);
 
 
 				}
 				else if (Actor->IsA<AEnemyBuliding>()) {
 
-					Cast<AEnemyBuliding>(Actor)->StateComponent->TakeDamage(40);
+					Cast<AEnemyBuliding>(Actor)->StateComponent->TakeDamage(AttackDamage);
 
 
 				}

@@ -9,6 +9,9 @@
 #include "HeliSoundComp.h"
 #include <Kismet/KismetSystemLibrary.h>
 #include <../../../../../../../Plugins/FX/Niagara/Source/Niagara/Public/NiagaraFunctionLibrary.h>
+#include "../../Actor/Heliport.h"
+#include <../../../../../../../Source/Runtime/Engine/Classes/Kismet/GameplayStatics.h>
+#include "../../GameModeBase/SkywardGameModeBase.h"
 
 UHeliMoveComp::UHeliMoveComp()
 {
@@ -18,6 +21,8 @@ UHeliMoveComp::UHeliMoveComp()
 void UHeliMoveComp::BeginPlay()
 {
 	Super::BeginPlay();
+	
+	SkywardGM = Cast<ASkywardGameModeBase>(UGameplayStatics::GetGameMode(GetWorld()));
 
 	DriveMode = EDriveMode::NOMALMODE;
 
@@ -66,6 +71,7 @@ void UHeliMoveComp::TickComponent(float DeltaTime, ELevelTick TickType, FActorCo
 
 			}
 		}
+		/*
 		else if (DriveMode == EDriveMode::AltitudeHoldMode) {
 			// 고도 유지 모드
 
@@ -76,9 +82,9 @@ void UHeliMoveComp::TickComponent(float DeltaTime, ELevelTick TickType, FActorCo
 			// 자동 호버링 모드
 			FVector HoveringLocation = Apache->GetActorLocation();
 
-			Apache->SetActorLocation(HoveringLocation);
+			//Apache->SetActorLocation(HoveringLocation);
 		}
-
+		*/
 
 	}
 	else { // 헬기 엔진 꺼짐
@@ -187,6 +193,13 @@ void UHeliMoveComp::Engine_On_Off(const FInputActionValue& value)
 
 			Apache->GetVehicleMovementComponent()->SetHandbrakeInput(true);
 
+			// 주차시 헬리포트 위에 있으면 미션 성공
+			if (hitResult.GetActor()->IsA<AHeliport>()) {
+
+				SkywardGM->bIsSuccess = true;
+
+			}
+
 		}
 
 	}
@@ -195,6 +208,7 @@ void UHeliMoveComp::Engine_On_Off(const FInputActionValue& value)
 
 void UHeliMoveComp::ChangeDrivingMode(const FInputActionValue& value)
 {
+	/*
 	if (DriveMode == EDriveMode::NOMALMODE) {
 		DriveMode = EDriveMode::AltitudeHoldMode;
 
@@ -207,6 +221,7 @@ void UHeliMoveComp::ChangeDrivingMode(const FInputActionValue& value)
 		DriveMode = EDriveMode::NOMALMODE;
 
 	}
+	*/
 
 }
 

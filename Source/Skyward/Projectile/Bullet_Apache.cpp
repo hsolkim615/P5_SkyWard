@@ -71,34 +71,13 @@ void ABullet_Apache::NotifyActorBeginOverlap(AActor* OtherActor)
 
 	UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), NSBullet, GetActorLocation(), FRotator(0), FVector(0.01f));
 
-
 	if (OtherActor->GetComponentByClass<UStateComponent>()) {
-
 
 		// ***** 데미지를 주는 방식으로 수정 필요 / 탱크가 갖고 있는 StateCompoenet의 함수를 호출할 것
 		//UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), NSBullet, TargetLocation, FRotator(0), FVector(3));
 
 
-		if (OtherActor->IsA<ATankBase>()) {
-
-			// StateComponent를 이용해 체력을 감소시키는 방식으로 수정
-
-
-			Cast<ATankBase>(OtherActor)->StateComponent->TakeDamage(20);
-
-		}
-		else if (OtherActor->IsA<ABunker>()) {
-
-			Cast<ABunker>(OtherActor)->StateComponent->TakeDamage(20);
-
-
-		}
-		else if (OtherActor->IsA<AEnemyBuliding>()) {
-
-			Cast<AEnemyBuliding>(OtherActor)->StateComponent->TakeDamage(20);
-
-
-		}
+		HitBullet(OtherActor);
 
 	}
 
@@ -118,7 +97,22 @@ void ABullet_Apache::SaveOwner()
 
 }
 
-void ABullet_Apache::setAttackDamage(float NewAttackDamage)
+void ABullet_Apache::HitBullet(AActor* TargetActor)
 {
+	if (TargetActor->IsA<ATankBase>()) {
+
+		Cast<ATankBase>(TargetActor)->StateComponent->TakeDamage(50);
+
+	}
+	else if (TargetActor->IsA<ABunker>()) {
+
+		Cast<ABunker>(TargetActor)->StateComponent->TakeDamage(50);
+
+	}
+	else if (TargetActor->IsA<AEnemyBuliding>()) {
+
+		Cast<AEnemyBuliding>(TargetActor)->StateComponent->TakeDamage(50);
+
+	}
 
 }

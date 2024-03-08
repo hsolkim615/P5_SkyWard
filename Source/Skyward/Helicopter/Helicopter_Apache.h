@@ -140,6 +140,19 @@ public:
 public:
 	void SetDoor();
 
+	
+public: // 사운드
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class USoundBase* WinSound;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class USoundBase* LoseSound;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class USoundBase* OpenSound;
+
+
+
 public: // 인터페이스 함수
 	// 피가 절반 이하일 때
 	void Damaged() override;

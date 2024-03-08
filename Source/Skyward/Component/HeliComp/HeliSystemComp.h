@@ -35,5 +35,10 @@ public:
 public:
 	void MissionWidget();
 
+public:
+	void PlayMissionSound();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class USoundBase* ClearSound;
 
 };

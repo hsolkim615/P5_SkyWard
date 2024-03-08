@@ -55,4 +55,10 @@ public:
 	UFUNCTION()
 	void SwitchMission(int32 IndexNum);
 
+
+public:
+	
+	int CurrentMisssionNumber = 0;
+	
+	
 };

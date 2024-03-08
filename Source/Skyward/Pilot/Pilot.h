@@ -55,6 +55,11 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class UStaticMeshComponent* ClickPointer;
 
+	
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MySettings|Components")
+	//class 
+
+
 
 public:
 	// IMC ¸ÊÇÎ

@@ -29,4 +29,6 @@ public: // °ø¿ë
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (BindWidget))
 	class UWidgetSwitcher* WidgetSwitcher;
 
+
+
 };

@@ -198,6 +198,11 @@ void UHeliMoveComp::Engine_On_Off(const FInputActionValue& value)
 
 				SkywardGM->bIsSuccess = true;
 
+				// 위젯 여는 소리
+				if (Apache->WinSound) {
+					UGameplayStatics::PlaySound2D(GetWorld(), Apache->WinSound);
+				}
+
 			}
 
 		}

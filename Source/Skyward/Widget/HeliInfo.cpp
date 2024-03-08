@@ -26,9 +26,19 @@ void UHeliInfo::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 		return;
 	}
 
-	// 체력 갱신
-	HP_Bar->SetPercent(100.f / Apache->StateComponent->HealthPoint);
+	float CurrentHealthPoint = Apache->StateComponent->HealthPoint / Apache->StateComponent->MaxHealthPoint;
 	
+	// 체력 갱신
+	HP_Bar->SetPercent(CurrentHealthPoint);
+
+	if (CurrentHealthPoint < 0.2) {
+		HP_Bar->SetFillColorAndOpacity(FColor::Red);
+	}
+	else if (CurrentHealthPoint < 0.5) {
+		HP_Bar->SetFillColorAndOpacity(FColor::Yellow);
+
+	}
+
 	// 헬기 정보 갱신
 	if (txt_RollAngle && txt_PitchAngle && txt_Altitude && txt_Bullet && txt_Missile && txt_HydraMissile)
 	{

@@ -58,4 +58,18 @@ void UHeliSystemComp::SetupPlayerInput(class UInputComponent* PlayerInputCompone
 void UHeliSystemComp::MissionWidget()
 {
 	Apache->MissionUIComp->SetVisibility(!Apache->MissionUIComp->IsVisible());
+
+	// 困连 咯绰 家府
+	if (Apache->MissionUIComp->IsWidgetVisible() == true && Apache->OpenSound) {
+		UGameplayStatics::PlaySound2D(GetWorld(), Apache->OpenSound);
+	}
+
+}
+
+void UHeliSystemComp::PlayMissionSound()
+{
+	// 固记 努府绢 家府
+	if (ClearSound) {
+		UGameplayStatics::PlaySound2D(GetWorld(), ClearSound);
+	}
 }

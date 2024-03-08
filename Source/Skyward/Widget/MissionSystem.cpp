@@ -7,6 +7,7 @@
 #include "../Helicopter/Helicopter_Apache.h"
 #include <../../../../../../../Source/Runtime/Engine/Classes/Kismet/GameplayStatics.h>
 #include "../GameModeBase/SkywardGameModeBase.h"
+#include "../Component/HeliComp/HeliSystemComp.h"
 
 
 void UMissionSystem::NativeConstruct()
@@ -23,12 +24,10 @@ void UMissionSystem::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 {
 	Super::NativeTick(MyGeometry, InDeltaTime);
 
-
+	/*
 	SetTankNumber();
 
 	SetBuildingNumber();
-
-
 
 	if (SkywardGM->DestroyEnemyBuliding >= 3) {
 		SwitchMission(2);
@@ -36,6 +35,33 @@ void UMissionSystem::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 	else if (SkywardGM->DestroyMoveTank >= 5) {
 		SwitchMission(1);
 
+	}
+	*/
+
+	if (CurrentMisssionNumber == 0) {
+		SetTankNumber();
+
+		if (SkywardGM->DestroyMoveTank >= 5) {
+			SwitchMission(1);
+
+			Cast<UHeliSystemComp>(Apache->SystemComp)->PlayMissionSound();
+
+			CurrentMisssionNumber = 1;
+
+		}
+
+	}
+	else if (CurrentMisssionNumber == 1) {
+		SetBuildingNumber();
+
+		if (SkywardGM->DestroyMoveTank >= 5) {
+			SwitchMission(2);
+			
+			Cast<UHeliSystemComp>(Apache->SystemComp)->PlayMissionSound();
+			
+			CurrentMisssionNumber = 2;
+		
+		}
 	}
 
 }

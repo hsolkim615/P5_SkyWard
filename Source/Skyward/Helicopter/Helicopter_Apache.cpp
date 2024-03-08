@@ -96,19 +96,34 @@ AHelicopter_Apache::AHelicopter_Apache()
 	GameEndUI1 = CreateDefaultSubobject<UWidgetComponent>(TEXT("GameEndUI1"));
 	GameEndUI1->SetupAttachment(RootComponent);
 	GameEndUI1->SetVisibility(false);
+	GameEndUI1->SetRelativeLocation(FVector(340, 0, 235));
+	GameEndUI1->SetRelativeRotation(FRotator(0, 180, 0));
+	GameEndUI1->SetRelativeScale3D(FVector(0.04f));
+	GameEndUI1->SetDrawSize(FVector2D(2000, 1000));
 
 	GameEndUI2 = CreateDefaultSubobject<UWidgetComponent>(TEXT("GameEndUI2"));
 	GameEndUI2->SetupAttachment(RootComponent);
 	GameEndUI2->SetVisibility(false);
+	GameEndUI2->SetRelativeLocation(FVector(310, 0, 260));
+	GameEndUI2->SetRelativeRotation(FRotator(-60, 180, 0));
+	GameEndUI2->SetRelativeScale3D(FVector(0.04f));
+	GameEndUI2->SetDrawSize(FVector2D(2000, 1000));
 
 	GameEndUI3 = CreateDefaultSubobject<UWidgetComponent>(TEXT("GameEndUI3"));
 	GameEndUI3->SetupAttachment(RootComponent);
 	GameEndUI3->SetVisibility(false);
+	GameEndUI3->SetRelativeLocation(FVector(300, 60, 230));
+	GameEndUI3->SetRelativeRotation(FRotator(0, 270, 20));
+	GameEndUI3->SetRelativeScale3D(FVector(0.04f));
+	GameEndUI3->SetDrawSize(FVector2D(2000, 1000));
 
 	GameEndUI4 = CreateDefaultSubobject<UWidgetComponent>(TEXT("GameEndUI4"));
 	GameEndUI4->SetupAttachment(RootComponent);
 	GameEndUI4->SetVisibility(false);
-
+	GameEndUI4->SetRelativeLocation(FVector(300, -60, 230));
+	GameEndUI4->SetRelativeRotation(FRotator(0, 90, -20));
+	GameEndUI4->SetRelativeScale3D(FVector(0.04f));
+	GameEndUI4->SetDrawSize(FVector2D(2000, 1000));
 
 
 	// =======================
@@ -129,8 +144,8 @@ void AHelicopter_Apache::BeginPlay()
 
 	SkywardGM = Cast<ASkywardGameModeBase>(UGameplayStatics::GetGameMode(GetWorld()));
 
-	StateComponent->SetMaxHealthPoint(1000.f);
-	StateComponent->SetAttackDamage(10.f);
+	//StateComponent->SetMaxHealthPoint(1000.f);
+	//StateComponent->SetAttackDamage(10.f);
 
 	ModifyMapping(true);
 
@@ -239,14 +254,20 @@ void AHelicopter_Apache::Die()
 	// 게임이 끝나고 패배 UI를 띄워야 함
 
 	SkywardGM->bIsFail = true;
+	SkywardGM->bIsSuccess= false;
+
+	// 위젯 여는 소리
+	if (LoseSound) {
+		UGameplayStatics::PlaySound2D(GetWorld(), LoseSound);
+	}
 
 	HeliInfoUIComp->SetVisibility(false);
 	MissionUIComp->SetVisibility(false);
-	
+
 
 	GameEndUI1->SetVisibility(true);
 	GameEndUI2->SetVisibility(true);
 	GameEndUI3->SetVisibility(true);
 	GameEndUI4->SetVisibility(true);
-	
+
 }

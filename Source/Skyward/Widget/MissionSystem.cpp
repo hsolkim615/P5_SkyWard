@@ -54,7 +54,7 @@ void UMissionSystem::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 	else if (CurrentMisssionNumber == 1) {
 		SetBuildingNumber();
 
-		if (SkywardGM->DestroyMoveTank >= 5) {
+		if (SkywardGM->DestroyEnemyBuliding >= 3) {
 			SwitchMission(2);
 			
 			Cast<UHeliSystemComp>(Apache->SystemComp)->PlayMissionSound();
